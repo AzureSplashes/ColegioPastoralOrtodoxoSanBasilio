@@ -1,0 +1,67 @@
+---
+/**
+ * Base.astro — Root layout wrapping every page.
+ * Provides: <head>, Nav, Footer, Emblem, Lucide icon init.
+ * Props:
+ *   title: string — <title> tag content
+ *   description: string — <meta name="description"> content
+ *   activePage: string — passed to Nav for active link highlighting
+ *   footerVariant: "full" | "minimal" — passed to Footer
+ */
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
+import Emblem from "../components/Emblem.astro";
+import "../styles/style.css";
+
+interface Props {
+  title: string;
+  description?: string;
+  activePage?: string;
+  footerVariant?: "full" | "minimal";
+}
+
+const {
+  title,
+  description = "Colegio Pastoral Ortodoxo San Basilio — Diócesis de México, OCA",
+  activePage = "",
+  footerVariant = "full",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sorts+Mill+Goudy:ital@0;1&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest" is:inline></script>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/assets/img/logo.png" />
+
+    <!-- Supabase config (for client-side auth) -->
+    <meta name="supabase-url" content={import.meta.env.PUBLIC_SUPABASE_URL || ""} />
+    <meta name="supabase-anon-key" content={import.meta.env.PUBLIC_SUPABASE_ANON_KEY || ""} />
+  </head>
+  <body>
+    <Nav activePage={activePage} />
+
+    <slot />
+
+    <Emblem />
+    <Footer variant={footerVariant} />
+
+    <script is:inline>lucide.createIcons();</script>
+  </body>
+</html>

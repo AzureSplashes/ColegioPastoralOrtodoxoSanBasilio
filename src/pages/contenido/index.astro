@@ -1,0 +1,42 @@
+---
+/**
+ * contenido/index.astro — Content hub: links to Textos Litúrgicos, Música, Curso Propedéutico.
+ */
+import Base from "../../layouts/Base.astro";
+---
+
+<Base
+  title="Contenido | Colegio Pastoral Ortodoxo San Basilio"
+  description="Recursos litúrgicos, musicales y de formación del Colegio Pastoral Ortodoxo San Basilio."
+  activePage="contenido"
+>
+  <main class="section">
+    <div class="container">
+      <div class="section-header">
+        <h1 class="section-title">Contenido</h1>
+        <p>Recursos de formación litúrgica, musical y doctrinal disponibles para descarga.</p>
+      </div>
+
+      <div class="cards-grid">
+        <div class="card">
+          <div class="card-icon"><i data-lucide="scroll-text"></i></div>
+          <h3 class="card-title">Textos Litúrgicos</h3>
+          <p class="card-desc">Liturgikon, Salterio, Libro de las Horas, Eucologio y demás textos para el oficio litúrgico.</p>
+          <a href="/contenido/textos-liturgicos/" class="card-link">Ver textos <i data-lucide="arrow-right"></i></a>
+        </div>
+        <div class="card">
+          <div class="card-icon"><i data-lucide="music"></i></div>
+          <h3 class="card-title">Música</h3>
+          <p class="card-desc">Octotono Dominical, instrucciones prácticas y anotaciones musicales litúrgicas.</p>
+          <a href="/contenido/musica/" class="card-link">Ver música <i data-lucide="arrow-right"></i></a>
+        </div>
+        <div class="card">
+          <div class="card-icon"><i data-lucide="book-open"></i></div>
+          <h3 class="card-title">Textos de Doctrina Cristiana Ortodoxa</h3>
+          <p class="card-desc">Material del curso propedéutico: vocaciones, eclesiología, órdenes sagradas y más.</p>
+          <a href="/contenido/curso-propedeutico/" class="card-link">Ver textos <i data-lucide="arrow-right"></i></a>
+        </div>
+      </div>
+    </div>
+  </main>
+</Base>

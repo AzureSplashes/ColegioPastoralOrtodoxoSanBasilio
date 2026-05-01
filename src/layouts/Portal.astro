@@ -1,0 +1,29 @@
+---
+/**
+ * Portal.astro — Layout for authenticated Alumnos pages.
+ * Wraps Base layout and adds the PortalNav between header and content.
+ * Props:
+ *   title: string
+ *   description: string
+ *   portalPage: "clases" | "tareas" | "recursos" — highlights active tab
+ */
+import Base from "./Base.astro";
+import PortalNav from "../components/PortalNav.astro";
+
+interface Props {
+  title: string;
+  description?: string;
+  portalPage?: string;
+}
+
+const {
+  title,
+  description = "Portal de alumnos del Colegio Pastoral Ortodoxo San Basilio.",
+  portalPage = "",
+} = Astro.props;
+---
+
+<Base title={title} description={description} activePage="alumnos">
+  <PortalNav activePage={portalPage} />
+  <slot />
+</Base>

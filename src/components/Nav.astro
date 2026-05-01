@@ -1,0 +1,138 @@
+---
+/**
+ * Nav.astro — Main site navigation.
+ * Props:
+ *   activePage: string — slug matching the current page for highlighting.
+ *     Values: "inicio" | "administracion" | "contenido" | "alumnos" | "contacto" | "avisos"
+ */
+interface Props {
+  activePage?: string;
+}
+
+const { activePage = "" } = Astro.props;
+
+const navItems = [
+  { href: "/", label: "Inicio", slug: "inicio" },
+  { href: "/administracion/", label: "Administración", slug: "administracion" },
+  {
+    href: "/contenido/", label: "Contenido", slug: "contenido",
+    children: [
+      { href: "/contenido/textos-liturgicos/", label: "Textos Litúrgicos" },
+      { href: "/contenido/musica/", label: "Música" },
+      { href: "/contenido/curso-propedeutico/", label: "Textos de Doctrina Cristiana Ortodoxa" },
+    ],
+  },
+  { href: "/alumnos/", label: "Alumnos", slug: "alumnos" },
+  { href: "/avisos/", label: "Avisos", slug: "avisos" },
+  { href: "/contacto/", label: "Contacto", slug: "contacto" },
+];
+---
+
+<header class="header">
+  <div class="container">
+    <nav class="nav">
+      <a href="/" class="logo-container">
+        <img src="/assets/img/logo.png" alt="Logo Colegio San Basilio" class="logo-img" />
+        <div class="logo-text">Colegio Pastoral Ortodoxo<br />San Basilio</div>
+      </a>
+
+      <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false">
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+      </button>
+
+      <ul class="nav-links">
+        {navItems.map((item) =>
+          item.children ? (
+            <li class="dropdown">
+              <a href={item.href} class:list={["nav-link", { active: activePage === item.slug }]}>
+                {item.label} <i data-lucide="chevron-down" style="width:14px;height:14px;display:inline-block;vertical-align:middle;margin-top:-2px"></i>
+              </a>
+              <ul class="dropdown-menu">
+                {item.children.map((child) => (
+                  <li><a href={child.href}>{child.label}</a></li>
+                ))}
+              </ul>
+            </li>
+          ) : (
+            <li>
+              <a href={item.href} class:list={["nav-link", { active: activePage === item.slug }]}>
+                {item.label}
+              </a>
+            </li>
+          )
+        )}
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  /* Mobile hamburger */
+  .nav-toggle {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    z-index: 1001;
+  }
+  .nav-toggle-bar {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--color-white);
+    margin: 5px 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+  .nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+  .nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(2) {
+    opacity: 0;
+  }
+  .nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  @media (max-width: 768px) {
+    .nav-toggle { display: block; }
+    .nav-links {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background-color: var(--color-primary);
+      flex-direction: column;
+      padding: 1rem 2rem 2rem;
+      box-shadow: var(--shadow-lg);
+    }
+    .nav-links.open { display: flex; }
+    .dropdown-menu {
+      position: static !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+      transform: none !important;
+      box-shadow: none !important;
+      border: none !important;
+      background: transparent !important;
+      padding-left: 1rem;
+    }
+    .dropdown-menu a { color: var(--color-white) !important; }
+    .dropdown-menu::before { display: none; }
+  }
+</style>
+
+<script>
+  const toggle = document.querySelector('.nav-toggle');
+  const navLinks = document.querySelector('.nav-links');
+  if (toggle && navLinks) {
+    toggle.addEventListener('click', () => {
+      const expanded = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', String(!expanded));
+      navLinks.classList.toggle('open');
+    });
+  }
+</script>

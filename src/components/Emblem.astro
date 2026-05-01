@@ -1,0 +1,27 @@
+---
+/**
+ * Emblem.astro — The institutional emblem (images.png) shown above the footer on every page.
+ * No props needed — purely decorative, consistent placement.
+ */
+---
+
+<div class="emblem-wrapper">
+  <img
+    src="/assets/img/images.png"
+    alt="Escudo del Colegio Pastoral Ortodoxo San Basilio"
+    class="emblem-img"
+  />
+</div>
+
+<style>
+  .emblem-wrapper {
+    text-align: center;
+    margin: 3rem 0 2rem 0;
+  }
+  .emblem-img {
+    margin: 0 auto;
+    border-radius: 8px;
+    box-shadow: var(--shadow-md);
+    max-width: 100%;
+  }
+</style>

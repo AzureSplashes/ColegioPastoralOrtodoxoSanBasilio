@@ -1,0 +1,166 @@
+---
+/**
+ * alumnos/index.astro — Student login page.
+ * Static page (no auth required to see the login form).
+ * Submits email+password to Supabase Auth client-side,
+ * then redirects to /alumnos/clases/ on success.
+ */
+import Base from "../../layouts/Base.astro";
+---
+
+<Base
+  title="Alumnos | Colegio Pastoral Ortodoxo San Basilio"
+  description="Portal de acceso para alumnos matriculados del Colegio Pastoral Ortodoxo San Basilio."
+  activePage="alumnos"
+>
+  <main class="section">
+    <div class="container">
+      <div class="login-card" id="login-card">
+        <div class="login-icon"><i data-lucide="lock"></i></div>
+        <h2 style="margin-bottom: 1rem;">Acceso para Alumnos</h2>
+        <p style="color: var(--color-text-light); margin-bottom: 2rem;">
+          Ingresa con las credenciales proporcionadas por la administración del Colegio.
+        </p>
+
+        <form id="login-form">
+          <div class="form-group">
+            <label for="email">Correo electrónico</label>
+            <input type="email" id="email" name="email" required placeholder="tu-correo@ejemplo.com" />
+          </div>
+          <div class="form-group">
+            <label for="password">Contraseña</label>
+            <input type="password" id="password" name="password" required placeholder="••••••••" />
+          </div>
+
+          <div id="login-error" class="login-error" style="display:none;"></div>
+
+          <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;" id="login-btn">
+            <i data-lucide="log-in"></i> Ingresar
+          </button>
+        </form>
+
+        <div class="mapa-section">
+          <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem; color: var(--color-primary);">
+            Mapa Curricular
+          </h3>
+          <p style="color: var(--color-text-light); font-size: 0.95rem; margin-bottom: 1.5rem;">
+            El curso del Colegio comprende un total de 24 asignaturas, tales
+            como Biblia, Historia, Patrística, Teología, entre otras.
+          </p>
+          <a
+            href="/documentos/mapa curricular.pdf"
+            download
+            class="btn btn-outline"
+            style="color: var(--color-primary); border-color: var(--color-primary); width: 100%; justify-content: center; background-color: transparent;"
+          >
+            <i data-lucide="download"></i> Descargar PDF
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+</Base>
+
+<style>
+  .login-card {
+    max-width: 500px;
+    margin: 4rem auto;
+    background: var(--color-white);
+    padding: 3rem;
+    border-radius: 12px;
+    box-shadow: var(--shadow-lg);
+    text-align: center;
+  }
+  .login-icon {
+    font-size: 3rem;
+    color: var(--color-accent);
+    margin-bottom: 1.5rem;
+  }
+  .form-group {
+    margin-bottom: 1.25rem;
+    text-align: left;
+  }
+  .form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    font-size: 0.9rem;
+  }
+  .form-group input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 1rem;
+  }
+  .form-group input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+  }
+  .login-error {
+    background: #fef2f2;
+    color: #991b1b;
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    text-align: left;
+  }
+  .mapa-section {
+    margin-top: 2.5rem;
+    text-align: left;
+    padding-top: 2rem;
+    border-top: 1px solid #eee;
+  }
+</style>
+
+<script is:inline>
+  // Client-side Supabase auth — reads config from meta tags set by Base.astro
+  (async function() {
+    const url = document.querySelector('meta[name="supabase-url"]')?.content;
+    const key = document.querySelector('meta[name="supabase-anon-key"]')?.content;
+
+    if (!url || !key) {
+      console.warn('Supabase config not found in meta tags.');
+      return;
+    }
+
+    const { createClient } = await import('https://esm.sh/@supabase/supabase-js@2');
+    const supabase = createClient(url, key);
+
+    // If already logged in, redirect to portal
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) {
+      window.location.href = '/alumnos/clases/';
+      return;
+    }
+
+    const form = document.getElementById('login-form');
+    const errorDiv = document.getElementById('login-error');
+    const btn = document.getElementById('login-btn');
+
+    form?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      errorDiv.style.display = 'none';
+      btn.textContent = 'Ingresando...';
+      btn.disabled = true;
+
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+
+      if (error) {
+        errorDiv.textContent = 'Credenciales incorrectas. Verifica tu correo y contraseña.';
+        errorDiv.style.display = 'block';
+        btn.innerHTML = '<i data-lucide="log-in"></i> Ingresar';
+        btn.disabled = false;
+        if (window.lucide) lucide.createIcons();
+        return;
+      }
+
+      window.location.href = '/alumnos/clases/';
+    });
+  })();
+</script>

@@ -1,0 +1,56 @@
+---
+/**
+ * alumnos/clases/[...slug].astro — Individual class detail (protected).
+ */
+export const prerender = false;
+
+import Portal from "../../../layouts/Portal.astro";
+import { getCollection, render } from "astro:content";
+
+const { slug } = Astro.params;
+const clases = await getCollection("clases");
+const clase = clases.find((c) => c.id === slug);
+
+if (!clase) return Astro.redirect("/alumnos/clases/");
+
+const { Content } = await render(clase);
+
+const formattedDate = new Date(clase.data.date).toLocaleDateString("es-MX", {
+  year: "numeric", month: "long", day: "numeric",
+});
+---
+
+<Portal title={`${clase.data.title} | Clases`} portalPage="clases">
+  <main class="section">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="/alumnos/clases/">← Volver a Clases</a>
+      </div>
+      <article class="article">
+        <time class="article-date">{formattedDate}</time>
+        <h1 class="section-title">{clase.data.title}</h1>
+        <p class="article-desc">{clase.data.description}</p>
+        <div class="article-content">
+          <Content />
+        </div>
+      </article>
+    </div>
+  </main>
+</Portal>
+
+<style>
+  .breadcrumb { margin-bottom: 2rem; font-size: 0.9rem; }
+  .breadcrumb a { color: var(--color-primary); }
+  .breadcrumb a:hover { color: var(--color-accent); }
+  .article { max-width: 800px; margin: 0 auto; }
+  .article-date {
+    display: block; font-size: 0.85rem; color: var(--color-accent);
+    text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem;
+  }
+  .article-desc { font-size: 1.1rem; color: var(--color-text-light); margin-top: 1rem; margin-bottom: 2rem; }
+  .article-content { font-size: 1.05rem; line-height: 1.8; }
+  .article-content :global(h2) { margin-top: 2rem; margin-bottom: 1rem; }
+  .article-content :global(p) { margin-bottom: 1rem; }
+  .article-content :global(ul), .article-content :global(ol) { margin-bottom: 1rem; padding-left: 1.5rem; }
+  .article-content :global(a) { color: var(--color-primary); text-decoration: underline; }
+</style>

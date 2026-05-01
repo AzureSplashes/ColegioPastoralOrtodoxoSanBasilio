@@ -1,0 +1,57 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "public/assets/img"
+public_folder: "/assets/img"
+
+locale: "es"
+
+collections:
+  - name: "avisos"
+    label: "Avisos / Anuncios"
+    folder: "src/content/avisos"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - { label: "Título", name: "title", widget: "string" }
+      - { label: "Fecha", name: "date", widget: "datetime" }
+      - { label: "Descripción breve", name: "description", widget: "string" }
+      - { label: "Imagen", name: "image", widget: "image", required: false }
+      - { label: "Contenido", name: "body", widget: "markdown" }
+
+  - name: "clases"
+    label: "Clases"
+    folder: "src/content/clases"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - { label: "Título", name: "title", widget: "string" }
+      - { label: "Fecha", name: "date", widget: "datetime" }
+      - { label: "Descripción", name: "description", widget: "string" }
+      - { label: "Contenido", name: "body", widget: "markdown" }
+
+  - name: "tareas"
+    label: "Tareas"
+    folder: "src/content/tareas"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - { label: "Título", name: "title", widget: "string" }
+      - { label: "Fecha de entrega", name: "dueDate", widget: "datetime" }
+      - { label: "Descripción", name: "description", widget: "string" }
+      - { label: "Enlace (Google Drive, etc.)", name: "link", widget: "string", required: false }
+      - { label: "Instrucciones", name: "body", widget: "markdown" }
+
+  - name: "recursos"
+    label: "Recursos"
+    folder: "src/content/recursos"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Título", name: "title", widget: "string" }
+      - { label: "Categoría", name: "category", widget: "select",
+          options: ["Lectura", "Video", "Documento", "Enlace"] }
+      - { label: "Descripción", name: "description", widget: "string" }
+      - { label: "Enlace externo", name: "link", widget: "string", required: false }
+      - { label: "Contenido", name: "body", widget: "markdown" }

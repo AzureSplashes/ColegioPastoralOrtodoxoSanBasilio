@@ -1,0 +1,112 @@
+---
+/**
+ * avisos/index.astro — Announcements listing page.
+ * Reads all .md files from src/content/avisos/ and lists them newest-first.
+ */
+import Base from "../../layouts/Base.astro";
+import { getCollection } from "astro:content";
+
+const avisos = (await getCollection("avisos")).sort(
+  (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+);
+---
+
+<Base
+  title="Avisos | Colegio Pastoral Ortodoxo San Basilio"
+  description="Anuncios y comunicados del Colegio Pastoral Ortodoxo San Basilio."
+  activePage="avisos"
+>
+  <main class="section">
+    <div class="container">
+      <div class="section-header">
+        <h1 class="section-title">Avisos</h1>
+        <p>Comunicados y anuncios del Colegio.</p>
+      </div>
+
+      {avisos.length === 0 ? (
+        <div class="empty-state">
+          <i data-lucide="megaphone"></i>
+          <p>No hay avisos publicados por el momento.</p>
+        </div>
+      ) : (
+        <div class="avisos-grid">
+          {avisos.map((aviso) => (
+            <a href={`/avisos/${aviso.id}/`} class="aviso-card">
+              {aviso.data.image && (
+                <img src={aviso.data.image} alt={aviso.data.title} class="aviso-img" />
+              )}
+              <div class="aviso-body">
+                <time class="aviso-date">
+                  {new Date(aviso.data.date).toLocaleDateString("es-MX", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </time>
+                <h3 class="aviso-title">{aviso.data.title}</h3>
+                <p class="aviso-desc">{aviso.data.description}</p>
+              </div>
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+  </main>
+</Base>
+
+<style>
+  .empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--color-text-light);
+  }
+  .empty-state i {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 1rem;
+    color: var(--color-accent);
+  }
+  .avisos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+  }
+  .aviso-card {
+    background: var(--color-white);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-decoration: none;
+    color: inherit;
+  }
+  .aviso-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+  }
+  .aviso-img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+  .aviso-body { padding: 1.5rem; }
+  .aviso-date {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--color-accent);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+  }
+  .aviso-title {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+    color: var(--color-primary);
+  }
+  .aviso-desc {
+    font-size: 0.95rem;
+    color: var(--color-text-light);
+  }
+</style>

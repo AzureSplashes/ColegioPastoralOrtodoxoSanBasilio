@@ -1,0 +1,71 @@
+---
+/**
+ * documentos-diocesis.astro — Diocesan documents download page.
+ */
+import Base from "../layouts/Base.astro";
+import ResourceItem from "../components/ResourceItem.astro";
+---
+
+<Base
+  title="Documentos Diócesis | Colegio Pastoral Ortodoxo San Basilio"
+  description="Documentos oficiales de la Diócesis de México disponibles para descarga."
+  activePage=""
+>
+  <main class="section">
+    <div class="container">
+      <div class="section-header">
+        <h1 class="section-title">Documentos de la Diócesis</h1>
+        <p>Decretos, cartas y publicaciones oficiales de la Diócesis de México, OCA.</p>
+      </div>
+
+      <ResourceItem
+        title="DECRETO 005 — Rehabilitación del Colegio"
+        description="Decreto de rehabilitación del Colegio Pastoral Ortodoxo San Basilio."
+        href="/documentos/DECRETO 005.pdf"
+      />
+      <ResourceItem
+        title="Carta de Bendición a Padre Eduardo"
+        description="Carta de bendición — 2 de noviembre de 2024."
+        href="/documentos/Carta de bendición a Padre Eduardo.pdf"
+      />
+      <ResourceItem
+        title="Tratado sobre el Espíritu Santo"
+        description="Obra patrística de San Basilio el Grande."
+        href="/documentos/TRATADO SOBRE EL ESPIRITU SANTO.pdf"
+      />
+    </div>
+  </main>
+</Base>
+
+<style>
+  .resource-item {
+    background: var(--color-white);
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-left: 4px solid var(--color-accent);
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.2s;
+  }
+  .resource-item:hover { transform: translateX(5px); }
+  .resource-info h4 { margin-bottom: 0.25rem; font-size: 1.1rem; }
+  .resource-info p { font-size: 0.85rem; color: var(--color-text-light); }
+  .download-btn {
+    background: var(--color-primary);
+    color: var(--color-white);
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    white-space: nowrap;
+  }
+  .download-btn:hover {
+    background: var(--color-accent);
+    color: var(--color-primary);
+  }
+</style>

@@ -1,0 +1,70 @@
+---
+/**
+ * alumnos/tareas/[...slug].astro — Individual assignment detail (protected).
+ */
+export const prerender = false;
+
+import Portal from "../../../layouts/Portal.astro";
+import { getCollection, render } from "astro:content";
+
+const { slug } = Astro.params;
+const tareas = await getCollection("tareas");
+const tarea = tareas.find((t) => t.id === slug);
+
+if (!tarea) return Astro.redirect("/alumnos/tareas/");
+
+const { Content } = await render(tarea);
+
+const formattedDue = new Date(tarea.data.dueDate).toLocaleDateString("es-MX", {
+  year: "numeric", month: "long", day: "numeric",
+});
+---
+
+<Portal title={`${tarea.data.title} | Tareas`} portalPage="tareas">
+  <main class="section">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="/alumnos/tareas/">← Volver a Tareas</a>
+      </div>
+      <article class="article">
+        <time class="article-date">Fecha de entrega: {formattedDue}</time>
+        <h1 class="section-title">{tarea.data.title}</h1>
+        <p class="article-desc">{tarea.data.description}</p>
+
+        {tarea.data.link && (
+          <a href={tarea.data.link} target="_blank" rel="noopener" class="drive-link">
+            <i data-lucide="external-link"></i> Abrir enlace (Google Drive)
+          </a>
+        )}
+
+        <div class="article-content">
+          <Content />
+        </div>
+      </article>
+    </div>
+  </main>
+</Portal>
+
+<style>
+  .breadcrumb { margin-bottom: 2rem; font-size: 0.9rem; }
+  .breadcrumb a { color: var(--color-primary); }
+  .breadcrumb a:hover { color: var(--color-accent); }
+  .article { max-width: 800px; margin: 0 auto; }
+  .article-date {
+    display: block; font-size: 0.85rem; color: var(--color-accent);
+    text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem;
+  }
+  .article-desc { font-size: 1.1rem; color: var(--color-text-light); margin-top: 1rem; }
+  .drive-link {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    margin: 1.5rem 0; padding: 0.75rem 1.5rem;
+    background: var(--color-primary); color: var(--color-white);
+    border-radius: 6px; font-size: 0.95rem;
+    transition: background 0.2s;
+  }
+  .drive-link:hover { background: var(--color-accent); color: var(--color-primary); }
+  .article-content { font-size: 1.05rem; line-height: 1.8; margin-top: 2rem; }
+  .article-content :global(h2) { margin-top: 2rem; margin-bottom: 1rem; }
+  .article-content :global(p) { margin-bottom: 1rem; }
+  .article-content :global(a) { color: var(--color-primary); text-decoration: underline; }
+</style>

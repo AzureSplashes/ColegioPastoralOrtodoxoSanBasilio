@@ -1,0 +1,36 @@
+---
+/**
+ * Lightbox.astro — Full-screen image lightbox modal.
+ * Include once per page that has gallery images. Gallery images trigger it via onclick.
+ */
+---
+
+<div id="lightbox" class="lightbox">
+  <span class="lightbox-close">&times;</span>
+  <img class="lightbox-content" id="lightbox-img" alt="" />
+</div>
+
+<script>
+  function openLightbox(src: string) {
+    const lightbox = document.getElementById('lightbox')!;
+    const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement;
+    lightbox.classList.add('active');
+    lightboxImg.src = src;
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox(event: Event) {
+    const target = event.target as HTMLElement;
+    if (target.id === 'lightbox' || target.className === 'lightbox-close') {
+      document.getElementById('lightbox')!.classList.remove('active');
+      document.body.style.overflow = 'auto';
+    }
+  }
+
+  // Bind events
+  document.getElementById('lightbox')?.addEventListener('click', closeLightbox);
+  document.querySelector('.lightbox-close')?.addEventListener('click', closeLightbox);
+
+  // Expose globally so gallery onclick attributes work
+  (window as any).openLightbox = openLightbox;
+</script>

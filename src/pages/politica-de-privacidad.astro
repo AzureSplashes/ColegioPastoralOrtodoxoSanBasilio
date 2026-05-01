@@ -1,0 +1,53 @@
+---
+/**
+ * politica-de-privacidad.astro — Privacy policy page.
+ */
+import Base from "../layouts/Base.astro";
+---
+
+<Base
+  title="Política de Privacidad | Colegio Pastoral Ortodoxo San Basilio"
+  description="Política de privacidad y tratamiento de datos personales del Colegio Pastoral Ortodoxo San Basilio."
+  activePage=""
+>
+  <main class="section">
+    <div class="container">
+      <div class="section-header">
+        <h1 class="section-title">Política de Privacidad</h1>
+      </div>
+      <div class="legal-content">
+        <h2>Tratamiento de Datos Personales</h2>
+        <p>
+          Los datos personales proporcionados a través del formulario de contacto
+          de este sitio (nombre, correo electrónico, mensaje) son utilizados
+          exclusivamente para responder a consultas relacionadas con el ingreso
+          al Colegio y la pastoral vocacional. No se comparten con terceros ni se
+          utilizan con fines comerciales.
+        </p>
+        <h2>Uso de Cookies</h2>
+        <p>
+          Este sitio web no utiliza cookies de seguimiento ni herramientas de
+          análisis de terceros. En caso de implementarse en el futuro, se
+          actualizará esta política y se solicitará el consentimiento del
+          usuario.
+        </p>
+        <h2>Derechos del Usuario</h2>
+        <p>
+          Los usuarios pueden solicitar la eliminación de sus datos personales en
+          cualquier momento escribiendo a cposb.oca@gmail.com.
+        </p>
+        <h2>Contacto</h2>
+        <p>
+          Para cualquier consulta sobre esta política de privacidad, escriba a:
+          cposb.oca@gmail.com
+        </p>
+      </div>
+    </div>
+  </main>
+</Base>
+
+<style>
+  .legal-content { max-width: 800px; margin: 0 auto; }
+  .legal-content h2 { margin-top: 2rem; margin-bottom: 1rem; font-size: 1.5rem; }
+  .legal-content p { margin-bottom: 1rem; color: var(--color-text-light); line-height: 1.8; }
+</style>

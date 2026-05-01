@@ -1,0 +1,100 @@
+---
+/**
+ * PortalNav.astro — Secondary navigation for the authenticated Alumnos area.
+ * Shows Clases / Tareas / Recursos tabs + logout.
+ * Props:
+ *   activePage: "clases" | "tareas" | "recursos"
+ */
+interface Props {
+  activePage?: string;
+}
+
+const { activePage = "" } = Astro.props;
+
+const tabs = [
+  { href: "/alumnos/clases/", label: "Clases", slug: "clases", icon: "book-open" },
+  { href: "/alumnos/tareas/", label: "Tareas", slug: "tareas", icon: "clipboard-list" },
+  { href: "/alumnos/recursos/", label: "Recursos", slug: "recursos", icon: "folder-open" },
+];
+---
+
+<nav class="portal-nav">
+  <div class="container">
+    <div class="portal-nav-inner">
+      <div class="portal-tabs">
+        {tabs.map((tab) => (
+          <a
+            href={tab.href}
+            class:list={["portal-tab", { active: activePage === tab.slug }]}
+          >
+            <i data-lucide={tab.icon}></i>
+            {tab.label}
+          </a>
+        ))}
+      </div>
+      <a href="/alumnos/logout/" class="portal-logout">
+        <i data-lucide="log-out"></i> Cerrar sesión
+      </a>
+    </div>
+  </div>
+</nav>
+
+<style>
+  .portal-nav {
+    background: var(--color-white);
+    border-bottom: 2px solid var(--color-bg-secondary);
+    padding: 0;
+  }
+  .portal-nav-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .portal-tabs {
+    display: flex;
+    gap: 0;
+  }
+  .portal-tab {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 1.5rem;
+    font-family: var(--font-heading);
+    font-size: 0.95rem;
+    color: var(--color-text-light);
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s ease;
+  }
+  .portal-tab:hover {
+    color: var(--color-primary);
+    background: var(--color-bg-secondary);
+  }
+  .portal-tab.active {
+    color: var(--color-primary);
+    border-bottom-color: var(--color-accent);
+    font-weight: 600;
+  }
+  .portal-logout {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    color: var(--color-text-light);
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: all 0.2s;
+  }
+  .portal-logout:hover {
+    color: #c0392b;
+    background: rgba(192, 57, 43, 0.08);
+  }
+  @media (max-width: 768px) {
+    .portal-nav-inner {
+      flex-direction: column;
+      gap: 0.5rem;
+      padding: 0.5rem 0;
+    }
+    .portal-tabs { width: 100%; justify-content: center; }
+    .portal-tab { padding: 0.75rem 1rem; font-size: 0.85rem; }
+  }
+</style>

@@ -1,0 +1,87 @@
+---
+/**
+ * sede.astro — Campus / building page with construction gallery.
+ */
+import Base from "../layouts/Base.astro";
+import Lightbox from "../components/Lightbox.astro";
+---
+
+<Base
+  title="Sede | Colegio Pastoral Ortodoxo San Basilio"
+  description="Sede y capilla del Colegio Pastoral Ortodoxo San Basilio: historia de la construcción y galería fotográfica."
+  activePage="inicio"
+>
+  <main class="section">
+    <div class="container">
+      <div class="section-header">
+        <h1 class="section-title">Nuestra Sede</h1>
+        <p>Avances de la construcción de la capilla y las instalaciones del Colegio.</p>
+      </div>
+
+      <div class="sede-grid">
+        <div>
+          <h3>Sede del Colegio Pastoral Ortodoxo</h3>
+          <p style="margin-top: 1.5rem;">
+            Desde la bendición de la primera piedra el 4 de junio de 2022 al día
+            de hoy se ha avanzado notablemente en la construcción de la capilla,
+            la cual se tiene prevista concluir para el primer trimestre de 2026.
+          </p>
+          <p style="margin-top: 1rem;">
+            Durante la visita de Su Beatitud Tikhon y su Eminencia Benjamín el
+            14 de enero de 2023 se bendijeron las instalaciones. Agradecemos
+            sinceramente el apoyo de todos y cada uno de los donantes por
+            participar con nosotros en este proyecto.
+          </p>
+          <div style="margin-top: 2rem;">
+            <a href="/contacto/" class="btn btn-primary">
+              <i data-lucide="heart"></i> Contacto
+            </a>
+          </div>
+        </div>
+        <div>
+          <img
+            src="/assets/img/IMG_6385-12.jpg"
+            alt="Sede del Colegio Pastoral Ortodoxo San Basilio"
+            style="border-radius: 12px; box-shadow: var(--shadow-lg);"
+          />
+        </div>
+      </div>
+
+      <!-- Gallery Section -->
+      <div style="margin-top: 5rem; margin-bottom: 2rem;">
+        <h3 class="gallery-title">Galería de la Construcción</h3>
+        <div class="gallery-grid">
+          <img src="/assets/img/sede/16cb7dfe-a3b0-49bd-b913-a54af0e238ce.avif" alt="Vista de la construcción de la capilla — exterior" class="gallery-img" onclick="openLightbox(this.src)" />
+          <img src="/assets/img/sede/485178280_9565176893505204_540127839557277251_n.jpg" alt="Avance de obra — estructura de la capilla" class="gallery-img" onclick="openLightbox(this.src)" />
+          <img src="/assets/img/sede/72b5b940-ff2d-49a9-bc9a-8bc02717b4cf.avif" alt="Detalle de construcción — muros y acabados" class="gallery-img" onclick="openLightbox(this.src)" />
+          <img src="/assets/img/sede/97905788-6acd-4125-90a5-a64f71722025.avif" alt="Vista general del terreno y la sede" class="gallery-img" onclick="openLightbox(this.src)" />
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <Lightbox />
+</Base>
+
+<style>
+  .sede-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    margin-top: 3rem;
+    align-items: center;
+  }
+  .gallery-title {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: var(--color-primary);
+    font-size: 1.8rem;
+    font-family: var(--font-heading);
+  }
+  @media (max-width: 768px) {
+    .sede-grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+  }
+</style>

@@ -1,0 +1,103 @@
+---
+/**
+ * avisos/[...slug].astro — Individual announcement detail page.
+ * Renders markdown content from the avisos collection.
+ */
+import Base from "../../layouts/Base.astro";
+import { getCollection, render } from "astro:content";
+
+export async function getStaticPaths() {
+  const avisos = await getCollection("avisos");
+  return avisos.map((aviso) => ({
+    params: { slug: aviso.id },
+    props: { aviso },
+  }));
+}
+
+const { aviso } = Astro.props;
+const { Content } = await render(aviso);
+
+const formattedDate = new Date(aviso.data.date).toLocaleDateString("es-MX", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+---
+
+<Base
+  title={`${aviso.data.title} | Avisos — Colegio San Basilio`}
+  description={aviso.data.description}
+  activePage="avisos"
+>
+  <main class="section">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="/">Inicio</a> / <a href="/avisos/">Avisos</a> / {aviso.data.title}
+      </div>
+
+      <article class="aviso-article">
+        <header class="aviso-header">
+          <time class="aviso-date">{formattedDate}</time>
+          <h1 class="section-title">{aviso.data.title}</h1>
+          <p class="aviso-description">{aviso.data.description}</p>
+        </header>
+
+        {aviso.data.image && (
+          <img src={aviso.data.image} alt={aviso.data.title} class="aviso-hero-img" />
+        )}
+
+        <div class="aviso-content">
+          <Content />
+        </div>
+      </article>
+
+      <div class="aviso-back">
+        <a href="/avisos/" class="btn btn-outline" style="color: var(--color-primary); border-color: var(--color-primary);">
+          <i data-lucide="arrow-left"></i> Volver a Avisos
+        </a>
+      </div>
+    </div>
+  </main>
+</Base>
+
+<style>
+  .breadcrumb { margin-bottom: 2rem; font-size: 0.9rem; color: var(--color-text-light); }
+  .breadcrumb a { color: var(--color-primary); }
+  .breadcrumb a:hover { color: var(--color-accent); }
+
+  .aviso-article { max-width: 800px; margin: 0 auto; }
+  .aviso-header { margin-bottom: 2rem; }
+  .aviso-date {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--color-accent);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 1rem;
+  }
+  .aviso-description {
+    font-size: 1.15rem;
+    color: var(--color-text-light);
+    margin-top: 1rem;
+  }
+  .aviso-hero-img {
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: var(--shadow-md);
+    margin-bottom: 2rem;
+  }
+  .aviso-content {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: var(--color-text);
+  }
+  .aviso-content :global(h2) { margin-top: 2rem; margin-bottom: 1rem; }
+  .aviso-content :global(p) { margin-bottom: 1rem; }
+  .aviso-content :global(ul), .aviso-content :global(ol) { margin-bottom: 1rem; padding-left: 1.5rem; }
+  .aviso-content :global(img) { border-radius: 8px; margin: 1.5rem 0; }
+
+  .aviso-back {
+    margin-top: 3rem;
+    text-align: center;
+  }
+</style>

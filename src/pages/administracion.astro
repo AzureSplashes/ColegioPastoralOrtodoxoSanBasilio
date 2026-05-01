@@ -1,0 +1,179 @@
+---
+/**
+ * administracion.astro — Staff directory: director, coordinators, professors.
+ */
+import Base from "../layouts/Base.astro";
+---
+
+<Base
+  title="Administración | Colegio Pastoral Ortodoxo San Basilio"
+  description="Autoridades y profesorado del Colegio Pastoral Ortodoxo San Basilio."
+  activePage="administracion"
+>
+  <main>
+    <div class="admin-hero">
+      <img
+        src="/assets/img/channels4_banner.jpg"
+        class="admin-hero-bg"
+        alt="Banner Colegio San Basilio"
+      />
+      <div class="container" style="position: relative; z-index: 1;">
+        <h1 class="admin-hero-title">Autoridades y Profesorado</h1>
+        <p style="opacity: 0.9; font-size: 1.1rem; max-width: 600px; margin: 0 auto;">
+          Quienes guían y forman a los futuros pastores del Colegio.
+        </p>
+      </div>
+    </div>
+
+    <section class="section" style="background-color: var(--color-bg-secondary); padding-top: 2rem;">
+      <div class="container">
+        <!-- Director -->
+        <div class="director-card">
+          <div class="staff-role">Director General</div>
+          <h2>Su Eminencia Arzobispo Alejo</h2>
+          <p>Arzobispo de la Diócesis de México, OCA.</p>
+        </div>
+
+        <!-- Staff Grid -->
+        <div class="staff-grid">
+          <div class="staff-card">
+            <div class="staff-info">
+              <div class="staff-role">Subdirector</div>
+              <h3 class="staff-name">Rev. Pbro. Saúl Díaz Sánchez</h3>
+              <div class="staff-subjects">
+                <span class="subject-tag">Teología Dogmática Ortodoxa</span>
+                <span class="subject-tag">Sagradas Escrituras (Canon Ortodoxo)</span>
+              </div>
+            </div>
+          </div>
+          <div class="staff-card">
+            <div class="staff-info">
+              <div class="staff-role">Coordinador Administrativo</div>
+              <h3 class="staff-name">Rev. Pbro. Tomas Solorio Pacheco</h3>
+              <div class="staff-subjects">
+                <span class="subject-tag">Teología Moral</span>
+                <span class="subject-tag">Patrística Latina</span>
+                <span class="subject-tag">Historia de la Iglesia del Primer Milenio</span>
+              </div>
+            </div>
+          </div>
+          <div class="staff-card">
+            <div class="staff-info">
+              <div class="staff-role">Coordinador del Propedéutico</div>
+              <h3 class="staff-name">Rev. Pbro. Jesús Ruiz Munilla</h3>
+              <div class="staff-subjects">
+                <span class="subject-tag">Historia de la Iglesia</span>
+                <span class="subject-tag">Nuevo Testamento</span>
+                <span class="subject-tag">Arqueología Bíblica</span>
+              </div>
+            </div>
+          </div>
+          <div class="staff-card">
+            <div class="staff-info">
+              <div class="staff-role">Profesor</div>
+              <h3 class="staff-name">Rev. Pbro. Demetrio Azocar Martínez</h3>
+              <div class="staff-subjects">
+                <span class="subject-tag">Cristología Ortodoxa</span>
+                <span class="subject-tag">Teología del Icono Ortodoxo</span>
+                <span class="subject-tag">Patrística III</span>
+                <span class="subject-tag">Teoría Musical</span>
+              </div>
+            </div>
+          </div>
+          <div class="staff-card">
+            <div class="staff-info">
+              <div class="staff-role">Apoyo Administrativo</div>
+              <h3 class="staff-name">Rev. Diácono Nicodemo Arias Porras</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</Base>
+
+<style>
+  .admin-hero {
+    position: relative;
+    background-color: var(--color-primary);
+    padding: 5rem 0;
+    text-align: center;
+    color: white;
+    overflow: hidden;
+    margin-bottom: 2rem;
+  }
+  .admin-hero-bg {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    opacity: 0.5;
+    z-index: 0;
+  }
+  .admin-hero-title {
+    font-family: var(--font-heading);
+    font-size: 3.5rem;
+    margin-bottom: 0.5rem;
+    color: white;
+  }
+  .staff-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+  }
+  .staff-card {
+    background: var(--color-white);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    border: 1px solid rgba(0,0,0,0.05);
+    transition: transform 0.3s ease;
+  }
+  .staff-card:hover { transform: translateY(-5px); }
+  .staff-info { padding: 2rem; }
+  .staff-role {
+    color: var(--color-accent);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+  }
+  .staff-name {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--color-primary);
+  }
+  .staff-subjects {
+    border-top: 1px solid #eee;
+    padding-top: 1rem;
+    margin-top: 1rem;
+  }
+  .subject-tag {
+    display: inline-block;
+    background: var(--color-bg-secondary);
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--color-primary);
+  }
+  .director-card {
+    background: var(--color-primary);
+    color: var(--color-white);
+    padding: 3rem;
+    border-radius: 12px;
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+  .director-card h2 {
+    color: var(--color-accent);
+    margin-bottom: 1rem;
+  }
+  .director-card p {
+    font-size: 1.2rem;
+    opacity: 0.9;
+  }
+</style>

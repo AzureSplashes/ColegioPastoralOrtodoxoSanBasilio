@@ -1,0 +1,66 @@
+---
+/**
+ * alumnos/recursos/[...slug].astro — Individual resource detail (protected).
+ */
+export const prerender = false;
+
+import Portal from "../../../layouts/Portal.astro";
+import { getCollection, render } from "astro:content";
+
+const { slug } = Astro.params;
+const recursos = await getCollection("recursos");
+const recurso = recursos.find((r) => r.id === slug);
+
+if (!recurso) return Astro.redirect("/alumnos/recursos/");
+
+const { Content } = await render(recurso);
+---
+
+<Portal title={`${recurso.data.title} | Recursos`} portalPage="recursos">
+  <main class="section">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="/alumnos/recursos/">← Volver a Recursos</a>
+      </div>
+      <article class="article">
+        <span class="category-badge">{recurso.data.category}</span>
+        <h1 class="section-title">{recurso.data.title}</h1>
+        <p class="article-desc">{recurso.data.description}</p>
+
+        {recurso.data.link && (
+          <a href={recurso.data.link} target="_blank" rel="noopener" class="drive-link">
+            <i data-lucide="external-link"></i> Abrir enlace externo
+          </a>
+        )}
+
+        <div class="article-content">
+          <Content />
+        </div>
+      </article>
+    </div>
+  </main>
+</Portal>
+
+<style>
+  .breadcrumb { margin-bottom: 2rem; font-size: 0.9rem; }
+  .breadcrumb a { color: var(--color-primary); }
+  .breadcrumb a:hover { color: var(--color-accent); }
+  .article { max-width: 800px; margin: 0 auto; }
+  .category-badge {
+    display: inline-block; font-size: 0.75rem; text-transform: uppercase;
+    letter-spacing: 1px; color: var(--color-accent); font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  .article-desc { font-size: 1.1rem; color: var(--color-text-light); margin-top: 1rem; }
+  .drive-link {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    margin: 1.5rem 0; padding: 0.75rem 1.5rem;
+    background: var(--color-primary); color: var(--color-white);
+    border-radius: 6px; font-size: 0.95rem; transition: background 0.2s;
+  }
+  .drive-link:hover { background: var(--color-accent); color: var(--color-primary); }
+  .article-content { font-size: 1.05rem; line-height: 1.8; margin-top: 2rem; }
+  .article-content :global(h2) { margin-top: 2rem; margin-bottom: 1rem; }
+  .article-content :global(p) { margin-bottom: 1rem; }
+  .article-content :global(a) { color: var(--color-primary); text-decoration: underline; }
+</style>

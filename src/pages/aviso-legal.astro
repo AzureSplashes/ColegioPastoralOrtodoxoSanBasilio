@@ -1,0 +1,49 @@
+---
+/**
+ * aviso-legal.astro — Legal notice page.
+ */
+import Base from "../layouts/Base.astro";
+---
+
+<Base
+  title="Aviso Legal | Colegio Pastoral Ortodoxo San Basilio"
+  description="Aviso legal del sitio web del Colegio Pastoral Ortodoxo San Basilio."
+  activePage=""
+>
+  <main class="section">
+    <div class="container">
+      <div class="section-header">
+        <h1 class="section-title">Aviso Legal</h1>
+      </div>
+      <div class="legal-content">
+        <p>
+          El presente sitio web es propiedad del Colegio Pastoral Ortodoxo San
+          Basilio, dependiente de la Diócesis de México de la Iglesia Ortodoxa
+          en América (OCA). El uso de este sitio implica la aceptación de los
+          términos aquí descritos.
+        </p>
+        <h2>Responsabilidad de Contenidos</h2>
+        <p>
+          Los contenidos publicados en este sitio — textos, imágenes, documentos
+          y material litúrgico — son proporcionados con fines informativos y
+          formativos para la comunidad del Colegio. Se realizan esfuerzos
+          razonables por mantener la información actualizada, pero no se
+          garantiza la exactitud absoluta de todos los datos en todo momento.
+        </p>
+        <h2>Propiedad Intelectual</h2>
+        <p>
+          Los textos litúrgicos, documentos diocesanos y material académico
+          publicados en este sitio son propiedad de sus respectivos autores y de
+          la Diócesis de México, OCA. Su reproducción se permite exclusivamente
+          para uso personal y formativo, no comercial.
+        </p>
+      </div>
+    </div>
+  </main>
+</Base>
+
+<style>
+  .legal-content { max-width: 800px; margin: 0 auto; }
+  .legal-content h2 { margin-top: 2rem; margin-bottom: 1rem; font-size: 1.5rem; }
+  .legal-content p { margin-bottom: 1rem; color: var(--color-text-light); line-height: 1.8; }
+</style>
