@@ -1,24 +1,28 @@
 ---
-/**
- * alumnos/clases/index.astro — Class content listing (protected).
- */
 export const prerender = false;
 
 import Portal from "../../../layouts/Portal.astro";
+import PortalEditHint from "../../../components/PortalEditHint.astro";
 import { getCollection } from "astro:content";
+import { getPortalPageConfig } from "../../../lib/portal";
 
 const clases = (await getCollection("clases")).sort(
   (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
 );
+
+const pageConfig = await getPortalPageConfig("clases");
+const role = (Astro.locals.role as string | null) ?? null;
 ---
 
 <Portal title="Clases | Portal de Alumnos" portalPage="clases">
   <main class="section">
     <div class="container">
       <div class="section-header">
-        <h1 class="section-title">Clases</h1>
-        <p>Material y contenido de las clases del Colegio.</p>
+        <h1 class="section-title">{pageConfig.title}</h1>
+        <p>{pageConfig.description}</p>
       </div>
+
+      <PortalEditHint canEdit={pageConfig.professorEditable} role={role} />
 
       {clases.length === 0 ? (
         <div class="empty-state">
@@ -48,11 +52,7 @@ const clases = (await getCollection("clases")).sort(
 </Portal>
 
 <style>
-  .empty-state {
-    text-align: center;
-    padding: 4rem 2rem;
-    color: var(--color-text-light);
-  }
+  .empty-state { text-align: center; padding: 4rem 2rem; color: var(--color-text-light); }
   .empty-state i { width: 48px; height: 48px; margin-bottom: 1rem; color: var(--color-accent); }
   .content-list { margin-top: 2rem; }
   .content-card {
@@ -70,14 +70,7 @@ const clases = (await getCollection("clases")).sort(
     color: inherit;
   }
   .content-card:hover { transform: translateX(5px); box-shadow: var(--shadow-md); }
-  .content-date {
-    display: block;
-    font-size: 0.8rem;
-    color: var(--color-accent);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 0.25rem;
-  }
+  .content-date { display: block; font-size: 0.8rem; color: var(--color-accent); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.25rem; }
   .content-title { font-size: 1.2rem; color: var(--color-primary); margin-bottom: 0.25rem; }
   .content-desc { font-size: 0.9rem; color: var(--color-text-light); }
   .content-arrow { color: var(--color-text-light); flex-shrink: 0; }

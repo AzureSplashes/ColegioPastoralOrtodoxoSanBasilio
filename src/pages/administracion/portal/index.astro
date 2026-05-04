@@ -1,0 +1,21 @@
+---
+export const prerender = false;
+import Base from "../../../layouts/Base.astro";
+---
+
+<Base title="Panel Admin | Portal" description="Gestion administrativa" activePage="administracion">
+  <main class="section">
+    <div class="container" style="max-width: 900px;">
+      <h1 class="section-title">Panel Administrativo</h1>
+      <p>Gestiona contenido y permisos de edicion en el CMS.</p>
+      <div style="margin-top:1.5rem; display:flex; gap:0.75rem; flex-wrap:wrap;">
+        <a class="btn btn-primary" href="/admin/">Abrir Decap CMS</a>
+        <a class="btn btn-outline" href="/alumnos/clases/">Ir al area restringida</a>
+      </div>
+      <ul style="margin-top:1.5rem; line-height:1.8;">
+        <li>En la coleccion "Portal Alumnos (Permisos y Textos)" puedes activar "Editable por profesores" por pagina.</li>
+        <li>Las cuentas con rol alumno solo tienen lectura.</li>
+      </ul>
+    </div>
+  </main>
+</Base>

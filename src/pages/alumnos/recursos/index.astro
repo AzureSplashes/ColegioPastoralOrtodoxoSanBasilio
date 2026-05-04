@@ -1,15 +1,17 @@
 ---
-/**
- * alumnos/recursos/index.astro — Resources listing (protected).
- */
 export const prerender = false;
 
 import Portal from "../../../layouts/Portal.astro";
+import PortalEditHint from "../../../components/PortalEditHint.astro";
 import { getCollection } from "astro:content";
+import { getPortalPageConfig } from "../../../lib/portal";
 
 const recursos = (await getCollection("recursos")).sort(
   (a, b) => a.data.title.localeCompare(b.data.title)
 );
+
+const pageConfig = await getPortalPageConfig("recursos");
+const role = (Astro.locals.role as string | null) ?? null;
 
 const categoryIcons: Record<string, string> = {
   Lectura: "book-open",
@@ -23,9 +25,11 @@ const categoryIcons: Record<string, string> = {
   <main class="section">
     <div class="container">
       <div class="section-header">
-        <h1 class="section-title">Recursos</h1>
-        <p>Material de apoyo, lecturas y enlaces para el curso.</p>
+        <h1 class="section-title">{pageConfig.title}</h1>
+        <p>{pageConfig.description}</p>
       </div>
+
+      <PortalEditHint canEdit={pageConfig.professorEditable} role={role} />
 
       {recursos.length === 0 ? (
         <div class="empty-state">

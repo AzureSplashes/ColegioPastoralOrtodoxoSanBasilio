@@ -2,21 +2,42 @@ backend:
   name: git-gateway
   branch: main
 
+locale: "es"
+publish_mode: simple
+site_url: "/"
+display_url: "/"
+
 media_folder: "public/assets/img"
 public_folder: "/assets/img"
 
-locale: "es"
-
 collections:
+  - name: "portalPages"
+    label: "Portal Alumnos (Permisos y Textos)"
+    folder: "src/content/portal_pages"
+    identifier_field: "slug"
+    create: false
+    editor:
+      preview: false
+    summary: "{{slug}} - Editable por profesores: {{professorEditable}}"
+    fields:
+      - label: "Pagina"
+        name: "slug"
+        widget: "select"
+        options: ["clases", "tareas", "recursos"]
+      - { label: "Titulo visible", name: "title", widget: "string", hint: "Encabezado principal de la pagina." }
+      - { label: "Descripcion visible", name: "description", widget: "text", hint: "Texto de apoyo debajo del titulo." }
+      - { label: "Editable por profesores", name: "professorEditable", widget: "boolean", default: false, hint: "Si esta activo, profesores podran editar esta seccion dentro del area restringida." }
+
   - name: "avisos"
     label: "Avisos / Anuncios"
     folder: "src/content/avisos"
     create: true
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    summary: "{{title}} - {{date}}"
     fields:
-      - { label: "Título", name: "title", widget: "string" }
+      - { label: "Titulo", name: "title", widget: "string" }
       - { label: "Fecha", name: "date", widget: "datetime" }
-      - { label: "Descripción breve", name: "description", widget: "string" }
+      - { label: "Descripcion breve", name: "description", widget: "string" }
       - { label: "Imagen", name: "image", widget: "image", required: false }
       - { label: "Contenido", name: "body", widget: "markdown" }
 
@@ -25,10 +46,11 @@ collections:
     folder: "src/content/clases"
     create: true
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    summary: "{{title}} - {{date}}"
     fields:
-      - { label: "Título", name: "title", widget: "string" }
+      - { label: "Titulo", name: "title", widget: "string" }
       - { label: "Fecha", name: "date", widget: "datetime" }
-      - { label: "Descripción", name: "description", widget: "string" }
+      - { label: "Descripcion", name: "description", widget: "string" }
       - { label: "Contenido", name: "body", widget: "markdown" }
 
   - name: "tareas"
@@ -36,10 +58,11 @@ collections:
     folder: "src/content/tareas"
     create: true
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    summary: "{{title}} - {{dueDate}}"
     fields:
-      - { label: "Título", name: "title", widget: "string" }
+      - { label: "Titulo", name: "title", widget: "string" }
       - { label: "Fecha de entrega", name: "dueDate", widget: "datetime" }
-      - { label: "Descripción", name: "description", widget: "string" }
+      - { label: "Descripcion", name: "description", widget: "string" }
       - { label: "Enlace (Google Drive, etc.)", name: "link", widget: "string", required: false }
       - { label: "Instrucciones", name: "body", widget: "markdown" }
 
@@ -48,10 +71,13 @@ collections:
     folder: "src/content/recursos"
     create: true
     slug: "{{slug}}"
+    summary: "{{title}} - {{category}}"
     fields:
-      - { label: "Título", name: "title", widget: "string" }
-      - { label: "Categoría", name: "category", widget: "select",
-          options: ["Lectura", "Video", "Documento", "Enlace"] }
-      - { label: "Descripción", name: "description", widget: "string" }
+      - { label: "Titulo", name: "title", widget: "string" }
+      - label: "Categoria"
+        name: "category"
+        widget: "select"
+        options: ["Lectura", "Video", "Documento", "Enlace"]
+      - { label: "Descripcion", name: "description", widget: "string" }
       - { label: "Enlace externo", name: "link", widget: "string", required: false }
       - { label: "Contenido", name: "body", widget: "markdown" }

@@ -1,8 +1,3 @@
-/**
- * Content collection schemas for Astro v6.
- * Collections: avisos (public), clases/tareas/recursos (protected).
- * Decap CMS writes .md files to each folder.
- */
 import { defineCollection, z } from "astro:content";
 import { glob } from "astro/loaders";
 
@@ -45,4 +40,14 @@ const recursos = defineCollection({
   }),
 });
 
-export const collections = { avisos, clases, tareas, recursos };
+const portalPages = defineCollection({
+  loader: glob({ base: "./src/content/portal_pages", pattern: "**/*.{md,mdx}" }),
+  schema: z.object({
+    slug: z.enum(["clases", "tareas", "recursos"]),
+    title: z.string(),
+    description: z.string(),
+    professorEditable: z.boolean().default(false),
+  }),
+});
+
+export const collections = { avisos, clases, tareas, recursos, portalPages };

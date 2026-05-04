@@ -3,17 +3,17 @@ import Base from "../../layouts/Base.astro";
 ---
 
 <Base
-  title="Alumnos | Colegio Pastoral Ortodoxo San Basilio"
-  description="Portal de acceso para alumnos matriculados del Colegio Pastoral Ortodoxo San Basilio."
+  title="Profesores | Colegio Pastoral Ortodoxo San Basilio"
+  description="Portal de acceso para profesores del Colegio Pastoral Ortodoxo San Basilio."
   activePage="alumnos"
 >
   <main class="section">
     <div class="container">
-      <div class="login-card" id="login-card" data-allowed-roles="alumno,admin" data-target-route="/alumnos/clases/">
-        <div class="login-icon"><i data-lucide="lock"></i></div>
-        <h2 style="margin-bottom: 1rem;">Acceso para Alumnos</h2>
+      <div class="login-card" id="login-card" data-allowed-roles="profesor,admin" data-target-route="/alumnos/clases/">
+        <div class="login-icon"><i data-lucide="graduation-cap"></i></div>
+        <h2 style="margin-bottom: 1rem;">Acceso para Profesores</h2>
         <p style="color: var(--color-text-light); margin-bottom: 2rem;">
-          Ingresa con tus credenciales de alumno.
+          Inicia sesion para administrar contenidos permitidos del area de alumnos.
         </p>
 
         <form id="login-form">
@@ -38,15 +38,7 @@ import Base from "../../layouts/Base.astro";
 </Base>
 
 <style>
-  .login-card {
-    max-width: 500px;
-    margin: 4rem auto;
-    background: var(--color-white);
-    padding: 3rem;
-    border-radius: 12px;
-    box-shadow: var(--shadow-lg);
-    text-align: center;
-  }
+  .login-card { max-width: 500px; margin: 4rem auto; background: var(--color-white); padding: 3rem; border-radius: 12px; box-shadow: var(--shadow-lg); text-align: center; }
   .login-icon { font-size: 3rem; color: var(--color-accent); margin-bottom: 1.5rem; }
   .form-group { margin-bottom: 1.25rem; text-align: left; }
   .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 500; font-size: 0.9rem; }
@@ -104,7 +96,7 @@ import Base from "../../layouts/Base.astro";
       const role = resolveRole(data.user);
       if (!allowedRoles.includes(role)) {
         await supabase.auth.signOut();
-        errorDiv.textContent = "Tu cuenta no tiene permisos de alumno.";
+        errorDiv.textContent = "Tu cuenta no tiene permisos de profesor.";
         errorDiv.style.display = "block";
         btn.innerHTML = "<i data-lucide='log-in'></i> Ingresar";
         btn.disabled = false;

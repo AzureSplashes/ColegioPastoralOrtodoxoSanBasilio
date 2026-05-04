@@ -1,24 +1,28 @@
 ---
-/**
- * alumnos/tareas/index.astro — Assignments listing (protected).
- */
 export const prerender = false;
 
 import Portal from "../../../layouts/Portal.astro";
+import PortalEditHint from "../../../components/PortalEditHint.astro";
 import { getCollection } from "astro:content";
+import { getPortalPageConfig } from "../../../lib/portal";
 
 const tareas = (await getCollection("tareas")).sort(
   (a, b) => new Date(b.data.dueDate).getTime() - new Date(a.data.dueDate).getTime()
 );
+
+const pageConfig = await getPortalPageConfig("tareas");
+const role = (Astro.locals.role as string | null) ?? null;
 ---
 
 <Portal title="Tareas | Portal de Alumnos" portalPage="tareas">
   <main class="section">
     <div class="container">
       <div class="section-header">
-        <h1 class="section-title">Tareas</h1>
-        <p>Asignaciones y entregas del curso.</p>
+        <h1 class="section-title">{pageConfig.title}</h1>
+        <p>{pageConfig.description}</p>
       </div>
+
+      <PortalEditHint canEdit={pageConfig.professorEditable} role={role} />
 
       {tareas.length === 0 ? (
         <div class="empty-state">
@@ -72,14 +76,8 @@ const tareas = (await getCollection("tareas")).sort(
   .content-card.past { border-left-color: #ccc; opacity: 0.7; }
   .content-card:hover { transform: translateX(5px); box-shadow: var(--shadow-md); }
   .tarea-meta { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.25rem; }
-  .content-date {
-    font-size: 0.8rem; color: var(--color-accent);
-    text-transform: uppercase; letter-spacing: 1px;
-  }
-  .badge-past {
-    font-size: 0.7rem; background: #f3f4f6; color: #6b7280;
-    padding: 0.15rem 0.5rem; border-radius: 10px;
-  }
+  .content-date { font-size: 0.8rem; color: var(--color-accent); text-transform: uppercase; letter-spacing: 1px; }
+  .badge-past { font-size: 0.7rem; background: #f3f4f6; color: #6b7280; padding: 0.15rem 0.5rem; border-radius: 10px; }
   .content-title { font-size: 1.2rem; color: var(--color-primary); margin-bottom: 0.25rem; }
   .content-desc { font-size: 0.9rem; color: var(--color-text-light); }
   .link-indicator { font-size: 0.8rem; color: var(--color-primary); margin-top: 0.5rem; display: inline-flex; align-items: center; gap: 0.3rem; }
