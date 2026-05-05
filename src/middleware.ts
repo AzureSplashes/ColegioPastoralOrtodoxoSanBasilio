@@ -12,14 +12,17 @@ const STUDENT_AREA_PREFIXES = [
 ];
 
 const ADMIN_PREFIXES = ["/administracion/portal"];
+const ADMIN_LOGIN_PATH = "/administracion/portal/login/";
 
 export const onRequest = defineMiddleware(async (context, next) => {
   const { pathname } = context.url;
 
   const isStudentArea = STUDENT_AREA_PREFIXES.some((p) => pathname.startsWith(p));
   const isAdminArea = ADMIN_PREFIXES.some((p) => pathname.startsWith(p));
+  const isAdminLoginPage = pathname === ADMIN_LOGIN_PATH;
 
   if (!isStudentArea && !isAdminArea) return next();
+  if (isAdminLoginPage) return next();
 
   const supabase = createClient(context.cookies);
   const { data } = await supabase.auth.getUser();
@@ -34,12 +37,12 @@ export const onRequest = defineMiddleware(async (context, next) => {
   context.locals.role = role;
 
   if (isAdminArea && !hasAnyRole(role, ["admin"])) {
-    return context.redirect("/alumnos/");
+    return context.redirect("/alumnos/?error=admin_required");
   }
 
   if (isStudentArea && !hasAnyRole(role, ["admin", "profesor", "alumno"])) {
     await supabase.auth.signOut();
-    return context.redirect("/alumnos/");
+    return context.redirect("/alumnos/?error=role_missing");
   }
 
   return next();

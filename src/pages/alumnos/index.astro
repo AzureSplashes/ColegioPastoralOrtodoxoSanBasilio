@@ -70,6 +70,16 @@ import Base from "../../layouts/Base.astro";
     const form = document.getElementById("login-form");
     const errorDiv = document.getElementById("login-error");
     const btn = document.getElementById("login-btn");
+    const params = new URLSearchParams(window.location.search);
+    const pageError = params.get("error");
+
+    if (pageError === "role_missing") {
+      errorDiv.textContent = "Tu usuario no tiene rol asignado en perfiles. Contacta al administrador.";
+      errorDiv.style.display = "block";
+    } else if (pageError === "admin_required") {
+      errorDiv.textContent = "Esta seccion requiere cuenta administradora.";
+      errorDiv.style.display = "block";
+    }
 
     form?.addEventListener("submit", async (e) => {
       e.preventDefault();
