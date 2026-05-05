@@ -66,13 +66,6 @@ import Base from "../../layouts/Base.astro";
 
     const { createClient } = await import("https://esm.sh/@supabase/supabase-js@2");
     const supabase = createClient(url, key);
-    const persistSessionCookies = (session) => {
-      if (!session?.access_token || !session?.refresh_token) return;
-      const maxAge = Number(session.expires_in || 3600);
-      const secure = window.location.protocol === "https:" ? "; Secure" : "";
-      document.cookie = `sb-access-token=${session.access_token}; Path=/; Max-Age=${maxAge}; SameSite=Lax${secure}`;
-      document.cookie = `sb-refresh-token=${session.refresh_token}; Path=/; Max-Age=2592000; SameSite=Lax${secure}`;
-    };
 
     const form = document.getElementById("login-form");
     const errorDiv = document.getElementById("login-error");
@@ -115,7 +108,30 @@ import Base from "../../layouts/Base.astro";
         return;
       }
 
-      persistSessionCookies(data?.session);
+      // Send tokens to server so @supabase/ssr sets properly-named cookies
+      try {
+        const res = await fetch("/api/auth/callback", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            access_token: data.session.access_token,
+            refresh_token: data.session.refresh_token,
+          }),
+        });
+
+        if (!res.ok) {
+          const errBody = await res.json().catch(() => ({}));
+          throw new Error(errBody.error || "Error al establecer sesión.");
+        }
+      } catch (err) {
+        errorDiv.textContent = err.message || "Error al conectar con el servidor.";
+        errorDiv.style.display = "block";
+        btn.innerHTML = "<i data-lucide='log-in'></i> Ingresar";
+        btn.disabled = false;
+        if (window.lucide) lucide.createIcons();
+        return;
+      }
+
       window.location.href = targetRoute;
     });
   })();

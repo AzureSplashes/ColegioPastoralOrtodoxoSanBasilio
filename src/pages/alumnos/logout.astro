@@ -9,6 +9,8 @@ import { createClient } from "../../lib/supabase";
 
 const supabase = createClient(Astro.cookies, Astro.request.headers.get("cookie"));
 await supabase.auth.signOut();
+
+// Also clean up any legacy cookie names just in case
 Astro.cookies.delete("sb-access-token", { path: "/" });
 Astro.cookies.delete("sb-refresh-token", { path: "/" });
 
