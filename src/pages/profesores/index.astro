@@ -9,7 +9,7 @@ import Base from "../../layouts/Base.astro";
 >
   <main class="section">
     <div class="container">
-      <div class="login-card" id="login-card" data-allowed-roles="profesor,admin" data-target-route="/alumnos/clases/">
+      <div class="login-card" id="login-card" data-target-route="/alumnos/clases/">
         <div class="login-icon"><i data-lucide="graduation-cap"></i></div>
         <h2 style="margin-bottom: 1rem;">Acceso para Profesores</h2>
         <p style="color: var(--color-text-light); margin-bottom: 2rem;">
@@ -52,7 +52,6 @@ import Base from "../../layouts/Base.astro";
     const url = document.querySelector('meta[name="supabase-url"]')?.content;
     const key = document.querySelector('meta[name="supabase-anon-key"]')?.content;
     const card = document.getElementById("login-card");
-    const allowedRoles = (card?.dataset.allowedRoles || "").split(",").map((r) => r.trim()).filter(Boolean);
     const targetRoute = card?.dataset.targetRoute || "/alumnos/clases/";
 
     if (!url || !key || !card) return;
@@ -60,15 +59,8 @@ import Base from "../../layouts/Base.astro";
     const { createClient } = await import("https://esm.sh/@supabase/supabase-js@2");
     const supabase = createClient(url, key);
 
-    const resolveRole = (user) => user?.app_metadata?.role || user?.user_metadata?.role || null;
-
     const { data: { user } } = await supabase.auth.getUser();
-    if (user) {
-      const role = resolveRole(user);
-      if (allowedRoles.includes(role)) {
-        window.location.href = targetRoute;
-      }
-    }
+    if (user) window.location.href = targetRoute;
 
     const form = document.getElementById("login-form");
     const errorDiv = document.getElementById("login-error");
@@ -83,20 +75,9 @@ import Base from "../../layouts/Base.astro";
       const email = document.getElementById("email")?.value;
       const password = document.getElementById("password")?.value;
 
-      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) {
         errorDiv.textContent = "Credenciales incorrectas.";
-        errorDiv.style.display = "block";
-        btn.innerHTML = "<i data-lucide='log-in'></i> Ingresar";
-        btn.disabled = false;
-        if (window.lucide) lucide.createIcons();
-        return;
-      }
-
-      const role = resolveRole(data.user);
-      if (!allowedRoles.includes(role)) {
-        await supabase.auth.signOut();
-        errorDiv.textContent = "Tu cuenta no tiene permisos de profesor.";
         errorDiv.style.display = "block";
         btn.innerHTML = "<i data-lucide='log-in'></i> Ingresar";
         btn.disabled = false;

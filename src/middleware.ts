@@ -3,7 +3,7 @@
  */
 import { defineMiddleware } from "astro:middleware";
 import { createClient } from "./lib/supabase";
-import { getRoleFromUser, hasAnyRole } from "./lib/auth";
+import { getRoleFromProfiles, hasAnyRole } from "./lib/auth";
 
 const STUDENT_AREA_PREFIXES = [
   "/alumnos/clases",
@@ -29,7 +29,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
     return context.redirect("/alumnos/");
   }
 
-  const role = getRoleFromUser(data.user);
+  const role = await getRoleFromProfiles(supabase, data.user.id);
   context.locals.user = data.user;
   context.locals.role = role;
 

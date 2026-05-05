@@ -21,3 +21,25 @@ export function getRoleFromUser(user: { app_metadata?: Record<string, unknown>; 
 export function hasAnyRole(role: UserRole | null, allowed: UserRole[]): boolean {
   return !!role && allowed.includes(role);
 }
+
+export async function getRoleFromProfiles(
+  supabase: {
+    from: (table: string) => {
+      select: (fields: string) => {
+        eq: (field: string, value: string) => {
+          maybeSingle: () => Promise<{ data: { role?: unknown } | null; error: unknown }>;
+        };
+      };
+    };
+  },
+  userId: string
+): Promise<UserRole | null> {
+  const { data } = await supabase
+    .from("profiles")
+    .select("role")
+    .eq("id", userId)
+    .maybeSingle();
+
+  const role = data?.role;
+  return isValidRole(role) ? role : null;
+}

@@ -5,7 +5,7 @@ import Base from "../../../../layouts/Base.astro";
 <Base title="Admin Portal | Colegio San Basilio" description="Acceso administrativo" activePage="administracion">
   <main class="section">
     <div class="container">
-      <div class="login-card" id="login-card" data-allowed-roles="admin" data-target-route="/administracion/portal/">
+      <div class="login-card" id="login-card" data-target-route="/administracion/portal/">
         <h2 style="margin-bottom: 1rem;">Portal Administrativo</h2>
         <p style="color: var(--color-text-light); margin-bottom: 2rem;">Solo cuentas con rol admin pueden entrar.</p>
 
@@ -39,16 +39,13 @@ import Base from "../../../../layouts/Base.astro";
     const url = document.querySelector('meta[name="supabase-url"]')?.content;
     const key = document.querySelector('meta[name="supabase-anon-key"]')?.content;
     const card = document.getElementById("login-card");
-    const allowedRoles = (card?.dataset.allowedRoles || "").split(",").map((r) => r.trim()).filter(Boolean);
     const targetRoute = card?.dataset.targetRoute || "/administracion/portal/";
     if (!url || !key || !card) return;
 
     const { createClient } = await import("https://esm.sh/@supabase/supabase-js@2");
     const supabase = createClient(url, key);
-    const resolveRole = (user) => user?.app_metadata?.role || user?.user_metadata?.role || null;
-
     const { data: { user } } = await supabase.auth.getUser();
-    if (user && allowedRoles.includes(resolveRole(user))) window.location.href = targetRoute;
+    if (user) window.location.href = targetRoute;
 
     const form = document.getElementById("login-form");
     const errorDiv = document.getElementById("login-error");
@@ -62,11 +59,10 @@ import Base from "../../../../layouts/Base.astro";
 
       const email = document.getElementById("email")?.value;
       const password = document.getElementById("password")?.value;
-      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
 
-      if (error || !allowedRoles.includes(resolveRole(data.user))) {
-        await supabase.auth.signOut();
-        errorDiv.textContent = "Credenciales invalidas o sin permisos de admin.";
+      if (error) {
+        errorDiv.textContent = "Credenciales invalidas.";
         errorDiv.style.display = "block";
         btn.textContent = "Ingresar";
         btn.disabled = false;
