@@ -7,7 +7,7 @@ export const prerender = false;
 
 import { createClient } from "../../lib/supabase";
 
-const supabase = createClient(Astro.cookies);
+const supabase = createClient(Astro.cookies, Astro.request.headers.get("cookie"));
 await supabase.auth.signOut();
 Astro.cookies.delete("sb-access-token", { path: "/" });
 Astro.cookies.delete("sb-refresh-token", { path: "/" });

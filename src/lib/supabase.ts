@@ -6,27 +6,28 @@
 import { createServerClient } from "@supabase/ssr";
 import type { AstroCookies } from "astro";
 
-export function createClient(cookies: AstroCookies) {
+function parseCookieHeader(cookieHeader: string | null): { name: string; value: string }[] {
+  if (!cookieHeader) return [];
+  return cookieHeader
+    .split(";")
+    .map((part) => part.trim())
+    .filter(Boolean)
+    .map((part) => {
+      const idx = part.indexOf("=");
+      if (idx === -1) return { name: part, value: "" };
+      const name = part.slice(0, idx).trim();
+      const value = part.slice(idx + 1).trim();
+      return { name, value };
+    });
+}
+
+export function createClient(cookies: AstroCookies, cookieHeader?: string | null) {
   return createServerClient(
     import.meta.env.PUBLIC_SUPABASE_URL,
     import.meta.env.PUBLIC_SUPABASE_ANON_KEY,
     {
       cookies: {
-        getAll: () => {
-          // Return all cookies as { name, value } pairs
-          const allCookies: { name: string; value: string }[] = [];
-          // AstroCookies doesn't expose a getAll, so we rely on
-          // the specific cookie names Supabase uses
-          const sbCookieNames = [
-            "sb-access-token",
-            "sb-refresh-token",
-          ];
-          for (const name of sbCookieNames) {
-            const val = cookies.get(name)?.value;
-            if (val) allCookies.push({ name, value: val });
-          }
-          return allCookies;
-        },
+        getAll: () => parseCookieHeader(cookieHeader ?? null),
         setAll: (cookiesToSet) => {
           for (const { name, value, options } of cookiesToSet) {
             cookies.set(name, value, options);

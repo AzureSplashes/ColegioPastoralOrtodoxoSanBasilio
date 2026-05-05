@@ -47,8 +47,9 @@ import Base from "../../../../layouts/Base.astro";
     const persistSessionCookies = (session) => {
       if (!session?.access_token || !session?.refresh_token) return;
       const maxAge = Number(session.expires_in || 3600);
-      document.cookie = `sb-access-token=${session.access_token}; Path=/; Max-Age=${maxAge}; SameSite=Lax; Secure`;
-      document.cookie = `sb-refresh-token=${session.refresh_token}; Path=/; Max-Age=2592000; SameSite=Lax; Secure`;
+      const secure = window.location.protocol === "https:" ? "; Secure" : "";
+      document.cookie = `sb-access-token=${session.access_token}; Path=/; Max-Age=${maxAge}; SameSite=Lax${secure}`;
+      document.cookie = `sb-refresh-token=${session.refresh_token}; Path=/; Max-Age=2592000; SameSite=Lax${secure}`;
     };
 
     const form = document.getElementById("login-form");
@@ -67,6 +68,13 @@ import Base from "../../../../layouts/Base.astro";
 
       if (error) {
         errorDiv.textContent = "Credenciales invalidas.";
+        errorDiv.style.display = "block";
+        btn.textContent = "Ingresar";
+        btn.disabled = false;
+        return;
+      }
+      if (!data?.session) {
+        errorDiv.textContent = "Inicio de sesion incompleto. Verifica confirmacion de correo o reintenta.";
         errorDiv.style.display = "block";
         btn.textContent = "Ingresar";
         btn.disabled = false;

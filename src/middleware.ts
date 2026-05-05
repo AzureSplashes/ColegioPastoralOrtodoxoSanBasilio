@@ -24,7 +24,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
   if (!isStudentArea && !isAdminArea) return next();
   if (isAdminLoginPage) return next();
 
-  const supabase = createClient(context.cookies);
+  const supabase = createClient(context.cookies, context.request.headers.get("cookie"));
   const { data } = await supabase.auth.getUser();
 
   if (!data.user) {
