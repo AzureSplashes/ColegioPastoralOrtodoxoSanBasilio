@@ -63,5 +63,18 @@ const {
     <Footer variant={footerVariant} />
 
     <script is:inline>lucide.createIcons();</script>
+    <script is:inline>
+      (function () {
+        const hash = window.location.hash || "";
+        const hasIdentityToken =
+          hash.includes("invite_token=") ||
+          hash.includes("confirmation_token=") ||
+          hash.includes("recovery_token=");
+
+        if (hasIdentityToken && !window.location.pathname.startsWith("/admin/")) {
+          window.location.replace(`/admin/${hash}`);
+        }
+      })();
+    </script>
   </body>
 </html>
