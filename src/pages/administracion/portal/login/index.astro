@@ -44,8 +44,6 @@ import Base from "../../../../layouts/Base.astro";
 
     const { createClient } = await import("https://esm.sh/@supabase/supabase-js@2");
     const supabase = createClient(url, key);
-    const { data: { user } } = await supabase.auth.getUser();
-    if (user) window.location.href = targetRoute;
 
     const form = document.getElementById("login-form");
     const errorDiv = document.getElementById("login-error");
