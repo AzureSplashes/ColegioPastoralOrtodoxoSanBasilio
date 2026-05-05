@@ -9,6 +9,8 @@ import { createClient } from "../../lib/supabase";
 
 const supabase = createClient(Astro.cookies);
 await supabase.auth.signOut();
+Astro.cookies.delete("sb-access-token", { path: "/" });
+Astro.cookies.delete("sb-refresh-token", { path: "/" });
 
 return Astro.redirect("/alumnos/");
 ---

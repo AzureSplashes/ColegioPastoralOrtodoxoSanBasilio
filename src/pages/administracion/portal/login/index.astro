@@ -44,6 +44,12 @@ import Base from "../../../../layouts/Base.astro";
 
     const { createClient } = await import("https://esm.sh/@supabase/supabase-js@2");
     const supabase = createClient(url, key);
+    const persistSessionCookies = (session) => {
+      if (!session?.access_token || !session?.refresh_token) return;
+      const maxAge = Number(session.expires_in || 3600);
+      document.cookie = `sb-access-token=${session.access_token}; Path=/; Max-Age=${maxAge}; SameSite=Lax; Secure`;
+      document.cookie = `sb-refresh-token=${session.refresh_token}; Path=/; Max-Age=2592000; SameSite=Lax; Secure`;
+    };
 
     const form = document.getElementById("login-form");
     const errorDiv = document.getElementById("login-error");
@@ -57,7 +63,7 @@ import Base from "../../../../layouts/Base.astro";
 
       const email = document.getElementById("email")?.value;
       const password = document.getElementById("password")?.value;
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 
       if (error) {
         errorDiv.textContent = "Credenciales invalidas.";
@@ -67,6 +73,7 @@ import Base from "../../../../layouts/Base.astro";
         return;
       }
 
+      persistSessionCookies(data?.session);
       window.location.href = targetRoute;
     });
   })();
