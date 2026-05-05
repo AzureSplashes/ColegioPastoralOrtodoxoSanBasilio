@@ -5,6 +5,7 @@ import Portal from "../../../layouts/Portal.astro";
 import PortalEditHint from "../../../components/PortalEditHint.astro";
 import { getCollection } from "astro:content";
 import { getPortalPageConfig } from "../../../lib/portal";
+import { marked } from "marked";
 
 const recursos = (await getCollection("recursos")).sort(
   (a, b) => a.data.title.localeCompare(b.data.title)
@@ -26,7 +27,7 @@ const categoryIcons: Record<string, string> = {
     <div class="container">
       <div class="section-header">
         <h1 class="section-title">{pageConfig.title}</h1>
-        <p>{pageConfig.description}</p>
+        <div class="section-desc" set:html={marked.parse(pageConfig.description)} />
       </div>
 
       <PortalEditHint canEdit={pageConfig.professorEditable} role={role} />

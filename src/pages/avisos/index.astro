@@ -6,9 +6,14 @@
 import Base from "../../layouts/Base.astro";
 import { getCollection } from "astro:content";
 
-const avisos = (await getCollection("avisos")).sort(
-  (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
-);
+let avisos = [];
+try {
+  avisos = (await getCollection("avisos"))
+    .filter((aviso) => !aviso.data.draft)
+    .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+} catch {
+  avisos = [];
+}
 ---
 
 <Base

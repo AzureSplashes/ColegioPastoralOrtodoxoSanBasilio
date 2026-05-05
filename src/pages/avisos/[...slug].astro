@@ -7,7 +7,12 @@ import Base from "../../layouts/Base.astro";
 import { getCollection, render } from "astro:content";
 
 export async function getStaticPaths() {
-  const avisos = await getCollection("avisos");
+  let avisos = [];
+  try {
+    avisos = (await getCollection("avisos")).filter((aviso) => !aviso.data.draft);
+  } catch {
+    avisos = [];
+  }
   return avisos.map((aviso) => ({
     params: { slug: aviso.id },
     props: { aviso },

@@ -11,6 +11,255 @@ media_folder: "public/assets/img"
 public_folder: "/assets/img"
 
 collections:
+  - name: "publicPages"
+    label: "Paginas publicas"
+    editor:
+      preview: true
+    files:
+      - label: "Inicio"
+        name: "inicio"
+        file: "src/content/pages/inicio.md"
+        fields: &pageFields
+          - { label: "Titulo de la pagina", name: "title", widget: "string" }
+          - { label: "Descripcion para buscadores", name: "description", widget: "text", required: false }
+          - { label: "Ruta interna", name: "slug", widget: "string", hint: "Sin diagonales al inicio ni al final. Ejemplo: historia o contenido/musica." }
+          - { label: "Seccion activa del menu", name: "activePage", widget: "string", required: false }
+          - { label: "Borrador", name: "draft", widget: "boolean", default: false, required: false }
+          - label: "Secciones de la pagina"
+            name: "sections"
+            widget: "list"
+            summary: "{{fields.type}} - {{fields.title}}{{fields.heading}}"
+            types:
+              - label: "Portada principal"
+                name: "hero"
+                widget: "object"
+                fields:
+                  - { label: "Titulo", name: "title", widget: "string" }
+                  - { label: "Texto de apoyo", name: "subtitle", widget: "text", required: false }
+                  - { label: "Imagen de fondo", name: "backgroundImage", widget: "image", required: false }
+                  - { label: "Imagen lateral", name: "sideImage", widget: "image", required: false }
+                  - label: "Botones"
+                    name: "buttons"
+                    widget: "list"
+                    required: false
+                    fields:
+                      - { label: "Texto del boton", name: "label", widget: "string" }
+                      - { label: "Enlace", name: "href", widget: "string" }
+                      - { label: "Icono", name: "icon", widget: "string", required: false, hint: "Nombre de icono Lucide, por ejemplo book-open." }
+                      - label: "Estilo"
+                        name: "style"
+                        widget: "select"
+                        options: ["primary", "outline", "link"]
+                        default: "primary"
+              - label: "Encabezado de seccion"
+                name: "section_header"
+                widget: "object"
+                fields:
+                  - { label: "Titulo", name: "title", widget: "string" }
+                  - { label: "Texto breve", name: "text", widget: "text", required: false }
+              - label: "Barra de beneficios"
+                name: "feature_bar"
+                widget: "object"
+                fields:
+                  - label: "Elementos"
+                    name: "items"
+                    widget: "list"
+                    fields:
+                      - { label: "Icono", name: "icon", widget: "string", default: "circle" }
+                      - { label: "Titulo", name: "title", widget: "string" }
+                      - { label: "Texto", name: "text", widget: "text" }
+              - label: "Tarjetas"
+                name: "cards"
+                widget: "object"
+                fields:
+                  - { label: "Imagen de fondo", name: "backgroundImage", widget: "image", required: false }
+                  - { label: "Aclarar fondo", name: "backgroundTint", widget: "boolean", default: false, required: false }
+                  - label: "Tarjetas"
+                    name: "items"
+                    widget: "list"
+                    fields:
+                      - { label: "Icono", name: "icon", widget: "string", required: false }
+                      - { label: "Titulo", name: "title", widget: "string" }
+                      - { label: "Texto", name: "text", widget: "text", required: false }
+                      - { label: "Enlace", name: "href", widget: "string", required: false }
+                      - { label: "Texto del enlace", name: "linkLabel", widget: "string", required: false }
+                      - label: "Estilo"
+                        name: "variant"
+                        widget: "select"
+                        options: ["standard", "institutional"]
+                        default: "standard"
+              - label: "Texto"
+                name: "text"
+                widget: "object"
+                fields:
+                  - { label: "Encabezado", name: "heading", widget: "string", required: false }
+                  - { label: "Contenido", name: "body", widget: "markdown", hint: "Use **negrita**, *cursiva*, [texto del enlace](url) y listas con guiones (-). Vea la Guia de Edicion en el menu lateral." }
+                  - label: "Alineacion"
+                    name: "align"
+                    widget: "select"
+                    options: ["left", "center"]
+                    default: "left"
+                  - label: "Ancho"
+                    name: "maxWidth"
+                    widget: "select"
+                    options: ["narrow", "normal", "wide"]
+                    default: "normal"
+              - label: "Texto con imagen"
+                name: "text_image"
+                widget: "object"
+                fields:
+                  - { label: "Encabezado", name: "heading", widget: "string", required: false }
+                  - { label: "Contenido", name: "body", widget: "markdown", hint: "Use **negrita**, *cursiva*, [texto del enlace](url) y listas con guiones (-). Vea la Guia de Edicion en el menu lateral." }
+                  - { label: "Imagen", name: "image", widget: "image" }
+                  - { label: "Texto alternativo", name: "imageAlt", widget: "string", required: false }
+                  - label: "Posicion de imagen"
+                    name: "imagePosition"
+                    widget: "select"
+                    options: ["left", "right"]
+                    default: "right"
+                  - label: "Botones"
+                    name: "buttons"
+                    widget: "list"
+                    required: false
+                    fields:
+                      - { label: "Texto del boton", name: "label", widget: "string" }
+                      - { label: "Enlace", name: "href", widget: "string" }
+                      - { label: "Icono", name: "icon", widget: "string", required: false }
+                      - label: "Estilo"
+                        name: "style"
+                        widget: "select"
+                        options: ["primary", "outline", "link"]
+                        default: "primary"
+              - label: "Galeria"
+                name: "gallery"
+                widget: "object"
+                fields:
+                  - { label: "Titulo", name: "title", widget: "string", required: false }
+                  - label: "Imagenes"
+                    name: "images"
+                    widget: "list"
+                    fields:
+                      - { label: "Imagen", name: "image", widget: "image" }
+                      - { label: "Descripcion accesible", name: "alt", widget: "string", required: false }
+              - label: "Lista de documentos"
+                name: "resource_list"
+                widget: "object"
+                fields:
+                  - label: "Documentos"
+                    name: "items"
+                    widget: "list"
+                    fields:
+                      - { label: "Titulo", name: "title", widget: "string" }
+                      - { label: "Descripcion", name: "description", widget: "string", required: false }
+                      - { label: "Archivo o enlace", name: "href", widget: "string" }
+              - label: "Autoridades y profesores"
+                name: "staff_list"
+                widget: "object"
+                fields:
+                  - label: "Director"
+                    name: "director"
+                    widget: "object"
+                    required: false
+                    fields:
+                      - { label: "Cargo", name: "role", widget: "string" }
+                      - { label: "Nombre", name: "name", widget: "string" }
+                      - { label: "Descripcion", name: "description", widget: "string", required: false }
+                  - label: "Personas"
+                    name: "people"
+                    widget: "list"
+                    fields:
+                      - { label: "Cargo", name: "role", widget: "string" }
+                      - { label: "Nombre", name: "name", widget: "string" }
+                      - label: "Materias"
+                        name: "subjects"
+                        widget: "list"
+                        required: false
+                        field: { label: "Materia", name: "subject", widget: "string" }
+              - label: "Contacto"
+                name: "contact"
+                widget: "object"
+                fields:
+                  - { label: "Texto introductorio", name: "intro", widget: "text", required: false }
+                  - { label: "Mostrar formulario", name: "showForm", widget: "boolean", default: true }
+                  - label: "Datos de contacto"
+                    name: "items"
+                    widget: "list"
+                    fields:
+                      - { label: "Icono", name: "icon", widget: "string", default: "info" }
+                      - { label: "Titulo", name: "title", widget: "string" }
+                      - label: "Lineas"
+                        name: "lines"
+                        widget: "list"
+                        field: { label: "Linea", name: "line", widget: "string" }
+      - { label: "Historia", name: "historia", file: "src/content/pages/historia.md", fields: *pageFields }
+      - { label: "Sede", name: "sede", file: "src/content/pages/sede.md", fields: *pageFields }
+      - { label: "Administracion", name: "administracion", file: "src/content/pages/administracion.md", fields: *pageFields }
+      - { label: "Contacto", name: "contacto", file: "src/content/pages/contacto.md", fields: *pageFields }
+      - { label: "Contenido", name: "contenido", file: "src/content/pages/contenido/index.md", fields: *pageFields }
+      - { label: "Textos Liturgicos", name: "textosLiturgicos", file: "src/content/pages/contenido/textos-liturgicos.md", fields: *pageFields }
+      - { label: "Musica", name: "musica", file: "src/content/pages/contenido/musica.md", fields: *pageFields }
+      - { label: "Curso Propedeutico", name: "cursoPropedeutico", file: "src/content/pages/contenido/curso-propedeutico.md", fields: *pageFields }
+      - { label: "Documentos Diocesis", name: "documentosDiocesis", file: "src/content/pages/documentos-diocesis.md", fields: *pageFields }
+      - { label: "Aviso Legal", name: "avisoLegal", file: "src/content/pages/aviso-legal.md", fields: *pageFields }
+      - { label: "Politica de Privacidad", name: "politicaPrivacidad", file: "src/content/pages/politica-de-privacidad.md", fields: *pageFields }
+
+  - name: "newPublicPages"
+    label: "Crear paginas nuevas"
+    folder: "src/content/pages/extra"
+    create: true
+    slug: "{{slug}}"
+    summary: "{{title}} - /{{slug}}/"
+    editor:
+      preview: true
+    fields: *pageFields
+
+  - name: "siteSettings"
+    label: "Menu y pie de pagina"
+    files:
+      - label: "Menu principal"
+        name: "navigation"
+        file: "src/content/settings/navigation/main.md"
+        fields:
+          - label: "Elementos del menu"
+            name: "items"
+            widget: "list"
+            summary: "{{fields.label}}"
+            fields:
+              - { label: "Etiqueta visible", name: "label", widget: "string" }
+              - { label: "Enlace", name: "href", widget: "string" }
+              - { label: "Seccion activa", name: "activePage", widget: "string", required: false }
+              - { label: "Visible", name: "visible", widget: "boolean", default: true }
+              - { label: "Ruta protegida", name: "locked", widget: "boolean", default: false, hint: "Marca rutas tecnicas como Alumnos para recordar que no conviene eliminarlas." }
+              - label: "Submenu"
+                name: "children"
+                widget: "list"
+                required: false
+                fields:
+                  - { label: "Etiqueta visible", name: "label", widget: "string" }
+                  - { label: "Enlace", name: "href", widget: "string" }
+                  - { label: "Visible", name: "visible", widget: "boolean", default: true }
+      - label: "Pie de pagina"
+        name: "footer"
+        file: "src/content/settings/footer/main.md"
+        fields:
+          - { label: "Descripcion institucional", name: "description", widget: "text" }
+          - label: "Columnas"
+            name: "columns"
+            widget: "list"
+            fields:
+              - { label: "Titulo", name: "title", widget: "string" }
+              - label: "Enlaces"
+                name: "links"
+                widget: "list"
+                fields:
+                  - { label: "Etiqueta", name: "label", widget: "string" }
+                  - { label: "Enlace", name: "href", widget: "string", required: false }
+          - label: "Contacto"
+            name: "contact"
+            widget: "list"
+            field: { label: "Linea", name: "line", widget: "string" }
+          - { label: "Texto de derechos", name: "copyright", widget: "string", required: false }
+
   - name: "portalPages"
     label: "Portal Alumnos (Permisos y Textos)"
     folder: "src/content/portal_pages"
@@ -25,7 +274,7 @@ collections:
         widget: "select"
         options: ["clases", "tareas", "recursos"]
       - { label: "Titulo visible", name: "title", widget: "string", hint: "Encabezado principal de la pagina." }
-      - { label: "Descripcion visible", name: "description", widget: "text", hint: "Texto de apoyo debajo del titulo." }
+      - { label: "Descripcion visible", name: "description", widget: "markdown", hint: "Texto debajo del titulo. Puede usar formato: **negrita**, [texto](enlace), listas con guiones." }
       - { label: "Editable por profesores", name: "professorEditable", widget: "boolean", default: false, hint: "Si esta activo, profesores podran editar esta seccion dentro del area restringida." }
 
   - name: "avisos"
@@ -39,7 +288,7 @@ collections:
       - { label: "Fecha", name: "date", widget: "datetime" }
       - { label: "Descripcion breve", name: "description", widget: "string" }
       - { label: "Imagen", name: "image", widget: "image", required: false }
-      - { label: "Contenido", name: "body", widget: "markdown" }
+      - { label: "Contenido", name: "body", widget: "markdown", hint: "Texto del aviso. Use **negrita**, *cursiva*, [enlaces](url), y listas." }
 
   - name: "clases"
     label: "Clases"
@@ -51,7 +300,7 @@ collections:
       - { label: "Titulo", name: "title", widget: "string" }
       - { label: "Fecha", name: "date", widget: "datetime" }
       - { label: "Descripcion", name: "description", widget: "string" }
-      - { label: "Contenido", name: "body", widget: "markdown" }
+      - { label: "Contenido", name: "body", widget: "markdown", hint: "Contenido de la clase. Use **negrita**, [enlaces](url) y listas." }
 
   - name: "tareas"
     label: "Tareas"
@@ -64,7 +313,7 @@ collections:
       - { label: "Fecha de entrega", name: "dueDate", widget: "datetime" }
       - { label: "Descripcion", name: "description", widget: "string" }
       - { label: "Enlace (Google Drive, etc.)", name: "link", widget: "string", required: false }
-      - { label: "Instrucciones", name: "body", widget: "markdown" }
+      - { label: "Instrucciones", name: "body", widget: "markdown", hint: "Instrucciones para el alumno. Ejemplo de enlace: [Ver documento](https://drive.google.com/...)" }
 
   - name: "recursos"
     label: "Recursos"
@@ -80,4 +329,16 @@ collections:
         options: ["Lectura", "Video", "Documento", "Enlace"]
       - { label: "Descripcion", name: "description", widget: "string" }
       - { label: "Enlace externo", name: "link", widget: "string", required: false }
-      - { label: "Contenido", name: "body", widget: "markdown" }
+      - { label: "Contenido", name: "body", widget: "markdown", hint: "Descripcion del recurso. Use **negrita**, [enlaces](url) y listas." }
+
+  - name: "ayuda"
+    label: "\U0001F4D6 Guia de Edicion"
+    editor:
+      preview: false
+    files:
+      - label: "Como editar el sitio"
+        name: "tutorial"
+        file: "src/content/settings/tutorial.md"
+        fields:
+          - { label: "Titulo", name: "title", widget: "hidden", default: "Guia de Edicion" }
+          - { label: "Guia de referencia", name: "body", widget: "markdown", hint: "Este documento es solo de referencia para los editores del sitio." }

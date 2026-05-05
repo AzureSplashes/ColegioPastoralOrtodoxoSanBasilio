@@ -1,0 +1,245 @@
+---
+import { marked } from "marked";
+import ResourceItem from "../ResourceItem.astro";
+
+interface Props {
+  block: Record<string, any>;
+}
+
+const { block } = Astro.props;
+
+const widthClass = {
+  narrow: "cms-width-narrow",
+  normal: "cms-width-normal",
+  wide: "cms-width-wide",
+};
+
+const buttonClass = (style = "primary") => {
+  if (style === "outline") return "btn btn-outline";
+  if (style === "link") return "card-link";
+  return "btn btn-primary";
+};
+---
+
+{block.type === "hero" && (
+  <section
+    class="hero"
+    style={block.backgroundImage ? `background-image: url('${block.backgroundImage}');` : undefined}
+  >
+    <div class="container">
+      <div class="hero-content">
+        <h1 class="hero-title">{block.title}</h1>
+        {block.subtitle && <p class="hero-subtitle">{block.subtitle}</p>}
+        {block.buttons?.length > 0 && (
+          <div class="hero-btns">
+            {block.buttons.map((button) => (
+              <a href={button.href} class={buttonClass(button.style)}>
+                {button.icon && <i data-lucide={button.icon}></i>}
+                {button.label}
+              </a>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+    {block.sideImage && <img src={block.sideImage} alt="" class="hero-image-side" />}
+  </section>
+)}
+
+{block.type === "section_header" && (
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <h1 class="section-title">{block.title}</h1>
+        {block.text && <p>{block.text}</p>}
+      </div>
+    </div>
+  </section>
+)}
+
+{block.type === "feature_bar" && (
+  <section class="features-bar">
+    <div class="container">
+      <div class="features-grid">
+        {block.items.map((item) => (
+          <div class="feature-item">
+            <div class="feature-icon"><i data-lucide={item.icon || "circle"}></i></div>
+            <div class="feature-text">
+              <h4>{item.title}</h4>
+              <p>{item.text}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+)}
+
+{block.type === "cards" && (
+  <section
+    class:list={["section", { "cms-image-band": block.backgroundImage }]}
+    style={block.backgroundImage ? `background-image: ${block.backgroundTint ? "linear-gradient(rgba(244, 242, 235, 0.85), rgba(244, 242, 235, 0.85)), " : ""}url('${block.backgroundImage}');` : undefined}
+  >
+    <div class="container">
+      <div class={block.items.some((item) => item.variant === "institutional") ? "institutional-grid" : "cards-grid"}>
+        {block.items.map((item) =>
+          item.variant === "institutional" ? (
+            <a href={item.href || "#"} class="institutional-block">
+              <div class="institutional-content">
+                <h3 class="institutional-title">{item.title}</h3>
+              </div>
+            </a>
+          ) : (
+            <div class="card">
+              {item.icon && <div class="card-icon"><i data-lucide={item.icon}></i></div>}
+              <h3 class="card-title">{item.title}</h3>
+              {item.text && <p class="card-desc">{item.text}</p>}
+              {item.href && (
+                <a href={item.href} class="card-link">
+                  {item.linkLabel || "Ver mas"} <i data-lucide="arrow-right"></i>
+                </a>
+              )}
+            </div>
+          )
+        )}
+      </div>
+    </div>
+  </section>
+)}
+
+{block.type === "text" && (
+  <section class="section">
+    <div class="container">
+      <div class:list={["cms-rich-text", widthClass[block.maxWidth] || "cms-width-normal", `align-${block.align || "left"}`]}>
+        {block.heading && <h2>{block.heading}</h2>}
+        <Fragment set:html={marked.parse(block.body)} />
+      </div>
+    </div>
+  </section>
+)}
+
+{block.type === "text_image" && (
+  <section class="section">
+    <div class="container">
+      <div class:list={["cms-text-image", { reverse: block.imagePosition === "left" }]}>
+        <div>
+          {block.heading && <h2>{block.heading}</h2>}
+          <Fragment set:html={marked.parse(block.body)} />
+          {block.buttons?.length > 0 && (
+            <div class="cms-buttons">
+              {block.buttons.map((button) => (
+                <a href={button.href} class={buttonClass(button.style)}>
+                  {button.icon && <i data-lucide={button.icon}></i>}
+                  {button.label}
+                </a>
+              ))}
+            </div>
+          )}
+        </div>
+        <img src={block.image} alt={block.imageAlt || ""} />
+      </div>
+    </div>
+  </section>
+)}
+
+{block.type === "gallery" && (
+  <section class="section">
+    <div class="container">
+      {block.title && <h2 class="gallery-title">{block.title}</h2>}
+      <div class="gallery-grid">
+        {block.images.map((item) => (
+          <img
+            src={item.image}
+            alt={item.alt || ""}
+            class="gallery-img"
+            onclick="openLightbox(this.src)"
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+)}
+
+{block.type === "resource_list" && (
+  <section class="section">
+    <div class="container">
+      <div class="resource-list">
+        {block.items.map((item) => (
+          <ResourceItem title={item.title} description={item.description} href={item.href} />
+        ))}
+      </div>
+    </div>
+  </section>
+)}
+
+{block.type === "staff_list" && (
+  <section class="section" style="background-color: var(--color-bg-secondary); padding-top: 2rem;">
+    <div class="container">
+      {block.director && (
+        <div class="director-card">
+          <div class="staff-role">{block.director.role}</div>
+          <h2>{block.director.name}</h2>
+          {block.director.description && <p>{block.director.description}</p>}
+        </div>
+      )}
+      <div class="staff-grid">
+        {block.people.map((person) => (
+          <div class="staff-card">
+            <div class="staff-info">
+              <div class="staff-role">{person.role}</div>
+              <h3 class="staff-name">{person.name}</h3>
+              {person.subjects?.length > 0 && (
+                <div class="staff-subjects">
+                  {person.subjects.map((subject) => <span class="subject-tag">{subject}</span>)}
+                </div>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+)}
+
+{block.type === "contact" && (
+  <section class="section">
+    <div class="container">
+      <div class="contact-grid">
+        <div class="contact-info-card">
+          <h3>Informacion de Contacto</h3>
+          {block.intro && <p style="margin-bottom: 2rem; opacity: 0.8;">{block.intro}</p>}
+          {block.items.map((item) => (
+            <div class="info-item">
+              <i data-lucide={item.icon || "info"}></i>
+              <div>
+                <h4>{item.title}</h4>
+                {item.lines.map((line) => <p>{line}</p>)}
+              </div>
+            </div>
+          ))}
+        </div>
+        {block.showForm && (
+          <div class="contact-form">
+            <form>
+              <div class="form-group">
+                <label>Nombre Completo</label>
+                <input type="text" placeholder="Nombre y apellidos" />
+              </div>
+              <div class="form-group">
+                <label>Correo Electronico</label>
+                <input type="email" placeholder="correo@ejemplo.com" />
+              </div>
+              <div class="form-group">
+                <label>Mensaje</label>
+                <textarea rows="5" placeholder="Escriba su consulta aqui..."></textarea>
+              </div>
+              <button type="button" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                Enviar Mensaje
+              </button>
+            </form>
+          </div>
+        )}
+      </div>
+    </div>
+  </section>
+)}

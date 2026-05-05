@@ -8,6 +8,7 @@ const avisos = defineCollection({
     date: z.coerce.date(),
     description: z.string(),
     image: z.string().optional(),
+    draft: z.boolean().default(false),
   }),
 });
 
@@ -50,4 +51,158 @@ const portalPages = defineCollection({
   }),
 });
 
-export const collections = { avisos, clases, tareas, recursos, portalPages };
+const buttonSchema = z.object({
+  label: z.string(),
+  href: z.string(),
+  style: z.enum(["primary", "outline", "link"]).default("primary"),
+  icon: z.string().optional(),
+});
+
+const pageBlockSchema = z.discriminatedUnion("type", [
+  z.object({
+    type: z.literal("hero"),
+    title: z.string(),
+    subtitle: z.string().optional(),
+    backgroundImage: z.string().optional(),
+    sideImage: z.string().optional(),
+    buttons: z.array(buttonSchema).default([]),
+  }),
+  z.object({
+    type: z.literal("section_header"),
+    title: z.string(),
+    text: z.string().optional(),
+  }),
+  z.object({
+    type: z.literal("feature_bar"),
+    items: z.array(z.object({
+      icon: z.string().default("circle"),
+      title: z.string(),
+      text: z.string(),
+    })).default([]),
+  }),
+  z.object({
+    type: z.literal("cards"),
+    backgroundImage: z.string().optional(),
+    backgroundTint: z.boolean().default(false),
+    items: z.array(z.object({
+      icon: z.string().optional(),
+      title: z.string(),
+      text: z.string().optional(),
+      href: z.string().optional(),
+      linkLabel: z.string().optional(),
+      variant: z.enum(["standard", "institutional"]).default("standard"),
+    })).default([]),
+  }),
+  z.object({
+    type: z.literal("text"),
+    heading: z.string().optional(),
+    body: z.string(),
+    align: z.enum(["left", "center"]).default("left"),
+    maxWidth: z.enum(["narrow", "normal", "wide"]).default("normal"),
+  }),
+  z.object({
+    type: z.literal("text_image"),
+    heading: z.string().optional(),
+    body: z.string(),
+    image: z.string(),
+    imageAlt: z.string().optional(),
+    imagePosition: z.enum(["left", "right"]).default("right"),
+    buttons: z.array(buttonSchema).default([]),
+  }),
+  z.object({
+    type: z.literal("gallery"),
+    title: z.string().optional(),
+    images: z.array(z.object({
+      image: z.string(),
+      alt: z.string().optional(),
+    })).default([]),
+  }),
+  z.object({
+    type: z.literal("resource_list"),
+    items: z.array(z.object({
+      title: z.string(),
+      description: z.string().optional(),
+      href: z.string(),
+    })).default([]),
+  }),
+  z.object({
+    type: z.literal("staff_list"),
+    director: z.object({
+      role: z.string(),
+      name: z.string(),
+      description: z.string().optional(),
+    }).optional(),
+    people: z.array(z.object({
+      role: z.string(),
+      name: z.string(),
+      subjects: z.array(z.string()).default([]),
+    })).default([]),
+  }),
+  z.object({
+    type: z.literal("contact"),
+    intro: z.string().optional(),
+    items: z.array(z.object({
+      icon: z.string().default("info"),
+      title: z.string(),
+      lines: z.array(z.string()).default([]),
+    })).default([]),
+    showForm: z.boolean().default(true),
+  }),
+]);
+
+const publicPages = defineCollection({
+  loader: glob({ base: "./src/content/pages", pattern: "**/*.{md,mdx}" }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string().optional(),
+    slug: z.string(),
+    activePage: z.string().optional(),
+    draft: z.boolean().default(false),
+    sections: z.array(pageBlockSchema).default([]),
+  }),
+});
+
+const navigation = defineCollection({
+  loader: glob({ base: "./src/content/settings/navigation", pattern: "**/*.{md,mdx}" }),
+  schema: z.object({
+    items: z.array(z.object({
+      label: z.string(),
+      href: z.string(),
+      activePage: z.string().optional(),
+      visible: z.boolean().default(true),
+      locked: z.boolean().default(false),
+      children: z.array(z.object({
+        label: z.string(),
+        href: z.string(),
+        visible: z.boolean().default(true),
+      })).default([]),
+    })).default([]),
+  }),
+});
+
+const footer = defineCollection({
+  loader: glob({ base: "./src/content/settings/footer", pattern: "**/*.{md,mdx}" }),
+  schema: z.object({
+    description: z.string(),
+    columns: z.array(z.object({
+      title: z.string(),
+      links: z.array(z.object({
+        label: z.string(),
+        href: z.string().optional(),
+      })).default([]),
+    })).default([]),
+    contact: z.array(z.string()).default([]),
+    copyright: z.string().optional(),
+  }),
+});
+
+export const collections = {
+  avisos,
+  clases,
+  tareas,
+  recursos,
+  portalPages,
+  publicPages,
+  navigation,
+  footer,
+};

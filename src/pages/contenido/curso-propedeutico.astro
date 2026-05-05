@@ -1,72 +1,9 @@
 ---
-/**
- * contenido/curso-propedeutico.astro — Introductory doctrine course materials.
- */
-import Base from "../../layouts/Base.astro";
-import ResourceItem from "../../components/ResourceItem.astro";
+import CmsPage from "../../components/CmsPage.astro";
+import { getPublicPageBySlug } from "../../lib/cms";
+
+const page = await getPublicPageBySlug("contenido/curso-propedeutico");
+if (!page) throw new Error("Missing CMS page: contenido/curso-propedeutico");
 ---
 
-<Base
-  title="Textos de Doctrina Cristiana Ortodoxa | Colegio Pastoral Ortodoxo San Basilio"
-  description="Material del curso propedéutico: vocaciones, eclesiología, órdenes sagradas, calendario litúrgico y más."
-  activePage="contenido"
->
-  <main class="section">
-    <div class="container">
-      <div class="breadcrumb">
-        <a href="/">Inicio</a> / <a href="/contenido/">Contenido</a> / Textos de Doctrina Cristiana Ortodoxa
-      </div>
-      <div class="section-header">
-        <h1 class="section-title">Textos de Doctrina Cristiana Ortodoxa</h1>
-        <p>Material del curso propedéutico para la formación inicial de los seminaristas.</p>
-      </div>
-
-      <div class="resource-list">
-        <ResourceItem title="1. Qué son las Vocaciones" description="Introducción al concepto de vocación en la Iglesia Ortodoxa." href="/documentos/1. Qué son las Vocaciones.pdf" />
-        <ResourceItem title="2. Disciplina de los Servidores de la Iglesia" description="Normas y disciplina para quienes sirven en la Iglesia." href="/documentos/2. Disciplina de los Servidores de la Iglesia.pdf" />
-        <ResourceItem title="3. Qué es la Iglesia Ortodoxa — Parte I" description="Eclesiología ortodoxa: naturaleza y fundamento de la Iglesia." href="/documentos/3. Qué es la Iglesia Ortodoxa - Parte I.pdf" />
-        <ResourceItem title="4. Qué es la Iglesia Ortodoxa — Parte II" description="Continuación: estructura y misión de la Iglesia Ortodoxa." href="/documentos/4. Qué es la Iglesia Ortodoxa - Parte II.pdf" />
-        <ResourceItem title="5. Autoridad Conciliar y Sinodal" description="Los Concilios Ecuménicos y la autoridad sinodal en la Iglesia." href="/documentos/5. Autoridad Conciliar y Sinodal.pdf" />
-        <ResourceItem title="6. Estructura y Organización de la Iglesia" description="Organización jerárquica y administrativa de la Iglesia Ortodoxa." href="/documentos/6. Estructura y organización de la Iglesia.pdf" />
-        <ResourceItem title="7. Órdenes Sagradas" description="Las órdenes del diaconado, presbiterado y episcopado." href="/documentos/7. Órdenes Sagradas.pdf" />
-        <ResourceItem title="8. Calendario Litúrgico" description="Estructura y funcionamiento del año litúrgico ortodoxo." href="/documentos/8. Calendario Litúrgico.pdf" />
-        <ResourceItem title="9. Escritura y Tradición — Parte I" description="La Sagrada Escritura y la Santa Tradición como fuentes de la fe." href="/documentos/9. Escritura y Tradición - Parte I.pdf" />
-        <ResourceItem title="10. Escritura y Tradición — Parte II" description="Continuación: relación entre Escritura, Tradición y Magisterio." href="/documentos/10. Escritura y Tradición - Parte II.pdf" />
-      </div>
-    </div>
-  </main>
-</Base>
-
-<style>
-  .resource-list { margin-top: 2rem; }
-  .resource-item {
-    background: var(--color-white);
-    padding: 1.5rem;
-    border-radius: 8px;
-    margin-bottom: 1rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-left: 4px solid var(--color-accent);
-    box-shadow: var(--shadow-sm);
-    transition: transform 0.2s;
-  }
-  .resource-item:hover { transform: translateX(5px); }
-  .resource-info h4 { margin-bottom: 0.25rem; font-size: 1.1rem; }
-  .resource-info p { font-size: 0.85rem; color: var(--color-text-light); }
-  .download-btn {
-    background: var(--color-primary);
-    color: var(--color-white);
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    font-size: 0.9rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    white-space: nowrap;
-  }
-  .download-btn:hover { background: var(--color-accent); color: var(--color-primary); }
-  .breadcrumb { margin-bottom: 2rem; font-size: 0.9rem; color: var(--color-text-light); }
-  .breadcrumb a { color: var(--color-primary); }
-  .breadcrumb a:hover { color: var(--color-accent); }
-</style>
+<CmsPage page={page} />

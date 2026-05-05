@@ -1,65 +1,9 @@
 ---
-/**
- * contenido/musica.astro — Music/chant resources download listing.
- */
-import Base from "../../layouts/Base.astro";
-import ResourceItem from "../../components/ResourceItem.astro";
+import CmsPage from "../../components/CmsPage.astro";
+import { getPublicPageBySlug } from "../../lib/cms";
+
+const page = await getPublicPageBySlug("contenido/musica");
+if (!page) throw new Error("Missing CMS page: contenido/musica");
 ---
 
-<Base
-  title="Música | Colegio Pastoral Ortodoxo San Basilio"
-  description="Recursos musicales litúrgicos: Octotono Dominical, instrucciones prácticas y anotaciones."
-  activePage="contenido"
->
-  <main class="section">
-    <div class="container">
-      <div class="breadcrumb">
-        <a href="/">Inicio</a> / <a href="/contenido/">Contenido</a> / Música
-      </div>
-      <div class="section-header">
-        <h1 class="section-title">Textos de Música</h1>
-        <p>Material de canto litúrgico y teoría musical para el oficio ortodoxo.</p>
-      </div>
-
-      <div class="resource-list">
-        <ResourceItem title="Octotono Dominical — Vísperas y Divina Liturgia" description="Textos cantados para los ocho tonos dominicales." href="/documentos/OCTOTONO DOMINICAL VÍSPERAS Y DIVINA LITURGIA.pdf" />
-        <ResourceItem title="Arkadiusz Mironko — Instrucciones Prácticas" description="Guía práctica para la dirección del coro litúrgico." href="/documentos/Arkadiusz Mironko. Instrucciones Prácticas.pdf" />
-        <ResourceItem title="Anotaciones a la Divina Liturgia" description="Notas musicales para el seguimiento de la Divina Liturgia." href="/documentos/ANOTACIONES A LA DIVINA LITURGIA (2" />
-      </div>
-    </div>
-  </main>
-</Base>
-
-<style>
-  .resource-list { margin-top: 2rem; }
-  .resource-item {
-    background: var(--color-white);
-    padding: 1.5rem;
-    border-radius: 8px;
-    margin-bottom: 1rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-left: 4px solid var(--color-accent);
-    box-shadow: var(--shadow-sm);
-    transition: transform 0.2s;
-  }
-  .resource-item:hover { transform: translateX(5px); }
-  .resource-info h4 { margin-bottom: 0.25rem; font-size: 1.1rem; }
-  .resource-info p { font-size: 0.85rem; color: var(--color-text-light); }
-  .download-btn {
-    background: var(--color-primary);
-    color: var(--color-white);
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    font-size: 0.9rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    white-space: nowrap;
-  }
-  .download-btn:hover { background: var(--color-accent); color: var(--color-primary); }
-  .breadcrumb { margin-bottom: 2rem; font-size: 0.9rem; color: var(--color-text-light); }
-  .breadcrumb a { color: var(--color-primary); }
-  .breadcrumb a:hover { color: var(--color-accent); }
-</style>
+<CmsPage page={page} />

@@ -1,0 +1,64 @@
+---
+---
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex" />
+    <title>Admin - Colegio San Basilio</title>
+  </head>
+  <body>
+    <div id="nc-root"></div>
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <script>
+      if (window.netlifyIdentity) {
+        window.netlifyIdentity.on("init", function (user) {
+          if (!user) {
+            window.netlifyIdentity.on("login", function () {
+              document.location.href = "/admin/";
+            });
+          }
+        });
+      }
+    </script>
+    <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+    <script>
+      const Preview = createClass({
+        render: function () {
+          const entry = this.props.entry;
+          const data = entry.get("data").toJS();
+          const sections = data.sections || [];
+
+          return h("main", { style: { fontFamily: "system-ui, sans-serif", background: "#FCFBF7", color: "#1A1A1A" } }, [
+            h("section", { style: { padding: "32px", background: "#3B225E", color: "#fff" } }, [
+              h("h1", { style: { margin: "0 0 8px", fontSize: "36px" } }, data.title || "Pagina sin titulo"),
+              h("p", { style: { margin: 0, opacity: 0.82 } }, data.description || "")
+            ]),
+            h("div", { style: { padding: "24px 32px" } },
+              sections.map((section, index) => h("article", {
+                key: index,
+                style: {
+                  background: "#fff",
+                  border: "1px solid #eee",
+                  borderLeft: "4px solid #C5A048",
+                  borderRadius: "8px",
+                  padding: "18px",
+                  marginBottom: "14px"
+                }
+              }, [
+                h("div", { style: { color: "#3B225E", fontWeight: 700, textTransform: "uppercase", fontSize: "12px", marginBottom: "8px" } }, section.type || "seccion"),
+                h("h2", { style: { margin: "0 0 8px", fontSize: "24px", color: "#3B225E" } }, section.title || section.heading || "Seccion"),
+                h("p", { style: { margin: 0, whiteSpace: "pre-wrap", color: "#555" } }, section.subtitle || section.text || section.body || `${(section.items || section.images || section.people || []).length} elementos`)
+              ]))
+            )
+          ]);
+        }
+      });
+
+      CMS.registerPreviewTemplate("publicPages", Preview);
+      CMS.registerPreviewTemplate("newPublicPages", Preview);
+    </script>
+  </body>
+</html>

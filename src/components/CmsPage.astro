@@ -1,0 +1,30 @@
+---
+import Base from "../layouts/Base.astro";
+import BlockRenderer from "./blocks/BlockRenderer.astro";
+import Lightbox from "./Lightbox.astro";
+
+interface Props {
+  page: {
+    data: {
+      title: string;
+      description?: string;
+      activePage?: string;
+      sections: Array<Record<string, unknown>>;
+    };
+  };
+}
+
+const { page } = Astro.props;
+const hasGallery = page.data.sections.some((section) => section.type === "gallery");
+---
+
+<Base
+  title={`${page.data.title} | Colegio Pastoral Ortodoxo San Basilio`}
+  description={page.data.description}
+  activePage={page.data.activePage || ""}
+>
+  <main>
+    {page.data.sections.map((section) => <BlockRenderer block={section} />)}
+  </main>
+  {hasGallery && <Lightbox />}
+</Base>

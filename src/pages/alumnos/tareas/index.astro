@@ -5,6 +5,7 @@ import Portal from "../../../layouts/Portal.astro";
 import PortalEditHint from "../../../components/PortalEditHint.astro";
 import { getCollection } from "astro:content";
 import { getPortalPageConfig } from "../../../lib/portal";
+import { marked } from "marked";
 
 const tareas = (await getCollection("tareas")).sort(
   (a, b) => new Date(b.data.dueDate).getTime() - new Date(a.data.dueDate).getTime()
@@ -19,7 +20,7 @@ const role = (Astro.locals.role as string | null) ?? null;
     <div class="container">
       <div class="section-header">
         <h1 class="section-title">{pageConfig.title}</h1>
-        <p>{pageConfig.description}</p>
+        <div class="section-desc" set:html={marked.parse(pageConfig.description)} />
       </div>
 
       <PortalEditHint canEdit={pageConfig.professorEditable} role={role} />

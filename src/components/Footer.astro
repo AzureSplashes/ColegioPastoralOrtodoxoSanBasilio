@@ -1,14 +1,36 @@
 ---
-/**
- * Footer.astro — Site footer.
- * Props:
- *   variant: "full" | "minimal" — controls whether navigation columns are shown.
- */
+import { getCollection } from "astro:content";
+
 interface Props {
   variant?: "full" | "minimal";
 }
 
 const { variant = "full" } = Astro.props;
+const footerSettings = await getCollection("footer");
+const footer = footerSettings[0]?.data || {
+  description: "Colegio Pastoral Ortodoxo San Basilio - Diocesis de Mexico, OCA.",
+  columns: [
+    {
+      title: "Navegacion",
+      links: [
+        { label: "Inicio", href: "/" },
+        { label: "Administracion", href: "/administracion/" },
+        { label: "Contenido", href: "/contenido/" },
+        { label: "Avisos", href: "/avisos/" },
+        { label: "Alumnos", href: "/alumnos/" },
+        { label: "Contacto", href: "/contacto/" },
+      ],
+    },
+    {
+      title: "Legal",
+      links: [
+        { label: "Aviso Legal", href: "/aviso-legal/" },
+        { label: "Politica de Privacidad", href: "/politica-de-privacidad/" },
+      ],
+    },
+  ],
+  contact: ["+52 55 7903 1388", "cposb.oca@gmail.com"],
+};
 ---
 
 <footer class="footer">
@@ -17,38 +39,28 @@ const { variant = "full" } = Astro.props;
       <div class="footer-grid">
         <div class="footer-col">
           <h4>Colegio San Basilio</h4>
-          <p style="opacity:0.7;font-size:0.9rem;">Colegio Pastoral Ortodoxo San Basilio — Diócesis de México, OCA.</p>
+          <p style="opacity:0.7;font-size:0.9rem;">{footer.description}</p>
         </div>
-        <div class="footer-col">
-          <h4>Navegación</h4>
-          <ul class="footer-links">
-            <li><a href="/">Inicio</a></li>
-            <li><a href="/administracion/">Administración</a></li>
-            <li><a href="/contenido/">Contenido</a></li>
-            <li><a href="/avisos/">Avisos</a></li>
-            <li><a href="/alumnos/">Alumnos</a></li>
-            <li><a href="/documentos-diocesis/">Documentos diócesis</a></li>
-            <li><a href="/contacto/">Contacto</a></li>
-          </ul>
-        </div>
-        <div class="footer-col">
-          <h4>Legal</h4>
-          <ul class="footer-links">
-            <li><a href="/aviso-legal/">Aviso Legal</a></li>
-            <li><a href="/politica-de-privacidad/">Política de Privacidad</a></li>
-          </ul>
-        </div>
+        {footer.columns.map((column) => (
+          <div class="footer-col">
+            <h4>{column.title}</h4>
+            <ul class="footer-links">
+              {column.links.map((link) => (
+                <li>{link.href ? <a href={link.href}>{link.label}</a> : link.label}</li>
+              ))}
+            </ul>
+          </div>
+        ))}
         <div class="footer-col">
           <h4>Contacto</h4>
           <ul class="footer-links" style="opacity:0.7;font-size:0.9rem;">
-            <li>+52 55 7903 1388</li>
-            <li>cposb.oca@gmail.com</li>
+            {footer.contact.map((line) => <li>{line}</li>)}
           </ul>
         </div>
       </div>
     )}
     <div class="footer-bottom">
-      <p>&copy; {new Date().getFullYear()} Colegio Pastoral Ortodoxo San Basilio. Todos los derechos reservados.</p>
+      <p>&copy; {new Date().getFullYear()} {footer.copyright || "Colegio Pastoral Ortodoxo San Basilio. Todos los derechos reservados."}</p>
     </div>
   </div>
 </footer>

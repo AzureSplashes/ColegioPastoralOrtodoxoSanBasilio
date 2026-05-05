@@ -1,40 +1,9 @@
 ---
-/**
- * historia.astro — History of the college.
- */
-import Base from "../layouts/Base.astro";
+import CmsPage from "../components/CmsPage.astro";
+import { getPublicPageBySlug } from "../lib/cms";
+
+const page = await getPublicPageBySlug("historia");
+if (!page) throw new Error("Missing CMS page: historia");
 ---
 
-<Base
-  title="Historia | Colegio Pastoral Ortodoxo San Basilio"
-  description="Orígenes y resurgimiento del Colegio Pastoral Ortodoxo San Basilio, fundado en 1974."
-  activePage="inicio"
->
-  <main class="section">
-    <div class="container">
-      <div class="section-header">
-        <h1 class="section-title">Historia del Colegio</h1>
-        <p>Orígenes y resurgimiento de nuestra institución.</p>
-      </div>
-      <div style="max-width: 800px; margin: 0 auto; font-size: 1.1rem; line-height: 1.8; color: var(--color-text);">
-        <p style="margin-bottom: 2rem;">
-          El Colegio Pastoral de Ortodoxo San Basilio fue fundado en el año de
-          1974 por su gracia Obispo José de bendita memoria, en el cual se formó
-          la segunda generación de sacerdotes del ese entonces Exarcado de
-          México. Se tuvo la destacada participación de Su Eminencia Antonio
-          Chedraui como profesor del Colegio.
-        </p>
-        <p style="margin-bottom: 2rem;">
-          Las actividades del Colegio concluyeron en ese tiempo en el año de
-          1983 tras el reposo en el Señor del Obispo José. Actualmente el
-          Colegio ha sido rehabilitado por Su Eminencia Alejo en el año de 2021.
-        </p>
-        <img
-          src="/assets/img/IMG_6385-901.jpg"
-          alt="Fotografía histórica del Colegio Pastoral Ortodoxo San Basilio"
-          style="margin: 0 auto; border-radius: 12px; box-shadow: var(--shadow-md); max-width: 100%;"
-        />
-      </div>
-    </div>
-  </main>
-</Base>
+<CmsPage page={page} />

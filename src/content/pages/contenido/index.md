@@ -1,0 +1,27 @@
+---
+title: "Contenido"
+description: "Recursos liturgicos, musicales y de formacion del Colegio Pastoral Ortodoxo San Basilio."
+slug: "contenido"
+activePage: "contenido"
+sections:
+  - type: "section_header"
+    title: "Contenido"
+    text: "Recursos de formacion liturgica, musical y doctrinal disponibles para descarga."
+  - type: "cards"
+    items:
+      - icon: "scroll-text"
+        title: "Textos Liturgicos"
+        text: "Liturgikon, Salterio, Libro de las Horas, Eucologio y demas textos para el oficio liturgico."
+        href: "/contenido/textos-liturgicos/"
+        linkLabel: "Ver textos"
+      - icon: "music"
+        title: "Musica"
+        text: "Octotono Dominical, instrucciones practicas y anotaciones musicales liturgicas."
+        href: "/contenido/musica/"
+        linkLabel: "Ver musica"
+      - icon: "book-open"
+        title: "Textos de Doctrina Cristiana Ortodoxa"
+        text: "Material del curso propedeutico: vocaciones, eclesiologia, ordenes sagradas y mas."
+        href: "/contenido/curso-propedeutico/"
+        linkLabel: "Ver textos"
+---
