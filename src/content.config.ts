@@ -85,6 +85,7 @@ const pageBlockSchema = z.discriminatedUnion("type", [
     backgroundImage: z.string().optional(),
     backgroundTint: z.boolean().default(false),
     items: z.array(z.object({
+      image: z.string().optional(),
       icon: z.string().optional(),
       title: z.string(),
       text: z.string().optional(),
@@ -130,11 +131,13 @@ const pageBlockSchema = z.discriminatedUnion("type", [
     director: z.object({
       role: z.string(),
       name: z.string(),
+      image: z.string().optional(),
       description: z.string().optional(),
     }).optional(),
     people: z.array(z.object({
       role: z.string(),
       name: z.string(),
+      image: z.string().optional(),
       subjects: z.array(z.string()).default([]),
     })).default([]),
   }),

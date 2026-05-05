@@ -14,7 +14,7 @@ collections:
   - name: "publicPages"
     label: "Paginas publicas"
     editor:
-      preview: true
+      preview: false
     files:
       - label: "Inicio"
         name: "inicio"
@@ -78,6 +78,7 @@ collections:
                     name: "items"
                     widget: "list"
                     fields:
+                      - { label: "Imagen", name: "image", widget: "image", required: false, hint: "Foto opcional para la tarjeta." }
                       - { label: "Icono", name: "icon", widget: "string", required: false }
                       - { label: "Titulo", name: "title", widget: "string" }
                       - { label: "Texto", name: "text", widget: "text", required: false }
@@ -163,6 +164,7 @@ collections:
                     fields:
                       - { label: "Cargo", name: "role", widget: "string" }
                       - { label: "Nombre", name: "name", widget: "string" }
+                      - { label: "Foto", name: "image", widget: "image", required: false }
                       - { label: "Descripcion", name: "description", widget: "string", required: false }
                   - label: "Personas"
                     name: "people"
@@ -170,6 +172,7 @@ collections:
                     fields:
                       - { label: "Cargo", name: "role", widget: "string" }
                       - { label: "Nombre", name: "name", widget: "string" }
+                      - { label: "Foto", name: "image", widget: "image", required: false }
                       - label: "Materias"
                         name: "subjects"
                         widget: "list"
@@ -204,13 +207,13 @@ collections:
       - { label: "Politica de Privacidad", name: "politicaPrivacidad", file: "src/content/pages/politica-de-privacidad.md", fields: *pageFields }
 
   - name: "newPublicPages"
-    label: "Crear paginas nuevas"
+    label: "Paginas adicionales"
     folder: "src/content/pages/extra"
     create: true
     slug: "{{slug}}"
     summary: "{{title}} - /{{slug}}/"
     editor:
-      preview: true
+      preview: false
     fields: *pageFields
 
   - name: "siteSettings"

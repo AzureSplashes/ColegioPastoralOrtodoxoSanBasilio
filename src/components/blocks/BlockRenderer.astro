@@ -91,7 +91,8 @@ const buttonClass = (style = "primary") => {
             </a>
           ) : (
             <div class="card">
-              {item.icon && <div class="card-icon"><i data-lucide={item.icon}></i></div>}
+              {item.image && <img src={item.image} alt={item.title} class="card-img" />}
+              {item.icon && !item.image && <div class="card-icon"><i data-lucide={item.icon}></i></div>}
               <h3 class="card-title">{item.title}</h3>
               {item.text && <p class="card-desc">{item.text}</p>}
               {item.href && (
@@ -177,6 +178,7 @@ const buttonClass = (style = "primary") => {
     <div class="container">
       {block.director && (
         <div class="director-card">
+          {block.director.image && <img src={block.director.image} alt={block.director.name} class="director-photo" />}
           <div class="staff-role">{block.director.role}</div>
           <h2>{block.director.name}</h2>
           {block.director.description && <p>{block.director.description}</p>}
@@ -185,6 +187,7 @@ const buttonClass = (style = "primary") => {
       <div class="staff-grid">
         {block.people.map((person) => (
           <div class="staff-card">
+            {person.image && <img src={person.image} alt={person.name} class="staff-photo" />}
             <div class="staff-info">
               <div class="staff-role">{person.role}</div>
               <h3 class="staff-name">{person.name}</h3>
