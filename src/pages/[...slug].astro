@@ -3,23 +3,9 @@ import { getCollection } from "astro:content";
 import CmsPage from "../components/CmsPage.astro";
 
 export async function getStaticPaths() {
-  const staticCmsRoutes = new Set([
-    "",
-    "administracion",
-    "aviso-legal",
-    "contacto",
-    "contenido",
-    "contenido/curso-propedeutico",
-    "contenido/musica",
-    "contenido/textos-liturgicos",
-    "documentos-diocesis",
-    "historia",
-    "politica-de-privacidad",
-    "sede",
-  ]);
   const pages = await getCollection("publicPages", ({ data }) => !data.draft);
   return pages
-    .filter((page) => page.data.slug && !staticCmsRoutes.has(page.data.slug))
+    .filter((page) => page.data.slug)
     .map((page) => ({
       params: { slug: page.data.slug },
       props: { page },

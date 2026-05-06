@@ -153,16 +153,23 @@ const pageBlockSchema = z.discriminatedUnion("type", [
   }),
 ]);
 
+const publicPagesSchema = z.object({
+  title: z.string(),
+  description: z.string().optional(),
+  slug: z.string(),
+  activePage: z.string().optional(),
+  draft: z.boolean().default(false),
+  sections: z.array(pageBlockSchema).default([]),
+});
+
 const publicPages = defineCollection({
   loader: glob({ base: "./src/content/pages", pattern: "**/*.{md,mdx}" }),
-  schema: z.object({
-    title: z.string(),
-    description: z.string().optional(),
-    slug: z.string(),
-    activePage: z.string().optional(),
-    draft: z.boolean().default(false),
-    sections: z.array(pageBlockSchema).default([]),
-  }),
+  schema: publicPagesSchema,
+});
+
+const homepage = defineCollection({
+  loader: glob({ base: "./src/content/homepage", pattern: "**/*.{md,mdx}" }),
+  schema: publicPagesSchema,
 });
 
 const navigation = defineCollection({
@@ -206,6 +213,7 @@ export const collections = {
   recursos,
   portalPages,
   publicPages,
+  homepage,
   navigation,
   footer,
 };

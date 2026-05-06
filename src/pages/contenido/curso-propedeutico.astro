@@ -1,9 +1,0 @@
----
-import CmsPage from "../../components/CmsPage.astro";
-import { getPublicPageBySlug } from "../../lib/cms";
-
-const page = await getPublicPageBySlug("contenido/curso-propedeutico");
-if (!page) throw new Error("Missing CMS page: contenido/curso-propedeutico");
----
-
-<CmsPage page={page} />

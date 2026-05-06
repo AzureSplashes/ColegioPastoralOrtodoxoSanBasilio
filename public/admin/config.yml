@@ -11,20 +11,22 @@ media_folder: "public/assets/img"
 public_folder: "/assets/img"
 
 collections:
-  - name: "publicPages"
-    label: "Paginas publicas"
+  - name: "homepage"
+    label: "Pagina de Inicio"
+    label_singular: "Pagina de Inicio"
+    description: "Esta es la pagina principal del sitio (la que se ve al entrar a la direccion web). Puede editar todo su contenido pero no se puede eliminar."
     editor:
       preview: false
     files:
       - label: "Inicio"
         name: "inicio"
-        file: "src/content/pages/inicio.md"
+        file: "src/content/homepage/inicio.md"
         fields: &pageFields
           - { label: "Titulo de la pagina", name: "title", widget: "string" }
           - { label: "Descripcion para buscadores", name: "description", widget: "text", required: false }
-          - { label: "Ruta interna", name: "slug", widget: "string", hint: "Sin diagonales al inicio ni al final. Ejemplo: historia o contenido/musica." }
-          - { label: "Seccion activa del menu", name: "activePage", widget: "string", required: false }
-          - { label: "Borrador", name: "draft", widget: "boolean", default: false, required: false }
+          - { label: "Ruta interna (URL)", name: "slug", widget: "string", hint: "La direccion web de la pagina, sin diagonales al inicio ni al final. Ejemplo: 'historia' crea la pagina en /historia. Para la pagina de inicio, dejelo vacio." }
+          - { label: "Seccion activa del menu", name: "activePage", widget: "string", required: false, hint: "Si esta pagina aparece en el menu principal, escriba aqui el nombre interno de esa entrada del menu (por ejemplo 'historia'). Si tiene dudas, dejelo vacio." }
+          - { label: "Borrador (oculto al publico)", name: "draft", widget: "boolean", default: false, required: false, hint: "Active esta opcion para guardar cambios sin publicarlos. Cuando este lista, desactivelo." }
           - label: "Secciones de la pagina"
             name: "sections"
             widget: "list"
@@ -194,22 +196,17 @@ collections:
                         name: "lines"
                         widget: "list"
                         field: { label: "Linea", name: "line", widget: "string" }
-      - { label: "Historia", name: "historia", file: "src/content/pages/historia.md", fields: *pageFields }
-      - { label: "Sede", name: "sede", file: "src/content/pages/sede.md", fields: *pageFields }
-      - { label: "Administracion", name: "administracion", file: "src/content/pages/administracion.md", fields: *pageFields }
-      - { label: "Contacto", name: "contacto", file: "src/content/pages/contacto.md", fields: *pageFields }
-      - { label: "Contenido", name: "contenido", file: "src/content/pages/contenido/index.md", fields: *pageFields }
-      - { label: "Textos Liturgicos", name: "textosLiturgicos", file: "src/content/pages/contenido/textos-liturgicos.md", fields: *pageFields }
-      - { label: "Musica", name: "musica", file: "src/content/pages/contenido/musica.md", fields: *pageFields }
-      - { label: "Curso Propedeutico", name: "cursoPropedeutico", file: "src/content/pages/contenido/curso-propedeutico.md", fields: *pageFields }
-      - { label: "Documentos Diocesis", name: "documentosDiocesis", file: "src/content/pages/documentos-diocesis.md", fields: *pageFields }
-      - { label: "Aviso Legal", name: "avisoLegal", file: "src/content/pages/aviso-legal.md", fields: *pageFields }
-      - { label: "Politica de Privacidad", name: "politicaPrivacidad", file: "src/content/pages/politica-de-privacidad.md", fields: *pageFields }
 
-  - name: "newPublicPages"
-    label: "Paginas adicionales"
-    folder: "src/content/pages/extra"
+  - name: "publicPages"
+    label: "Paginas"
+    label_singular: "Pagina"
+    description: "Aqui estan todas las paginas publicas del sitio. Puede crear, editar y eliminar paginas. AVISO: Si elimina una pagina que aparece en el menu principal o esta enlazada desde otra parte del sitio, recuerde tambien quitar ese enlace en 'Menu y pie de pagina' para evitar que los visitantes lleguen a una pagina inexistente."
+    folder: "src/content/pages"
     create: true
+    delete: true
+    nested:
+      depth: 100
+      summary: "{{title}}"
     slug: "{{slug}}"
     summary: "{{title}} - /{{slug}}/"
     editor:
@@ -231,7 +228,7 @@ collections:
               - { label: "Etiqueta visible", name: "label", widget: "string" }
               - { label: "Enlace", name: "href", widget: "string" }
               - { label: "Seccion activa", name: "activePage", widget: "string", required: false }
-              - { label: "Visible", name: "visible", widget: "boolean", default: true }
+              - { label: "Visible", name: "visible", widget: "boolean", default: true, hint: "Desactive para ocultar este enlace del menu sin eliminarlo." }
               - { label: "Ruta protegida", name: "locked", widget: "boolean", default: false, hint: "Marca rutas tecnicas como Alumnos para recordar que no conviene eliminarlas." }
               - label: "Submenu"
                 name: "children"
@@ -284,6 +281,7 @@ collections:
     label: "Avisos / Anuncios"
     folder: "src/content/avisos"
     create: true
+    delete: true
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
     summary: "{{title}} - {{date}}"
     fields:
@@ -297,6 +295,7 @@ collections:
     label: "Clases"
     folder: "src/content/clases"
     create: true
+    delete: true
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
     summary: "{{title}} - {{date}}"
     fields:
@@ -309,6 +308,7 @@ collections:
     label: "Tareas"
     folder: "src/content/tareas"
     create: true
+    delete: true
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
     summary: "{{title}} - {{dueDate}}"
     fields:
@@ -322,6 +322,7 @@ collections:
     label: "Recursos"
     folder: "src/content/recursos"
     create: true
+    delete: true
     slug: "{{slug}}"
     summary: "{{title}} - {{category}}"
     fields:
