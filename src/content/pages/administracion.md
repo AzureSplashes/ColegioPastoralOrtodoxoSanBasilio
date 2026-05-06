@@ -35,9 +35,6 @@ sections:
       - role: Administración
         name: Rev. Dcn Eugeny Aurioles Tapia
         subjects: []
-      - role: Apoyo Administrativo
-        name: Rev. Diacono Nicodemo Arias Porras
-        subjects: []
       - role: Profesor
         name: Rev. Pbro. Jesús Ruiz Munilla
         subjects:
