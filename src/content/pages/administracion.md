@@ -8,6 +8,7 @@ sections:
     title: Autoridades y Profesorado
     subtitle: Quienes guian y forman a los futuros pastores del Colegio.
     backgroundImage: /assets/img/channels4_banner.jpg
+    backgroundOverlay: purple-soft
   - type: staff_list
     director:
       role: Rector
