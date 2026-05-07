@@ -19,12 +19,47 @@ const buttonClass = (style = "primary") => {
   if (style === "link") return "card-link";
   return "btn btn-primary";
 };
+
+/**
+ * Build an inline `style` value for an <img> from optional CMS image controls.
+ */
+const imageStyle = (
+  src: { imageFit?: string; imagePosition?: string; imageAnchor?: string } = {},
+) => {
+  const fit = src.imageFit;
+  const pos = src.imagePosition || src.imageAnchor;
+  const parts: string[] = [];
+  if (fit) parts.push(`object-fit: ${fit}`);
+  if (pos) parts.push(`object-position: ${pos}`);
+  return parts.length > 0 ? parts.join("; ") + ";" : undefined;
+};
+
+/**
+ * Maps a CMS overlay preset to a CSS color string used in linear-gradient.
+ * Brand purple #3B225E = rgb(59, 34, 94). Gold #C5A048 = rgb(197, 160, 72).
+ */
+const overlayColor = (preset?: string): string | null => {
+  switch (preset) {
+    case "purple-soft":   return "rgba(59, 34, 94, 0.45)";
+    case "purple-strong": return "rgba(59, 34, 94, 0.7)";
+    case "gold-soft":     return "rgba(197, 160, 72, 0.4)";
+    case "dark-soft":     return "rgba(0, 0, 0, 0.35)";
+    case "dark-strong":   return "rgba(0, 0, 0, 0.6)";
+    default:              return null;
+  }
+};
 ---
 
 {block.type === "hero" && (
   <section
     class="hero"
-    style={block.backgroundImage ? `background-image: url('${block.backgroundImage}');` : undefined}
+    style={(() => {
+      if (!block.backgroundImage) return undefined;
+      const overlay = overlayColor(block.backgroundOverlay);
+      const overlayLayer = overlay ? `linear-gradient(${overlay}, ${overlay}), ` : "";
+      const pos = block.backgroundPosition ? ` background-position: ${block.backgroundPosition};` : "";
+      return `background-image: ${overlayLayer}url('${block.backgroundImage}');${pos}`;
+    })()}
   >
     <div class="container">
       <div class="hero-content">
@@ -42,7 +77,7 @@ const buttonClass = (style = "primary") => {
         )}
       </div>
     </div>
-    {block.sideImage && <img src={block.sideImage} alt="" class="hero-image-side" />}
+    {block.sideImage && <img src={block.sideImage} alt="" class="hero-image-side zoomable" onclick="openLightbox(this.src)" />}
   </section>
 )}
 
@@ -91,7 +126,7 @@ const buttonClass = (style = "primary") => {
             </a>
           ) : (
             <div class="card">
-              {item.image && <img src={item.image} alt={item.title} class="card-img" />}
+              {item.image && <img src={item.image} alt={item.title} class="card-img zoomable" style={imageStyle(item)} onclick="openLightbox(this.src)" />}
               {item.icon && !item.image && <div class="card-icon"><i data-lucide={item.icon}></i></div>}
               <h3 class="card-title">{item.title}</h3>
               {item.text && <p class="card-desc">{item.text}</p>}
@@ -137,7 +172,7 @@ const buttonClass = (style = "primary") => {
             </div>
           )}
         </div>
-        <img src={block.image} alt={block.imageAlt || ""} />
+        <img src={block.image} alt={block.imageAlt || ""} class="zoomable" style={imageStyle({ imageFit: block.imageFit, imagePosition: block.imageAnchor })} onclick="openLightbox(this.src)" />
       </div>
     </div>
   </section>
@@ -152,7 +187,8 @@ const buttonClass = (style = "primary") => {
           <img
             src={item.image}
             alt={item.alt || ""}
-            class="gallery-img"
+            class="gallery-img zoomable"
+            style={imageStyle(item)}
             onclick="openLightbox(this.src)"
           />
         ))}
@@ -174,11 +210,11 @@ const buttonClass = (style = "primary") => {
 )}
 
 {block.type === "staff_list" && (
-  <section class="section" style="background-color: var(--color-bg-secondary); padding-top: 2rem;">
+  <section class:list={["section", "staff-section", `shape-${block.photoShape || "rectangle"}`]} style="background-color: var(--color-bg-secondary); padding-top: 2rem;">
     <div class="container">
       {block.director && (
         <div class="director-card">
-          {block.director.image && <img src={block.director.image} alt={block.director.name} class="director-photo" />}
+          {block.director.image && <img src={block.director.image} alt={block.director.name} class="director-photo zoomable" style={imageStyle(block.director)} onclick="openLightbox(this.src)" />}
           <div class="staff-role">{block.director.role}</div>
           <h2>{block.director.name}</h2>
           {block.director.description && <p>{block.director.description}</p>}
@@ -187,7 +223,7 @@ const buttonClass = (style = "primary") => {
       <div class="staff-grid">
         {block.people.map((person) => (
           <div class="staff-card">
-            {person.image && <img src={person.image} alt={person.name} class="staff-photo" />}
+            {person.image && <img src={person.image} alt={person.name} class="staff-photo zoomable" style={imageStyle(person)} onclick="openLightbox(this.src)" />}
             <div class="staff-info">
               <div class="staff-role">{person.role}</div>
               <h3 class="staff-name">{person.name}</h3>

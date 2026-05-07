@@ -16,7 +16,7 @@ collections:
     label_singular: "Pagina de Inicio"
     description: "Esta es la pagina principal del sitio (la que se ve al entrar a la direccion web). Puede editar todo su contenido pero no se puede eliminar."
     editor:
-      preview: false
+      preview: true
     files:
       - label: "Inicio"
         name: "inicio"
@@ -27,6 +27,7 @@ collections:
           - { label: "Ruta interna (URL)", name: "slug", widget: "string", hint: "La direccion web de la pagina, sin diagonales al inicio ni al final. Ejemplo: 'historia' crea la pagina en /historia. Para la pagina de inicio, dejelo vacio." }
           - { label: "Seccion activa del menu", name: "activePage", widget: "string", required: false, hint: "Si esta pagina aparece en el menu principal, escriba aqui el nombre interno de esa entrada del menu (por ejemplo 'historia'). Si tiene dudas, dejelo vacio." }
           - { label: "Borrador (oculto al publico)", name: "draft", widget: "boolean", default: false, required: false, hint: "Active esta opcion para guardar cambios sin publicarlos. Cuando este lista, desactivelo." }
+          - { label: "¿Esta página debe aparecer en el menú principal?", name: "showInMenu", widget: "boolean", default: false, required: false, hint: "Esta opción es solo un recordatorio: aún tiene que ir a 'Ajustes del sitio → Menú principal' y añadir el enlace manualmente. Decap no actualiza el menú automáticamente." }
           - label: "Secciones de la pagina"
             name: "sections"
             widget: "list"
@@ -39,11 +40,27 @@ collections:
                   - { label: "Titulo", name: "title", widget: "string" }
                   - { label: "Texto de apoyo", name: "subtitle", widget: "text", required: false }
                   - { label: "Imagen de fondo", name: "backgroundImage", widget: "image", required: false }
+                  - label: "Posición del fondo"
+                    name: "backgroundPosition"
+                    widget: "select"
+                    options: ["center", "top", "bottom", "left", "right", "top left", "top right", "bottom left", "bottom right"]
+                    default: "center"
+                    required: false
+                    hint: "Si la parte importante del fondo queda fuera, ajuste aquí."
+                  - label: "Tono superpuesto"
+                    name: "backgroundOverlay"
+                    widget: "select"
+                    options: ["none", "purple-soft", "purple-strong", "gold-soft", "dark-soft", "dark-strong"]
+                    default: "purple-soft"
+                    required: false
+                    hint: "Capa de color translúcida sobre la imagen. Hace el texto del título más legible y le da identidad de marca."
                   - { label: "Imagen lateral", name: "sideImage", widget: "image", required: false }
                   - label: "Botones"
                     name: "buttons"
                     widget: "list"
                     required: false
+                    summary: "{{fields.label}}"
+                    collapsed: true
                     fields:
                       - { label: "Texto del boton", name: "label", widget: "string" }
                       - { label: "Enlace", name: "href", widget: "string" }
@@ -66,6 +83,8 @@ collections:
                   - label: "Elementos"
                     name: "items"
                     widget: "list"
+                    summary: "{{fields.title}}"
+                    collapsed: true
                     fields:
                       - { label: "Icono", name: "icon", widget: "string", default: "circle" }
                       - { label: "Titulo", name: "title", widget: "string" }
@@ -79,8 +98,22 @@ collections:
                   - label: "Tarjetas"
                     name: "items"
                     widget: "list"
+                    summary: "{{fields.title}}"
+                    collapsed: true
                     fields:
                       - { label: "Imagen", name: "image", widget: "image", required: false, hint: "Foto opcional para la tarjeta." }
+                      - label: "Encuadre de la imagen"
+                        name: "imageFit"
+                        widget: "select"
+                        options: ["cover", "contain"]
+                        default: "cover"
+                        required: false
+                      - label: "Posición de la imagen"
+                        name: "imagePosition"
+                        widget: "select"
+                        options: ["center", "top", "bottom", "left", "right", "top left", "top right", "bottom left", "bottom right"]
+                        default: "center"
+                        required: false
                       - { label: "Icono", name: "icon", widget: "string", required: false }
                       - { label: "Titulo", name: "title", widget: "string" }
                       - { label: "Texto", name: "text", widget: "text", required: false }
@@ -115,11 +148,25 @@ collections:
                   - { label: "Contenido", name: "body", widget: "markdown", hint: "Use **negrita**, *cursiva*, [texto del enlace](url) y listas con guiones (-). Vea la Guia de Edicion en el menu lateral." }
                   - { label: "Imagen", name: "image", widget: "image" }
                   - { label: "Texto alternativo", name: "imageAlt", widget: "string", required: false }
-                  - label: "Posicion de imagen"
+                  - label: "Lado de la imagen"
                     name: "imagePosition"
                     widget: "select"
                     options: ["left", "right"]
                     default: "right"
+                    hint: "¿La imagen va a la izquierda o derecha del texto?"
+                  - label: "Encuadre de la imagen"
+                    name: "imageFit"
+                    widget: "select"
+                    options: ["cover", "contain"]
+                    default: "cover"
+                    required: false
+                  - label: "Anclaje de la imagen"
+                    name: "imageAnchor"
+                    widget: "select"
+                    options: ["center", "top", "bottom", "left", "right", "top left", "top right", "bottom left", "bottom right"]
+                    default: "center"
+                    required: false
+                    hint: "Dónde se ancla la imagen dentro de su cuadro (útil cuando 'Encuadre' es Cover)."
                   - label: "Botones"
                     name: "buttons"
                     widget: "list"
@@ -141,9 +188,23 @@ collections:
                   - label: "Imagenes"
                     name: "images"
                     widget: "list"
+                    summary: "{{fields.alt}}"
+                    collapsed: true
                     fields:
                       - { label: "Imagen", name: "image", widget: "image" }
                       - { label: "Descripcion accesible", name: "alt", widget: "string", required: false }
+                      - label: "Encuadre"
+                        name: "imageFit"
+                        widget: "select"
+                        options: ["cover", "contain"]
+                        default: "cover"
+                        required: false
+                      - label: "Anclaje"
+                        name: "imagePosition"
+                        widget: "select"
+                        options: ["center", "top", "bottom", "left", "right", "top left", "top right", "bottom left", "bottom right"]
+                        default: "center"
+                        required: false
               - label: "Lista de documentos"
                 name: "resource_list"
                 widget: "object"
@@ -151,6 +212,8 @@ collections:
                   - label: "Documentos"
                     name: "items"
                     widget: "list"
+                    summary: "{{fields.title}}"
+                    collapsed: true
                     fields:
                       - { label: "Titulo", name: "title", widget: "string" }
                       - { label: "Descripcion", name: "description", widget: "string", required: false }
@@ -159,22 +222,58 @@ collections:
                 name: "staff_list"
                 widget: "object"
                 fields:
+                  - label: "Forma de las fotos"
+                    name: "photoShape"
+                    widget: "select"
+                    options: ["rectangle", "circle"]
+                    default: "rectangle"
+                    required: false
+                    hint: "Aplica a todas las fotos del bloque, incluida la del director."
                   - label: "Director"
                     name: "director"
                     widget: "object"
                     required: false
+                    collapsed: true
                     fields:
                       - { label: "Cargo", name: "role", widget: "string" }
                       - { label: "Nombre", name: "name", widget: "string" }
                       - { label: "Foto", name: "image", widget: "image", required: false }
+                      - label: "Encuadre de la foto"
+                        name: "imageFit"
+                        widget: "select"
+                        options: ["cover", "contain"]
+                        default: "cover"
+                        required: false
+                      - label: "Posición de la foto"
+                        name: "imagePosition"
+                        widget: "select"
+                        options: ["center", "top", "bottom", "left", "right", "top left", "top right", "bottom left", "bottom right"]
+                        default: "center"
+                        required: false
                       - { label: "Descripcion", name: "description", widget: "string", required: false }
                   - label: "Personas"
                     name: "people"
                     widget: "list"
+                    summary: "{{fields.role}} — {{fields.name}}"
+                    collapsed: true
                     fields:
                       - { label: "Cargo", name: "role", widget: "string" }
                       - { label: "Nombre", name: "name", widget: "string" }
                       - { label: "Foto", name: "image", widget: "image", required: false }
+                      - label: "Encuadre de la foto"
+                        name: "imageFit"
+                        widget: "select"
+                        options: ["cover", "contain"]
+                        default: "cover"
+                        required: false
+                        hint: "Cover recorta para llenar el cuadro; Contain muestra la imagen completa con margen."
+                      - label: "Posición de la foto"
+                        name: "imagePosition"
+                        widget: "select"
+                        options: ["center", "top", "bottom", "left", "right", "top left", "top right", "bottom left", "bottom right"]
+                        default: "center"
+                        required: false
+                        hint: "Si la cara queda cortada, pruebe 'top'. Para perfiles laterales, 'left' o 'right'."
                       - label: "Materias"
                         name: "subjects"
                         widget: "list"
@@ -189,6 +288,8 @@ collections:
                   - label: "Datos de contacto"
                     name: "items"
                     widget: "list"
+                    summary: "{{fields.title}}"
+                    collapsed: true
                     fields:
                       - { label: "Icono", name: "icon", widget: "string", default: "info" }
                       - { label: "Titulo", name: "title", widget: "string" }
@@ -200,30 +301,31 @@ collections:
   - name: "publicPages"
     label: "Paginas"
     label_singular: "Pagina"
-    description: "Aqui estan todas las paginas publicas del sitio. Puede crear, editar y eliminar paginas. AVISO: Si elimina una pagina que aparece en el menu principal o esta enlazada desde otra parte del sitio, recuerde tambien quitar ese enlace en 'Menu y pie de pagina' para evitar que los visitantes lleguen a una pagina inexistente."
+    description: "Aqui estan todas las paginas publicas del sitio. Puede crear, editar y eliminar paginas. AVISO: Si elimina una pagina que aparece en el menu principal o esta enlazada desde otra parte del sitio, recuerde tambien quitar ese enlace en 'Ajustes del sitio' para evitar que los visitantes lleguen a una pagina inexistente."
     folder: "src/content/pages"
     create: true
     delete: true
-    nested:
-      depth: 100
-      summary: "{{title}}"
     slug: "{{slug}}"
     summary: "{{title}} - /{{slug}}/"
     editor:
-      preview: false
+      preview: true
     fields: *pageFields
 
   - name: "siteSettings"
-    label: "Menu y pie de pagina"
+    label: "Ajustes del sitio"
+    description: "Menú principal, pie de página y textos del Portal de Alumnos."
     files:
       - label: "Menu principal"
         name: "navigation"
         file: "src/content/settings/navigation/main.md"
+        editor:
+          preview: false
         fields:
           - label: "Elementos del menu"
             name: "items"
             widget: "list"
             summary: "{{fields.label}}"
+            collapsed: true
             fields:
               - { label: "Etiqueta visible", name: "label", widget: "string" }
               - { label: "Enlace", name: "href", widget: "string" }
@@ -234,6 +336,8 @@ collections:
                 name: "children"
                 widget: "list"
                 required: false
+                summary: "{{fields.label}}"
+                collapsed: true
                 fields:
                   - { label: "Etiqueta visible", name: "label", widget: "string" }
                   - { label: "Enlace", name: "href", widget: "string" }
@@ -241,16 +345,22 @@ collections:
       - label: "Pie de pagina"
         name: "footer"
         file: "src/content/settings/footer/main.md"
+        editor:
+          preview: false
         fields:
           - { label: "Descripcion institucional", name: "description", widget: "text" }
           - label: "Columnas"
             name: "columns"
             widget: "list"
+            summary: "{{fields.title}}"
+            collapsed: true
             fields:
               - { label: "Titulo", name: "title", widget: "string" }
               - label: "Enlaces"
                 name: "links"
                 widget: "list"
+                summary: "{{fields.label}}"
+                collapsed: true
                 fields:
                   - { label: "Etiqueta", name: "label", widget: "string" }
                   - { label: "Enlace", name: "href", widget: "string", required: false }
@@ -261,21 +371,19 @@ collections:
           - { label: "Texto de derechos", name: "copyright", widget: "string", required: false }
 
   - name: "portalPages"
-    label: "Portal Alumnos (Permisos y Textos)"
+    label: "Encabezados del Portal"
+    description: "Aquí solo se edita el TÍTULO Y EL TEXTO INTRODUCTORIO que aparece en las tres páginas del portal restringido (Clases, Tareas, Recursos), más el permiso de edición de profesores. Para añadir/editar/eliminar las CLASES, TAREAS o RECURSOS en sí, use las colecciones del mismo nombre en el menú lateral."
     folder: "src/content/portal_pages"
     identifier_field: "slug"
     create: false
     editor:
       preview: false
-    summary: "{{slug}} - Editable por profesores: {{professorEditable}}"
+    summary: "Encabezado de la página de {{slug}}"
     fields:
-      - label: "Pagina"
-        name: "slug"
-        widget: "select"
-        options: ["clases", "tareas", "recursos"]
-      - { label: "Titulo visible", name: "title", widget: "string", hint: "Encabezado principal de la pagina." }
-      - { label: "Descripcion visible", name: "description", widget: "markdown", hint: "Texto debajo del titulo. Puede usar formato: **negrita**, [texto](enlace), listas con guiones." }
-      - { label: "Editable por profesores", name: "professorEditable", widget: "boolean", default: false, hint: "Si esta activo, profesores podran editar esta seccion dentro del area restringida." }
+      - { label: "Página", name: "slug", widget: "hidden" }
+      - { label: "Título visible", name: "title", widget: "string", hint: "Encabezado principal de esta página dentro del portal." }
+      - { label: "Descripción visible", name: "description", widget: "markdown", hint: "Texto debajo del título. Puede usar formato: **negrita**, [texto](enlace), listas con guiones." }
+      - { label: "Editable por profesores", name: "professorEditable", widget: "boolean", default: false, hint: "Si está activo, los profesores podrán editar esta sección dentro del área restringida." }
 
   - name: "avisos"
     label: "Avisos / Anuncios"
@@ -284,6 +392,8 @@ collections:
     delete: true
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
     summary: "{{title}} - {{date}}"
+    editor:
+      preview: true
     fields:
       - { label: "Titulo", name: "title", widget: "string" }
       - { label: "Fecha", name: "date", widget: "datetime" }
@@ -298,6 +408,8 @@ collections:
     delete: true
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
     summary: "{{title}} - {{date}}"
+    editor:
+      preview: true
     fields:
       - { label: "Titulo", name: "title", widget: "string" }
       - { label: "Fecha", name: "date", widget: "datetime" }
@@ -311,6 +423,8 @@ collections:
     delete: true
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
     summary: "{{title}} - {{dueDate}}"
+    editor:
+      preview: true
     fields:
       - { label: "Titulo", name: "title", widget: "string" }
       - { label: "Fecha de entrega", name: "dueDate", widget: "datetime" }
@@ -325,6 +439,8 @@ collections:
     delete: true
     slug: "{{slug}}"
     summary: "{{title}} - {{category}}"
+    editor:
+      preview: true
     fields:
       - { label: "Titulo", name: "title", widget: "string" }
       - label: "Categoria"

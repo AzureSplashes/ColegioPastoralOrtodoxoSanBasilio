@@ -23,7 +23,7 @@ items:
         href: "/contenido/musica/"
         visible: true
       - label: "Textos de Doctrina Cristiana Ortodoxa"
-        href: "/contenido/curso-propedeutico/"
+        href: "/contenido/textos-doctrina-cristiana/"
         visible: true
   - label: "Alumnos"
     href: "/alumnos/"

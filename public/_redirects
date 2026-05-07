@@ -1,0 +1,6 @@
+# Netlify redirects. The Astro adapter merges this with auto-generated rules.
+
+# Renamed page: curso-propedeutico → textos-doctrina-cristiana (2026-05-07).
+# Filename and slug now match the user-facing title.
+/contenido/curso-propedeutico/    /contenido/textos-doctrina-cristiana/    301
+/contenido/curso-propedeutico     /contenido/textos-doctrina-cristiana/    301

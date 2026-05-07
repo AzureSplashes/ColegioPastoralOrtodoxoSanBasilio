@@ -58,12 +58,24 @@ const buttonSchema = z.object({
   icon: z.string().optional(),
 });
 
+// Optional per-image presentation controls (object-fit + object-position).
+// Editors set these in the CMS to compensate for inconsistently-framed source photos.
+const imageFitEnum = z.enum(["cover", "contain"]).optional();
+const imagePositionEnum = z.enum([
+  "center", "top", "bottom", "left", "right",
+  "top left", "top right", "bottom left", "bottom right",
+]).optional();
+
 const pageBlockSchema = z.discriminatedUnion("type", [
   z.object({
     type: z.literal("hero"),
     title: z.string(),
     subtitle: z.string().optional(),
     backgroundImage: z.string().optional(),
+    backgroundPosition: imagePositionEnum,
+    backgroundOverlay: z.enum([
+      "none", "purple-soft", "purple-strong", "gold-soft", "dark-soft", "dark-strong",
+    ]).optional(),
     sideImage: z.string().optional(),
     buttons: z.array(buttonSchema).default([]),
   }),
@@ -86,6 +98,8 @@ const pageBlockSchema = z.discriminatedUnion("type", [
     backgroundTint: z.boolean().default(false),
     items: z.array(z.object({
       image: z.string().optional(),
+      imageFit: imageFitEnum,
+      imagePosition: imagePositionEnum,
       icon: z.string().optional(),
       title: z.string(),
       text: z.string().optional(),
@@ -108,6 +122,8 @@ const pageBlockSchema = z.discriminatedUnion("type", [
     image: z.string(),
     imageAlt: z.string().optional(),
     imagePosition: z.enum(["left", "right"]).default("right"),
+    imageFit: imageFitEnum,
+    imageAnchor: imagePositionEnum,
     buttons: z.array(buttonSchema).default([]),
   }),
   z.object({
@@ -116,6 +132,8 @@ const pageBlockSchema = z.discriminatedUnion("type", [
     images: z.array(z.object({
       image: z.string(),
       alt: z.string().optional(),
+      imageFit: imageFitEnum,
+      imagePosition: imagePositionEnum,
     })).default([]),
   }),
   z.object({
@@ -128,16 +146,21 @@ const pageBlockSchema = z.discriminatedUnion("type", [
   }),
   z.object({
     type: z.literal("staff_list"),
+    photoShape: z.enum(["rectangle", "circle"]).optional(),
     director: z.object({
       role: z.string(),
       name: z.string(),
       image: z.string().optional(),
+      imageFit: imageFitEnum,
+      imagePosition: imagePositionEnum,
       description: z.string().optional(),
     }).optional(),
     people: z.array(z.object({
       role: z.string(),
       name: z.string(),
       image: z.string().optional(),
+      imageFit: imageFitEnum,
+      imagePosition: imagePositionEnum,
       subjects: z.array(z.string()).default([]),
     })).default([]),
   }),
@@ -159,6 +182,9 @@ const publicPagesSchema = z.object({
   slug: z.string(),
   activePage: z.string().optional(),
   draft: z.boolean().default(false),
+  // Reminder field only — Decap doesn't auto-add to the menu, so this is
+  // just a flag the editor sets to remind themselves to update Menú principal.
+  showInMenu: z.boolean().optional(),
   sections: z.array(pageBlockSchema).default([]),
 });
 

@@ -15,7 +15,7 @@ interface Props {
 }
 
 const { page } = Astro.props;
-const hasGallery = page.data.sections.some((section) => section.type === "gallery");
+// Lightbox loaded on every CMS page since any block can now hold zoomable images.
 ---
 
 <Base
@@ -26,5 +26,5 @@ const hasGallery = page.data.sections.some((section) => section.type === "galler
   <main>
     {page.data.sections.map((section) => <BlockRenderer block={section} />)}
   </main>
-  {hasGallery && <Lightbox />}
+  <Lightbox />
 </Base>

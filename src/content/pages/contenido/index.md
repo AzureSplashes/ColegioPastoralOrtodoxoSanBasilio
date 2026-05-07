@@ -22,6 +22,6 @@ sections:
       - icon: "book-open"
         title: "Textos de Doctrina Cristiana Ortodoxa"
         text: "Material del curso propedeutico: vocaciones, eclesiologia, ordenes sagradas y mas."
-        href: "/contenido/curso-propedeutico/"
+        href: "/contenido/textos-doctrina-cristiana/"
         linkLabel: "Ver textos"
 ---

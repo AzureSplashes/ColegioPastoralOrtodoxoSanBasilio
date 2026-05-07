@@ -1,7 +1,7 @@
 ---
 title: "Textos de Doctrina Cristiana Ortodoxa"
 description: "Material del curso propedeutico: vocaciones, eclesiologia, ordenes sagradas, calendario liturgico y mas."
-slug: "contenido/curso-propedeutico"
+slug: "contenido/textos-doctrina-cristiana"
 activePage: "contenido"
 sections:
   - type: "section_header"

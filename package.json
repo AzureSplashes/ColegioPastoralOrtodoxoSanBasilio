@@ -3,11 +3,12 @@
   "type": "module",
   "version": "0.0.1",
   "engines": {
-    "node": ">=22.12.0"
+    "node": ">=22.12.0 <23"
   },
   "scripts": {
-    "dev": "astro dev",
-    "build": "astro build",
+    "sync:cms-styles": "node -e \"require('fs').copyFileSync('src/styles/style.css','public/styles/style.css')\"",
+    "dev": "npm run sync:cms-styles && astro dev",
+    "build": "npm run sync:cms-styles && astro build",
     "preview": "astro preview",
     "astro": "astro"
   },

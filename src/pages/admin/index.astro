@@ -7,6 +7,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex" />
+    <!-- Explicit config path — needed because the admin route is an Astro page, not a static folder.
+         Without this, Decap requests `/admin/config.yml` relative to the rendered route and 404s. -->
+    <link href="/admin/config.yml" type="text/yaml" rel="cms-config-url" />
     <title>Admin - Colegio San Basilio</title>
   </head>
   <body>
@@ -23,6 +26,15 @@
         });
       }
     </script>
+    <!-- Decap CMS — git-gateway compatible, ships React internally, the one we know loads.
+         Preview templates registered in /admin/preview.js render each block type using the live site CSS.
+         Tried & rejected: TinaCMS (Vite collision), Sveltia (dropped git-gateway), Static CMS (React global mismatch). -->
     <script is:inline src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+    <!-- marked is used inside preview.js to render markdown bodies (text + text_image blocks). -->
+    <script is:inline src="https://unpkg.com/marked@13/marked.min.js"></script>
+    <script is:inline src="/admin/preview.js"></script>
+    <!-- binding.js runs in this (parent) window. It watches form-pane hovers and
+         postMessages the preview iframe to toggle the .cms-hover-glow class. -->
+    <script is:inline src="/admin/binding.js"></script>
   </body>
 </html>
