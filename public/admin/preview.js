@@ -243,6 +243,7 @@ function bootPreviewTemplates() {
               key: "img",
               src: block.image,
               alt: block.imageAlt || "",
+              className: block.photoShape === "circle" ? "shape-circle-img" : "shape-rectangle-img",
               style: imageStyle({ imageFit: block.imageFit, imagePosition: block.imageAnchor }),
             }),
           ]
@@ -264,7 +265,7 @@ function bootPreviewTemplates() {
               h("img", {
                 src: item.image,
                 alt: item.alt || "",
-                className: "gallery-img",
+                className: "gallery-img " + (block.photoShape === "circle" ? "shape-circle-img" : "shape-rectangle-img"),
                 style: imageStyle(item),
               })
             )

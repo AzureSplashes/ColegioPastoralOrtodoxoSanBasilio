@@ -172,7 +172,7 @@ const overlayColor = (preset?: string): string | null => {
             </div>
           )}
         </div>
-        <img src={block.image} alt={block.imageAlt || ""} class="zoomable" style={imageStyle({ imageFit: block.imageFit, imagePosition: block.imageAnchor })} onclick="openLightbox(this.src)" />
+        <img src={block.image} alt={block.imageAlt || ""} class:list={["zoomable", block.photoShape === "circle" ? "shape-circle-img" : "shape-rectangle-img"]} style={imageStyle({ imageFit: block.imageFit, imagePosition: block.imageAnchor })} onclick="openLightbox(this.src)" />
       </div>
     </div>
   </section>
@@ -187,7 +187,7 @@ const overlayColor = (preset?: string): string | null => {
           <img
             src={item.image}
             alt={item.alt || ""}
-            class="gallery-img zoomable"
+            class:list={["gallery-img", "zoomable", block.photoShape === "circle" ? "shape-circle-img" : "shape-rectangle-img"]}
             style={imageStyle(item)}
             onclick="openLightbox(this.src)"
           />

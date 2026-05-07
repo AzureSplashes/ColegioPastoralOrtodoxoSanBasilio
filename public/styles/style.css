@@ -924,3 +924,14 @@ img {
   margin: 1rem auto 0;
   display: block;
 }
+
+/* ─── Custom image shapes for standalone blocks ───────────────────────────── */
+.shape-circle-img {
+  border-radius: 50% !important;
+  aspect-ratio: 1 / 1;
+  object-fit: cover !important;
+}
+
+.shape-rectangle-img {
+  border-radius: 8px;
+}

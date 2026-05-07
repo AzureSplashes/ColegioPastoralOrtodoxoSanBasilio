@@ -160,6 +160,12 @@ collections:
                     options: ["cover", "contain"]
                     default: "cover"
                     required: false
+                  - label: "Forma de la imagen"
+                    name: "photoShape"
+                    widget: "select"
+                    options: ["rectangle", "circle"]
+                    default: "rectangle"
+                    required: false
                   - label: "Anclaje de la imagen"
                     name: "imageAnchor"
                     widget: "select"
@@ -185,6 +191,12 @@ collections:
                 widget: "object"
                 fields:
                   - { label: "Titulo", name: "title", widget: "string", required: false }
+                  - label: "Forma de las imágenes"
+                    name: "photoShape"
+                    widget: "select"
+                    options: ["rectangle", "circle"]
+                    default: "rectangle"
+                    required: false
                   - label: "Imagenes"
                     name: "images"
                     widget: "list"
