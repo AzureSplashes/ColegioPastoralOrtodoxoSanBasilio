@@ -31,7 +31,7 @@ sections:
         description: "Las ordenes del diaconado, presbiterado y episcopado."
         href: "/documentos/7. Órdenes Sagradas.pdf"
       - title: "8. Calendario Liturgico"
-        description: "Estructura y funcionamiento del ano liturgico ortodoxo."
+        description: "Estructura y funcionamiento del año liturgico ortodoxo."
         href: "/documentos/8. Calendario Litúrgico.pdf"
       - title: "9. Escritura y Tradicion - Parte I"
         description: "La Sagrada Escritura y la Santa Tradicion como fuentes de la fe."
