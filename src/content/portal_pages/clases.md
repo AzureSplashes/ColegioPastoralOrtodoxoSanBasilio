@@ -1,10 +1,7 @@
 ---
 slug: clases
-title: Clases
+title: Videos
 description: |+
-  Videos de las clases grabadas
-
-  https://www.youtube.com/playlist?list=PL42TqdUSrImrQ2jUieADSn6V-sKUJuZAB
-
+  Clases grabadas y lecciones en video para el estudio autónomo.
 professorEditable: true
 ---

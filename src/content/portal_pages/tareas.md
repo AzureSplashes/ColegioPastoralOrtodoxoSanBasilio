@@ -1,6 +1,6 @@
 ---
 slug: tareas
-title: Tareas
-description: Asignaciones y entregas del curso.
+title: Evaluaciones
+description: Cuestionarios y evaluaciones del curso para verificar tu aprendizaje.
 professorEditable: true
 ---

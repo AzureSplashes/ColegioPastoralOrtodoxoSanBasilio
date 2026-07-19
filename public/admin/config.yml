@@ -414,7 +414,7 @@ collections:
       - { label: "Contenido", name: "body", widget: "markdown", hint: "Texto del aviso. Use **negrita**, *cursiva*, [enlaces](url), y listas." }
 
   - name: "clases"
-    label: "Clases"
+    label: "Videos (Clases)"
     folder: "src/content/clases"
     create: true
     delete: true
@@ -426,10 +426,11 @@ collections:
       - { label: "Titulo", name: "title", widget: "string" }
       - { label: "Fecha", name: "date", widget: "datetime" }
       - { label: "Descripcion", name: "description", widget: "string" }
+      - { label: "ID de Video de YouTube", name: "youtubeId", widget: "string", required: false, hint: "El código de 11 caracteres del video de YouTube (ej: QHOlYjEjzmY). Deje vacío si no es un video." }
       - { label: "Contenido", name: "body", widget: "markdown", hint: "Contenido de la clase. Use **negrita**, [enlaces](url) y listas." }
 
   - name: "tareas"
-    label: "Tareas"
+    label: "Evaluaciones (Tareas)"
     folder: "src/content/tareas"
     create: true
     delete: true
@@ -441,8 +442,8 @@ collections:
       - { label: "Titulo", name: "title", widget: "string" }
       - { label: "Fecha de entrega", name: "dueDate", widget: "datetime" }
       - { label: "Descripcion", name: "description", widget: "string" }
-      - { label: "Enlace (Google Drive, etc.)", name: "link", widget: "string", required: false }
-      - { label: "Instrucciones", name: "body", widget: "markdown", hint: "Instrucciones para el alumno. Ejemplo de enlace: [Ver documento](https://drive.google.com/...)" }
+      - { label: "Enlace (Google Forms, Drive, etc.)", name: "link", widget: "string", required: false, hint: "Pegue aquí el enlace al cuestionario de Google Forms o documento de Drive." }
+      - { label: "Instrucciones", name: "body", widget: "markdown", hint: "Instrucciones para el alumno. Ejemplo de enlace: [Ver cuestionario](https://docs.google.com/forms/...)" }
 
   - name: "recursos"
     label: "Recursos"

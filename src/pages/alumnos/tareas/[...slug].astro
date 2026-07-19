@@ -20,11 +20,11 @@ const formattedDue = new Date(tarea.data.dueDate).toLocaleDateString("es-MX", {
 });
 ---
 
-<Portal title={`${tarea.data.title} | Tareas`} portalPage="tareas">
+<Portal title={`${tarea.data.title} | Evaluaciones`} portalPage="tareas">
   <main class="section">
     <div class="container">
       <div class="breadcrumb">
-        <a href="/alumnos/tareas/">← Volver a Tareas</a>
+        <a href="/alumnos/tareas/">← Volver a Evaluaciones</a>
       </div>
       <article class="article">
         <time class="article-date">Fecha de entrega: {formattedDue}</time>
@@ -33,7 +33,7 @@ const formattedDue = new Date(tarea.data.dueDate).toLocaleDateString("es-MX", {
 
         {tarea.data.link && (
           <a href={tarea.data.link} target="_blank" rel="noopener" class="drive-link">
-            <i data-lucide="external-link"></i> Abrir enlace (Google Drive)
+            <i data-lucide="external-link"></i> {tarea.data.link.includes("forms") ? "Abrir cuestionario (Google Forms)" : "Abrir enlace (Google Drive)"}
           </a>
         )}
 
