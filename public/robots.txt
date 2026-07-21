@@ -4,4 +4,4 @@ Disallow: /alumnos/
 Disallow: /admin/
 Disallow: /api/
 
-Sitemap: https://colegiopastoralortodoxosanbasilio.com/sitemap.xml
+Sitemap: https://colegiopastoralortodoxosanbasilio.com.mx/sitemap.xml

@@ -27,7 +27,7 @@ const {
   footerVariant = "full",
 } = Astro.props;
 
-const canonicalUrl = new URL(Astro.url.pathname, "https://colegiopastoralortodoxosanbasilio.com").href;
+const canonicalUrl = new URL(Astro.url.pathname, "https://colegiopastoralortodoxosanbasilio.com.mx").href;
 ---
 
 <!doctype html>
@@ -44,14 +44,14 @@ const canonicalUrl = new URL(Astro.url.pathname, "https://colegiopastoralortodox
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonicalUrl} />
-    <meta property="og:image" content="https://colegiopastoralortodoxosanbasilio.com/assets/img/logo.png" />
+    <meta property="og:image" content="https://colegiopastoralortodoxosanbasilio.com.mx/assets/img/logo.png" />
     <meta property="og:site_name" content="Colegio Pastoral Ortodoxo San Basilio" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content="https://colegiopastoralortodoxosanbasilio.com/assets/img/logo.png" />
+    <meta name="twitter:image" content="https://colegiopastoralortodoxosanbasilio.com.mx/assets/img/logo.png" />
 
     <!-- Structured Data (JSON-LD) for Google Search Console (Admissions contact) -->
     {activePage === "inicio" && (
@@ -60,9 +60,9 @@ const canonicalUrl = new URL(Astro.url.pathname, "https://colegiopastoralortodox
         "@type": "EducationalOrganization",
         "name": "Colegio Pastoral Ortodoxo San Basilio",
         "description": "Seminario e institución de formación teológica, litúrgica y pastoral de la Diócesis de México de la Iglesia Ortodoxa en América (OCA).",
-        "url": "https://colegiopastoralortodoxosanbasilio.com",
-        "logo": "https://colegiopastoralortodoxosanbasilio.com/assets/img/logo.png",
-        "image": "https://colegiopastoralortodoxosanbasilio.com/assets/img/logo.png",
+        "url": "https://colegiopastoralortodoxosanbasilio.com.mx",
+        "logo": "https://colegiopastoralortodoxosanbasilio.com.mx/assets/img/logo.png",
+        "image": "https://colegiopastoralortodoxosanbasilio.com.mx/assets/img/logo.png",
         "address": {
           "@type": "PostalAddress",
           "addressLocality": "Ciudad de México",
