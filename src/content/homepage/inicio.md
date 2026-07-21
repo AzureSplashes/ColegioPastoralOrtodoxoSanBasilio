@@ -1,6 +1,6 @@
 ---
 title: "Colegio Pastoral Ortodoxo San Basilio"
-description: "Colegio Pastoral Ortodoxo San Basilio - Diocesis de Mexico, OCA."
+description: "Seminario de formación teológica, litúrgica y pastoral de la Diócesis de México de la Iglesia Ortodoxa en América (OCA). Preparación de sacerdotes y servidores para la Iglesia en Latinoamérica."
 slug: ""
 activePage: "inicio"
 sections:
@@ -14,7 +14,7 @@ sections:
         href: "/sede/"
         style: "primary"
         icon: "book-open"
-      - label: "Calendario Academico"
+      - label: "Contacto por WhatsApp"
         href: "https://wa.me/525636196242"
         style: "outline"
         icon: "message-circle"

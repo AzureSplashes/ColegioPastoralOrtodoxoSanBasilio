@@ -26,6 +26,8 @@ const {
   activePage = "",
   footerVariant = "full",
 } = Astro.props;
+
+const canonicalUrl = new URL(Astro.url.pathname, "https://colegiopastoralortodoxosanbasilio.com").href;
 ---
 
 <!doctype html>
@@ -35,6 +37,51 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+
+    <!-- Open Graph / Facebook / WhatsApp -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content="https://colegiopastoralortodoxosanbasilio.com/assets/img/logo.png" />
+    <meta property="og:site_name" content="Colegio Pastoral Ortodoxo San Basilio" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content="https://colegiopastoralortodoxosanbasilio.com/assets/img/logo.png" />
+
+    <!-- Structured Data (JSON-LD) for Google Search Console (Admissions contact) -->
+    {activePage === "inicio" && (
+      <script type="application/ld+json" is:inline set:html={JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "EducationalOrganization",
+        "name": "Colegio Pastoral Ortodoxo San Basilio",
+        "description": "Seminario e institución de formación teológica, litúrgica y pastoral de la Diócesis de México de la Iglesia Ortodoxa en América (OCA).",
+        "url": "https://colegiopastoralortodoxosanbasilio.com",
+        "logo": "https://colegiopastoralortodoxosanbasilio.com/assets/img/logo.png",
+        "image": "https://colegiopastoralortodoxosanbasilio.com/assets/img/logo.png",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Ciudad de México",
+          "addressCountry": "MX"
+        },
+        "contactPoint": [
+          {
+            "@type": "ContactPoint",
+            "telephone": "+52-55-7903-1388",
+            "contactType": "Admissions",
+            "email": "cposb.oca@gmail.com",
+            "availableLanguage": "Spanish"
+          }
+        ],
+        "sameAs": [
+          "https://www.youtube.com/playlist?list=PL42TqdUSrImrQ2jUieADSn6V-sKUJuZAB"
+        ]
+      })} />
+    )}
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
