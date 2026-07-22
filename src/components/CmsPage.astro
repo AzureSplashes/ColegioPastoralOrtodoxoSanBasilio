@@ -16,10 +16,14 @@ interface Props {
 
 const { page } = Astro.props;
 // Lightbox loaded on every CMS page since any block can now hold zoomable images.
+
+const displayTitle = page.data.title === "Colegio Pastoral Ortodoxo San Basilio"
+  ? page.data.title
+  : `${page.data.title} | Colegio Pastoral Ortodoxo San Basilio`;
 ---
 
 <Base
-  title={`${page.data.title} | Colegio Pastoral Ortodoxo San Basilio`}
+  title={displayTitle}
   description={page.data.description}
   activePage={page.data.activePage || ""}
 >

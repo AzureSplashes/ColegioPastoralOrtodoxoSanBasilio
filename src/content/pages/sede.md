@@ -1,12 +1,12 @@
 ---
 title: "Sede"
-description: "Sede y capilla del Colegio Pastoral Ortodoxo San Basilio: historia de la construccion y galeria fotografica."
+description: "Sede y capilla del Colegio Pastoral Ortodoxo San Basilio: centro de formacion teologica, historia de la construccion y galeria fotografica."
 slug: "sede"
 activePage: "inicio"
 sections:
   - type: "section_header"
     title: "Nuestra Sede"
-    text: "Avances de la construccion de la capilla y las instalaciones del Colegio."
+    text: "Avances de la construccion de la capilla e instalaciones para los estudios teologicos y la vida liturgica del Colegio."
   - type: "text_image"
     heading: "Sede del Colegio Pastoral Ortodoxo"
     body: "Desde la bendicion de la primera piedra el 4 de junio de 2022 al dia de hoy se ha avanzado notablemente en la construccion de la capilla, la cual se tiene prevista concluir para el primer trimestre de 2026.\n\nDurante la visita de Su Beatitud Tikhon y su Eminencia Benjamin el 14 de enero de 2023 se bendijeron las instalaciones. Agradecemos sinceramente el apoyo de todos y cada uno de los donantes por participar con nosotros en este proyecto."

@@ -1,15 +1,15 @@
 ---
 title: "Historia"
-description: "Origenes y resurgimiento del Colegio Pastoral Ortodoxo San Basilio, fundado en 1974."
+description: "Origenes y resurgimiento del Colegio Pastoral Ortodoxo San Basilio, seminario e institucion de formacion teologica fundado en 1974."
 slug: "historia"
 activePage: "inicio"
 sections:
   - type: "section_header"
     title: "Historia del Colegio"
-    text: "Origenes y resurgimiento de nuestra institucion."
+    text: "Origenes y resurgimiento de nuestra institucion de formacion teologica y pastoral."
   - type: "text"
     maxWidth: "narrow"
-    body: "El Colegio Pastoral de Ortodoxo San Basilio fue fundado en el año de 1974 por su gracia Obispo Jose de bendita memoria, en el cual se formo la segunda generacion de sacerdotes del ese entonces Exarcado de Mexico. Se tuvo la destacada participacion de Su Eminencia Antonio Chedraui como profesor del Colegio.\n\nLas actividades del Colegio concluyeron en ese tiempo en el año de 1983 tras el reposo en el Senor del Obispo Jose. Actualmente el Colegio ha sido rehabilitado por Su Eminencia Alejo en el año de 2021."
+    body: "El Colegio Pastoral Ortodoxo San Basilio fue fundado en el año de 1974 por su gracia Obispo Jose de bendita memoria, como seminario e institucion de formacion teologica de la Diocesis de Mexico (OCA), en el cual se formo la segunda generacion de sacerdotes del ese entonces Exarcado de Mexico. Se tuvo la destacada participacion de Su Eminencia Antonio Chedraui como profesor del Colegio.\n\nLas actividades del Colegio concluyeron en ese tiempo en el año de 1983 tras el reposo en el Senor del Obispo Jose. Actualmente el Colegio ha sido rehabilitado por Su Eminencia Alejo en el año de 2021 para consolidar la formacion del clero y servidores de la Iglesia Ortodoxa Canonica."
   - type: "gallery"
     images:
       - image: "/assets/img/IMG_6385-901.jpg"
