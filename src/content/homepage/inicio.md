@@ -1,6 +1,6 @@
 ---
-title: "Colegio Pastoral Ortodoxo San Basilio"
-description: "Seminario de formación teológica, litúrgica y pastoral de la Diócesis de México de la Iglesia Ortodoxa en América (OCA). Preparación de sacerdotes y servidores para la Iglesia en Latinoamérica."
+title: "Colegio Pastoral Ortodoxo San Basilio | Seminario Ortodoxo en México"
+description: "Colegio Pastoral Ortodoxo San Basilio: Seminario Ortodoxo en México para la formación teológica, litúrgica y pastoral de la Diócesis de México de la Iglesia Ortodoxa en América (OCA)."
 slug: ""
 activePage: "inicio"
 sections:
@@ -33,8 +33,8 @@ sections:
         title: "Comunidad"
         text: "Aprendizaje en comunidad bajo la guia de sacerdotes y profesores experimentados."
   - type: "section_header"
-    title: "Nuestra Institucion"
-    text: "Formando pastores y servidores en la Tradicion, Patristica y Fe Ortodoxa."
+    title: "Seminario Ortodoxo en México"
+    text: "Formando pastores y servidores en la Tradicion, Patristica y Fe Ortodoxa Canonica."
   - type: "cards"
     backgroundImage: "/assets/img/institucional_bg.png"
     backgroundTint: true
