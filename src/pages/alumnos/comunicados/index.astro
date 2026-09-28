@@ -1,12 +1,44 @@
 ---
 export const prerender = false;
 import Portal from "../../../layouts/Portal.astro";
+import { createClient } from "../../../lib/supabase";
 import { getCollection } from "astro:content";
+const supabase = createClient(Astro.cookies, Astro.request.headers.get("cookie"));
+const user = Astro.locals.user;
+const canManage = Astro.locals.role === "profesor" || Astro.locals.role === "admin";
+let formError = "";
+if (Astro.request.method === "POST") {
+  const form = await Astro.request.formData();
+  const action = String(form.get("action") || "");
+  if (!canManage || !user) formError = "No tienes permiso para gestionar comunicados.";
+  else if (action === "publish") {
+    const title = String(form.get("title") || "").trim();
+    const body = String(form.get("body") || "").trim();
+    if (title.length < 5 || title.length > 160 || body.length < 10 || body.length > 5000) formError = "El título debe tener entre 5 y 160 caracteres y el texto entre 10 y 5000.";
+    else {
+      const { error } = await supabase.from("portal_announcements").insert({ author_id: user.id, title, body });
+      if (error) formError = "No se pudo publicar el comunicado.";
+      else return Astro.redirect("/alumnos/comunicados/", 303);
+    }
+  } else if (action === "delete") {
+    const id = String(form.get("id") || "");
+    if (!/^[0-9a-f-]{36}$/i.test(id)) formError = "Comunicado no válido.";
+    else {
+      const { error } = await supabase.from("portal_announcements").delete().eq("id", id);
+      if (error) formError = "No se pudo eliminar el comunicado.";
+      else return Astro.redirect("/alumnos/comunicados/", 303);
+    }
+  } else formError = "Acción no válida.";
+}
+const { data: announcements, error: loadError } = await supabase.from("portal_announcements").select("id,title,body,created_at").order("created_at", { ascending: false }).limit(100);
 const avisos = (await getCollection("avisos")).filter((item) => !item.data.draft).sort((a,b) => +new Date(b.data.date) - +new Date(a.data.date));
 ---
 <Portal title="Comunicados | Portal académico" portalPage="comunicados">
-  <main class="section"><div class="container"><div class="section-header"><h1 class="section-title">Comunicados</h1><p>Noticias y avisos publicados por el Colegio.</p></div>
-  {avisos.length ? <div class="communications-list">{avisos.map((item) => <a href={`/avisos/${item.id}/`} class="communication"><time>{new Date(item.data.date).toLocaleDateString("es-MX",{day:"numeric",month:"long",year:"numeric"})}</time><div><h2>{item.data.title}</h2><p>{item.data.description}</p></div><i data-lucide="arrow-up-right"></i></a>)}</div> : <div class="portal-empty">Todavía no hay comunicados publicados.</div>}
+  <main class="section"><div class="container"><div class="section-header"><h1 class="section-title">Comunicados</h1><p>Avisos académicos para la comunidad del Colegio.</p></div>
+    {canManage && <section class="announcement-compose"><h2>Publicar comunicado</h2>{formError && <p class="form-error" role="alert">{formError}</p>}<form method="post"><input type="hidden" name="action" value="publish" /><label for="announcement-title">Título</label><input id="announcement-title" name="title" required minlength="5" maxlength="160" /><label for="announcement-body">Mensaje</label><textarea id="announcement-body" name="body" required minlength="10" maxlength="5000" rows="5"></textarea><button class="btn btn-primary" type="submit">Publicar comunicado</button></form></section>}
+    {loadError && <p class="portal-empty">Los comunicados del portal aún no están configurados en Supabase.</p>}
+    {announcements?.length ? <div class="communications-list">{announcements.map((item) => <article class="communication"><time>{new Date(item.created_at).toLocaleDateString("es-MX",{day:"numeric",month:"long",year:"numeric"})}</time><div><h2>{item.title}</h2><p class="announcement-body">{item.body}</p>{canManage && <form method="post" onsubmit="return confirm('¿Eliminar este comunicado?')"><input type="hidden" name="action" value="delete" /><input type="hidden" name="id" value={item.id} /><button class="mod-delete" type="submit">Eliminar comunicado</button></form>}</div></article>)}</div> : !loadError && <p class="portal-empty">Todavía no hay comunicados del portal.</p>}
+    {avisos.length > 0 && <section class="site-news"><h2>Noticias del sitio</h2><div class="communications-list">{avisos.map((item) => <a href={`/avisos/${item.id}/`} class="communication"><time>{new Date(item.data.date).toLocaleDateString("es-MX",{day:"numeric",month:"long",year:"numeric"})}</time><div><h3>{item.data.title}</h3><p>{item.data.description}</p></div><i data-lucide="arrow-up-right"></i></a>)}</div></section>}
   </div></main>
 </Portal>
-<style>.communications-list{border-top:1px solid #d9d1c5}.communication{display:grid;grid-template-columns:150px minmax(0,1fr) auto;gap:1.5rem;padding:1.5rem 0;border-bottom:1px solid #d9d1c5;align-items:start}.communication:hover h2{color:#896e38}.communication time{color:#755d36;font-size:.8rem;font-weight:700;text-transform:uppercase}.communication h2{font-size:1.5rem}.communication p{color:var(--color-text-light);font-size:.9rem;margin-top:.3rem}.communication svg{width:18px;color:#8b713e}.portal-empty{padding:2rem;background:#fff;border:1px solid #ded7c9;color:var(--color-text-light)}@media(max-width:650px){.communication{grid-template-columns:1fr auto}.communication time{grid-column:1/-1}}</style>
+<style>.announcement-compose{background:#eeeae1;border-top:3px solid #b59555;padding:1.5rem;margin-bottom:2rem}.announcement-compose h2,.site-news h2{font-size:1.8rem;margin-bottom:1rem}.announcement-compose form{display:grid;gap:.6rem;max-width:720px}.announcement-compose label{font-weight:700;font-size:.8rem}.announcement-compose input,.announcement-compose textarea{padding:.75rem;border:1px solid #cfc5b5;background:#fff;font:inherit}.announcement-compose button{justify-self:start;margin-top:.5rem}.communications-list{border-top:1px solid #d9d1c5}.communication{display:grid;grid-template-columns:150px minmax(0,1fr) auto;gap:1.5rem;padding:1.5rem 0;border-bottom:1px solid #d9d1c5;align-items:start}.communication h2,.communication h3{font-size:1.5rem}.communication time{color:#755d36;font-size:.8rem;font-weight:700;text-transform:uppercase}.communication p{color:var(--color-text-light);font-size:.9rem;margin-top:.3rem}.communication .announcement-body{white-space:pre-wrap;line-height:1.7}.communication svg{width:18px;color:#8b713e}.site-news{margin-top:3rem}.portal-empty{padding:2rem;background:#fff;border:1px solid #ded7c9;color:var(--color-text-light)}.form-error{color:#8f2d2d;font-weight:700}.mod-delete{margin-top:.9rem;background:none;border:0;padding:0;color:#8f2d2d;font:700 .8rem var(--font-body);cursor:pointer;text-decoration:underline}@media(max-width:650px){.communication{grid-template-columns:1fr auto}.communication time{grid-column:1/-1}}</style>
