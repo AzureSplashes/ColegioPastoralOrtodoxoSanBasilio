@@ -2,8 +2,11 @@
 export const prerender = false;
 import Portal from "../../../layouts/Portal.astro";
 import { getCollection } from "astro:content";
+import { createClient } from "../../../lib/supabase";
 const role = (Astro.locals.role as string | null) || "alumno";
-const name = role === "profesor" ? "Profesor" : role === "admin" ? "Administrador" : "Alumno";
+const supabase = createClient(Astro.cookies, Astro.request.headers.get("cookie"));
+const { data: profile } = await supabase.from("profiles").select("display_name").eq("id", Astro.locals.user?.id || "").maybeSingle();
+const name = profile?.display_name || (role === "profesor" ? "Profesor" : role === "admin" ? "Administrador" : "Alumno");
 const [clases, tareas] = await Promise.all([getCollection("clases"), getCollection("tareas")]);
 const upcoming = tareas.filter((item) => !item.data.archived && new Date(item.data.dueDate) >= new Date()).sort((a,b) => +new Date(a.data.dueDate) - +new Date(b.data.dueDate)).slice(0,3);
 const links = [

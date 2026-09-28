@@ -3,6 +3,7 @@ interface Props { activePage?: string; role?: string | null; }
 const { activePage = "", role = null } = Astro.props;
 const items = [
   { href: "/alumnos/panel/", label: "Panel", slug: "panel", icon: "layout-dashboard" },
+  { href: "/alumnos/perfil/", label: "Mi perfil", slug: "perfil", icon: "user-round" },
   { href: "/alumnos/en-vivo/", label: "Clases en vivo", slug: "en-vivo", icon: "video" },
   { href: "/alumnos/clases/", label: "Clases pregrabadas", slug: "clases", icon: "play-circle" },
   { href: "/alumnos/comunicados/", label: "Comunicados", slug: "comunicados", icon: "megaphone" },

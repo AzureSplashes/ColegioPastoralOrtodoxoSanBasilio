@@ -1,0 +1,35 @@
+---
+export const prerender = false;
+import Portal from "../../../layouts/Portal.astro";
+import { createClient } from "../../../lib/supabase";
+
+const supabase = createClient(Astro.cookies, Astro.request.headers.get("cookie"));
+const user = Astro.locals.user;
+let errorMessage = "";
+let successMessage = Astro.url.searchParams.has("saved") ? "Tu nombre visible se guardó." : "";
+
+if (Astro.request.method === "POST") {
+  const form = await Astro.request.formData();
+  const displayName = String(form.get("display_name") || "").trim().replace(/\s+/g, " ");
+  if (displayName.length < 2 || displayName.length > 80) {
+    errorMessage = "Escribe un nombre de entre 2 y 80 caracteres.";
+  } else {
+    const { error } = await supabase.rpc("set_portal_display_name", { new_name: displayName });
+    if (error) errorMessage = "No se pudo guardar. Comprueba que la migración de perfiles esté instalada.";
+    else return Astro.redirect("/alumnos/perfil/?saved=1", 303);
+  }
+}
+
+const { data: profile, error: loadError } = await supabase.from("profiles").select("display_name").eq("id", user?.id || "").maybeSingle();
+---
+<Portal title="Mi perfil | Portal académico" portalPage="perfil">
+  <main class="section"><div class="container profile-container"><div class="section-header"><h1 class="section-title">Mi perfil</h1><p>Elige el nombre que verán tus compañeros y profesores en el portal.</p></div>
+    <section class="profile-card"><h2>Nombre visible</h2><p>Tu cuenta y tus permisos seguirán asociados a tu correo institucional.</p>
+      {loadError && <p class="form-error" role="alert">La edición del perfil aún no está configurada en Supabase.</p>}
+      {errorMessage && <p class="form-error" role="alert">{errorMessage}</p>}
+      {successMessage && <p class="form-success" role="status">{successMessage}</p>}
+      <form method="post"><label for="display-name">¿Cómo quieres aparecer?</label><input id="display-name" name="display_name" autocomplete="name" required minlength="2" maxlength="80" value={profile?.display_name || ""} placeholder="Tu nombre y apellido" /><button type="submit" class="btn btn-primary">Guardar nombre</button></form>
+    </section>
+  </div></main>
+</Portal>
+<style>.profile-container{max-width:850px!important}.profile-card{background:#fff;border:1px solid #ded7c9;border-top:3px solid #b59555;padding:2rem}.profile-card h2{font-size:2rem}.profile-card p{color:var(--color-text-light);margin:.4rem 0 1.3rem}.profile-card form{display:grid;gap:.7rem;max-width:530px}.profile-card label{font-size:.83rem;font-weight:700}.profile-card input{padding:.8rem;border:1px solid #cfc5b5;font:inherit}.profile-card button{justify-self:start;margin-top:.5rem}.profile-card .form-error{color:#8f2d2d;font-weight:700}.profile-card .form-success{color:#166534;font-weight:700}</style>

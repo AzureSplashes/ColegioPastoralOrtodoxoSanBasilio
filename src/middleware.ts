@@ -7,6 +7,7 @@ import { getRoleFromProfiles, hasAnyRole } from "./lib/auth";
 
 const STUDENT_AREA_PREFIXES = [
   "/alumnos/panel",
+  "/alumnos/perfil",
   "/alumnos/en-vivo",
   "/alumnos/comunicados",
   "/alumnos/foros",
