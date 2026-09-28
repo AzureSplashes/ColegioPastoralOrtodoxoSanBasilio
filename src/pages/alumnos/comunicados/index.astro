@@ -1,0 +1,12 @@
+---
+export const prerender = false;
+import Portal from "../../../layouts/Portal.astro";
+import { getCollection } from "astro:content";
+const avisos = (await getCollection("avisos")).filter((item) => !item.data.draft).sort((a,b) => +new Date(b.data.date) - +new Date(a.data.date));
+---
+<Portal title="Comunicados | Portal académico" portalPage="comunicados">
+  <main class="section"><div class="container"><div class="section-header"><h1 class="section-title">Comunicados</h1><p>Noticias y avisos publicados por el Colegio.</p></div>
+  {avisos.length ? <div class="communications-list">{avisos.map((item) => <a href={`/avisos/${item.id}/`} class="communication"><time>{new Date(item.data.date).toLocaleDateString("es-MX",{day:"numeric",month:"long",year:"numeric"})}</time><div><h2>{item.data.title}</h2><p>{item.data.description}</p></div><i data-lucide="arrow-up-right"></i></a>)}</div> : <div class="portal-empty">Todavía no hay comunicados publicados.</div>}
+  </div></main>
+</Portal>
+<style>.communications-list{border-top:1px solid #d9d1c5}.communication{display:grid;grid-template-columns:150px minmax(0,1fr) auto;gap:1.5rem;padding:1.5rem 0;border-bottom:1px solid #d9d1c5;align-items:start}.communication:hover h2{color:#896e38}.communication time{color:#755d36;font-size:.8rem;font-weight:700;text-transform:uppercase}.communication h2{font-size:1.5rem}.communication p{color:var(--color-text-light);font-size:.9rem;margin-top:.3rem}.communication svg{width:18px;color:#8b713e}.portal-empty{padding:2rem;background:#fff;border:1px solid #ded7c9;color:var(--color-text-light)}@media(max-width:650px){.communication{grid-template-columns:1fr auto}.communication time{grid-column:1/-1}}</style>

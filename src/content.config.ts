@@ -29,6 +29,7 @@ const tareas = defineCollection({
     dueDate: z.coerce.date(),
     description: z.string(),
     link: z.string().optional(),
+    archived: z.boolean().default(false),
   }),
 });
 
@@ -78,6 +79,7 @@ const pageBlockSchema = z.discriminatedUnion("type", [
       "none", "purple-soft", "purple-strong", "gold-soft", "dark-soft", "dark-strong",
     ]).optional(),
     sideImage: z.string().optional(),
+    sideImageAlt: z.string().optional(),
     buttons: z.array(buttonSchema).default([]),
   }),
   z.object({

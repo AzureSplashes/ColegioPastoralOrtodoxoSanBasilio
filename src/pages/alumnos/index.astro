@@ -9,7 +9,7 @@ import Base from "../../layouts/Base.astro";
 >
   <main class="section">
     <div class="container">
-      <div class="login-card" id="login-card" data-target-route="/alumnos/clases/">
+      <div class="login-card" id="login-card" data-target-route="/alumnos/panel/">
         <div class="login-icon"><i data-lucide="lock"></i></div>
         <h2 style="margin-bottom: 1rem;">Acceso para Alumnos</h2>
         <p style="color: var(--color-text-light); margin-bottom: 2rem;">
@@ -60,7 +60,7 @@ import Base from "../../layouts/Base.astro";
     const url = document.querySelector('meta[name="supabase-url"]')?.content;
     const key = document.querySelector('meta[name="supabase-anon-key"]')?.content;
     const card = document.getElementById("login-card");
-    const targetRoute = card?.dataset.targetRoute || "/alumnos/clases/";
+    const targetRoute = card?.dataset.targetRoute || "/alumnos/panel/";
 
     if (!url || !key || !card) return;
 

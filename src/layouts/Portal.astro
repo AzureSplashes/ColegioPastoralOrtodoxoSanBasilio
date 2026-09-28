@@ -1,29 +1,35 @@
 ---
-/**
- * Portal.astro — Layout for authenticated Alumnos pages.
- * Wraps Base layout and adds the PortalNav between header and content.
- * Props:
- *   title: string
- *   description: string
- *   portalPage: "clases" | "tareas" | "recursos" — highlights active tab
- */
 import Base from "./Base.astro";
 import PortalNav from "../components/PortalNav.astro";
-
-interface Props {
-  title: string;
-  description?: string;
-  portalPage?: string;
-}
-
-const {
-  title,
-  description = "Portal de alumnos del Colegio Pastoral Ortodoxo San Basilio.",
-  portalPage = "",
-} = Astro.props;
+interface Props { title: string; description?: string; portalPage?: string; }
+const { title, description = "Portal académico del Colegio Pastoral Ortodoxo San Basilio.", portalPage = "" } = Astro.props;
+const role = (Astro.locals.role as string | null) ?? null;
 ---
-
 <Base title={title} description={description} activePage="alumnos">
-  <PortalNav activePage={portalPage} />
-  <slot />
+  <div class="portal-shell">
+    <PortalNav activePage={portalPage} role={role} />
+    <div class="portal-content"><slot /></div>
+  </div>
 </Base>
+<style is:global>
+  .portal-shell { display: grid; grid-template-columns: 248px minmax(0,1fr); min-height: 70vh; background: #f7f6f2; }
+  .portal-sidebar { background: #f0ede6; border-right: 1px solid #ddd6ca; display: flex; flex-direction: column; }
+  .portal-sidebar-heading { padding: 2rem 1.25rem 1.35rem; border-bottom: 1px solid #dcd5c9; display: grid; gap: .3rem; }
+  .portal-sidebar-heading strong { font: 400 1.55rem/1.15 var(--font-heading); color: var(--color-primary); }
+  .portal-sidebar-heading small { color: var(--color-text-light); font-size: .8rem; }
+  .portal-eyebrow { font: 700 .63rem var(--font-body); color: #806a41; letter-spacing: .15em; }
+  .portal-menu { padding: 1rem .7rem; }
+  .portal-menu-link { display: flex; align-items: center; gap: .75rem; padding: .75rem .85rem; color: #443e49; font-size: .88rem; border-left: 3px solid transparent; }
+  .portal-menu-link svg { width: 18px; height: 18px; flex: 0 0 auto; stroke-width: 1.8; }
+  .portal-menu-link:hover { color: var(--color-primary); background: #e7e0d4; }
+  .portal-menu-link.active { color: var(--color-primary); background: #e6dece; border-left-color: var(--color-accent); font-weight: 700; }
+  .portal-sidebar-bottom { margin-top: auto; padding: 1rem .7rem 1.5rem; border-top: 1px solid #dcd5c9; }
+  .portal-external { width: 14px !important; height: 14px !important; margin-left: auto; }
+  .portal-content { min-width: 0; }
+  .portal-content > main.section { padding-block: 3rem 5rem; }
+  .portal-content .container { max-width: 1150px; }
+  .portal-content .section-header { max-width: none; margin: 0 0 2rem; }
+  .portal-content .section-title { font-size: clamp(2.3rem,3.6vw,3.6rem); }
+  @media (max-width: 850px) { .portal-shell { display: block; } .portal-sidebar-heading { padding: 1.2rem; } .portal-menu { display: flex; overflow-x: auto; gap: .25rem; padding: .5rem; } .portal-menu-link { white-space: nowrap; padding: .65rem .8rem; } .portal-sidebar-bottom { display: flex; gap: .2rem; padding: .5rem; } }
+  @media (max-width: 520px) { .portal-sidebar-heading { display: none; } .portal-menu-link { font-size: .79rem; } .portal-sidebar-bottom { overflow-x: auto; } }
+</style>

@@ -1,6 +1,6 @@
 ---
 slug: tareas
-title: Evaluaciones
-description: Cuestionarios y evaluaciones del curso para verificar tu aprendizaje.
+title: Tareas
+description: Actividades y evaluaciones del curso con sus fechas de entrega.
 professorEditable: true
 ---

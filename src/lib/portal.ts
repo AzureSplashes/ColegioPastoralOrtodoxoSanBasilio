@@ -2,7 +2,7 @@ import { getCollection } from "astro:content";
 
 const defaults = {
   clases: {
-    title: "Clases",
+    title: "Clases pregrabadas",
     description: "Material y contenido de las clases del Colegio.",
     professorEditable: false,
   },

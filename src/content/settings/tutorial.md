@@ -213,12 +213,14 @@ En los campos con editor de texto enriquecido, puede usar Markdown:
 
 ## Portal de Alumnos
 
-Para publicar contenido en el portal (Clases, Tareas, Recursos):
+Para publicar contenido en el portal (Clases pregrabadas, Tareas, Recursos):
 
 1. Seleccione la colección correspondiente en el menú lateral
 2. Haga clic en **Nueva entrada**
 3. Complete los campos y use el editor Markdown para el contenido
 4. Haga clic en **Publicar**
+
+Los cuestionarios de mayo de 2026 aparecen en **Tareas** como material archivado, organizados por asignatura. Si publica tareas para el ciclo actual, deje desactivada la opción **Material archivado**.
 
 **Ejemplo de enlace en una tarea:**
 
@@ -228,9 +230,9 @@ Revise el material en [Google Drive](https://drive.google.com/...)
 
 ---
 
-## Avisos / Anuncios
+## Comunicados (Avisos)
 
-Los avisos aparecen en la página pública de Avisos. Cada aviso tiene:
+Los avisos aparecen en la página pública de Avisos y en **Comunicados** dentro del portal. Cada aviso tiene:
 
 - **Título** y **fecha**
 - **Descripción breve** — se muestra en la tarjeta de la lista

@@ -6,6 +6,11 @@ import { createClient } from "./lib/supabase";
 import { getRoleFromProfiles, hasAnyRole } from "./lib/auth";
 
 const STUDENT_AREA_PREFIXES = [
+  "/alumnos/panel",
+  "/alumnos/en-vivo",
+  "/alumnos/comunicados",
+  "/alumnos/foros",
+  "/alumnos/boleta",
   "/alumnos/clases",
   "/alumnos/tareas",
   "/alumnos/recursos",

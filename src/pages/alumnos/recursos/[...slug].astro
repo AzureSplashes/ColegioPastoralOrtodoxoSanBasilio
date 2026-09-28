@@ -28,8 +28,8 @@ const { Content } = await render(recurso);
         <p class="article-desc">{recurso.data.description}</p>
 
         {recurso.data.link && (
-          <a href={recurso.data.link} target="_blank" rel="noopener" class="drive-link">
-            <i data-lucide="external-link"></i> Abrir enlace externo
+          <a href={recurso.data.link} target={recurso.data.link.startsWith("/") ? undefined : "_blank"} rel={recurso.data.link.startsWith("/") ? undefined : "noopener noreferrer"} class="drive-link">
+            <i data-lucide="external-link"></i> {recurso.data.link.startsWith("/") ? "Abrir colección" : "Abrir enlace externo"}
           </a>
         )}
 

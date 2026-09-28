@@ -10,16 +10,23 @@ import { marked } from "marked";
 const clases = (await getCollection("clases")).sort(
   (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
 );
+const courseNames = ["Antiguo Testamento I", "Nuevo Testamento I", "Patrística I", "Historia de la Iglesia I", "Antiguo Testamento II", "Nuevo Testamento II"];
+const courseGroups = courseNames.map((name) => ({
+  name,
+  lessons: clases.filter((clase) => clase.data.title.startsWith(name + ".")),
+})).filter((group) => group.lessons.length > 0);
+const uncategorized = clases.filter((clase) => !courseNames.some((name) => clase.data.title.startsWith(name + ".")));
+if (uncategorized.length) courseGroups.push({ name: "Otras clases", lessons: uncategorized });
 
 const pageConfig = await getPortalPageConfig("clases");
 const role = (Astro.locals.role as string | null) ?? null;
 ---
 
-<Portal title="Clases | Portal de Alumnos" portalPage="clases">
+<Portal title="Clases pregrabadas | Portal académico" portalPage="clases">
   <main class="section">
     <div class="container">
       <div class="section-header">
-        <h1 class="section-title">{pageConfig.title}</h1>
+        <h1 class="section-title">Clases pregrabadas</h1>
         <div class="section-desc" set:html={marked.parse(pageConfig.description)} />
       </div>
 
@@ -31,21 +38,8 @@ const role = (Astro.locals.role as string | null) ?? null;
           <p>No hay clases publicadas por el momento.</p>
         </div>
       ) : (
-        <div class="content-list">
-          {clases.map((clase) => (
-            <a href={`/alumnos/clases/${clase.id}/`} class="content-card">
-              <div class="content-card-body">
-                <time class="content-date">
-                  {new Date(clase.data.date).toLocaleDateString("es-MX", {
-                    year: "numeric", month: "long", day: "numeric",
-                  })}
-                </time>
-                <h3 class="content-title">{clase.data.title}</h3>
-                <p class="content-desc">{clase.data.description}</p>
-              </div>
-              <i data-lucide="chevron-right" class="content-arrow"></i>
-            </a>
-          ))}
+        <div class="course-catalog">
+          {courseGroups.map((group) => <section class="course-group"><div class="course-heading"><h2>{group.name}</h2><span>{group.lessons.length} {group.lessons.length === 1 ? "clase" : "clases"}</span></div><div class="content-list">{group.lessons.map((clase) => <a href={`/alumnos/clases/${clase.id}/`} class="content-card"><div class="content-card-body"><time class="content-date">{new Date(clase.data.date).toLocaleDateString("es-MX", { year: "numeric", month: "long", day: "numeric" })}</time><h3 class="content-title">{clase.data.title.replace(group.name + ".", "").trim()}</h3><p class="content-desc">{clase.data.description}</p></div><i data-lucide="chevron-right" class="content-arrow"></i></a>)}</div></section>)}
         </div>
       )}
     </div>
@@ -56,6 +50,11 @@ const role = (Astro.locals.role as string | null) ?? null;
   .empty-state { text-align: center; padding: 4rem 2rem; color: var(--color-text-light); }
   .empty-state i { width: 48px; height: 48px; margin-bottom: 1rem; color: var(--color-accent); }
   .content-list { margin-top: 2rem; }
+  .course-group { margin-top: 2.4rem; }
+  .course-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; border-bottom: 1px solid #d8d0c2; padding-bottom: .7rem; }
+  .course-heading h2 { font-size: 1.85rem; }
+  .course-heading span { font-size: .75rem; color: var(--color-text-light); text-transform: uppercase; letter-spacing: .08em; }
+  .course-group .content-list { margin-top: 1rem; }
   .content-card {
     display: flex;
     justify-content: space-between;

@@ -1,0 +1,12 @@
+---
+export const prerender = false;
+import Portal from "../../../layouts/Portal.astro";
+const meetUrl = "https://meet.google.com/fbj-ytac-vut";
+---
+<Portal title="Clases en vivo | Portal académico" portalPage="en-vivo">
+  <main class="section"><div class="container">
+    <div class="section-header"><span class="portal-kicker">APRENDIZAJE EN DIRECTO</span><h1 class="section-title">Clases en vivo</h1><p>Entra a la sala virtual del Colegio cuando comience tu clase.</p></div>
+    <div class="meet-card"><div class="meet-icon"><i data-lucide="video"></i></div><div><h2>Sala de Google Meet</h2><p>La clase se abre en una pestaña nueva para que puedas usar cámara, micrófono y todas las funciones de Meet.</p><code>meet.google.com/fbj-ytac-vut</code></div><a class="btn btn-primary" href={meetUrl} target="_blank" rel="noopener noreferrer"><i data-lucide="external-link"></i> Entrar a clase</a></div>
+  </div></main>
+</Portal>
+<style>.portal-kicker { color:#8d7444;font-size:.7rem;font-weight:700;letter-spacing:.18em; }.meet-card { display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:1.5rem;align-items:center;background:#fff;border:1px solid #ddd5c8;padding:2rem; }.meet-icon { width:68px;height:68px;background:#eee7d9;color:#4a3262;display:grid;place-items:center; }.meet-icon svg { width:30px;height:30px; }.meet-card h2 { font-size:1.9rem; }.meet-card p { color:var(--color-text-light);max-width:55ch;margin:.4rem 0; }.meet-card code { font-size:.85rem;color:#594b60; }.meet-card .btn { white-space:nowrap; }@media(max-width:750px){.meet-card{grid-template-columns:1fr}.meet-card .btn{justify-content:center}}</style>

@@ -8,8 +8,9 @@ import { getPortalPageConfig } from "../../../lib/portal";
 import { marked } from "marked";
 
 const tareas = (await getCollection("tareas")).sort(
-  (a, b) => new Date(b.data.dueDate).getTime() - new Date(a.data.dueDate).getTime()
+  (a, b) => Number(a.data.archived) - Number(b.data.archived) || new Date(b.data.dueDate).getTime() - new Date(a.data.dueDate).getTime()
 );
+const activeCount = tareas.filter((item) => !item.data.archived).length;
 
 const pageConfig = await getPortalPageConfig("tareas");
 const role = (Astro.locals.role as string | null) ?? null;
@@ -32,14 +33,15 @@ const role = (Astro.locals.role as string | null) ?? null;
         </div>
       ) : (
         <div class="content-list">
+          {activeCount === 0 && <p class="archive-intro">No hay tareas actuales publicadas. Estos cuestionarios se conservan como material de consulta del ciclo de mayo de 2026.</p>}
           {tareas.map((tarea) => {
-            const isPast = new Date(tarea.data.dueDate) < new Date();
+            const isPast = !tarea.data.archived && new Date(tarea.data.dueDate) < new Date();
             return (
-              <a href={`/alumnos/tareas/${tarea.id}/`} class:list={["content-card", { past: isPast }]}>
+              <a href={`/alumnos/tareas/${tarea.id}/`} class:list={["content-card", { past: isPast, archived: tarea.data.archived }]}>
                 <div class="content-card-body">
                   <div class="tarea-meta">
                     <time class="content-date">
-                      Entrega: {new Date(tarea.data.dueDate).toLocaleDateString("es-MX", {
+                      {tarea.data.archived ? "Archivo · Mayo 2026" : "Entrega: " + new Date(tarea.data.dueDate).toLocaleDateString("es-MX", {
                         year: "numeric", month: "long", day: "numeric",
                       })}
                     </time>
@@ -75,6 +77,8 @@ const role = (Astro.locals.role as string | null) ?? null;
     text-decoration: none; color: inherit;
   }
   .content-card.past { border-left-color: #ccc; opacity: 0.7; }
+  .content-card.archived { border-left-color: #b9aa8f; }
+  .archive-intro { background: #eeeae1; border-left: 3px solid #b59555; padding: 1rem 1.25rem; color: var(--color-text-light); margin-bottom: 1.5rem; }
   .content-card:hover { transform: translateX(5px); box-shadow: var(--shadow-md); }
   .tarea-meta { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.25rem; }
   .content-date { font-size: 0.8rem; color: var(--color-accent); text-transform: uppercase; letter-spacing: 1px; }

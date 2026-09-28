@@ -1,0 +1,48 @@
+---
+export const prerender = false;
+import Portal from "../../../layouts/Portal.astro";
+import { getCollection } from "astro:content";
+const role = (Astro.locals.role as string | null) || "alumno";
+const name = role === "profesor" ? "Profesor" : role === "admin" ? "Administrador" : "Alumno";
+const [clases, tareas] = await Promise.all([getCollection("clases"), getCollection("tareas")]);
+const upcoming = tareas.filter((item) => !item.data.archived && new Date(item.data.dueDate) >= new Date()).sort((a,b) => +new Date(a.data.dueDate) - +new Date(b.data.dueDate)).slice(0,3);
+const links = [
+  { href: "/alumnos/en-vivo/", icon: "video", title: "Clases en vivo", text: "Entra a la sala de Google Meet del Colegio." },
+  { href: "/alumnos/clases/", icon: "play-circle", title: "Clases pregrabadas", text: `${clases.length} clases disponibles para repasar a tu ritmo.` },
+  { href: "/alumnos/comunicados/", icon: "megaphone", title: "Comunicados", text: "Novedades y anuncios del Colegio." },
+  { href: "/alumnos/foros/", icon: "messages-square", title: "Foros", text: "Abre una conversación o responde a la comunidad." },
+  { href: "/alumnos/tareas/", icon: "clipboard-list", title: "Tareas", text: "Consulta las actividades y sus fechas de entrega." },
+  { href: "/alumnos/recursos/", icon: "folder-open", title: "Recursos", text: "Textos litúrgicos, música y lecturas de doctrina." },
+  { href: "/alumnos/boleta/", icon: "graduation-cap", title: "Boleta", text: "Revisa tus calificaciones publicadas." },
+];
+---
+<Portal title="Panel académico | Colegio San Basilio" portalPage="panel">
+  <main class="section dashboard-main"><div class="container">
+    <div class="dashboard-intro"><div><span class="dashboard-kicker">PORTAL ACADÉMICO</span><h1>Bienvenido, {name}</h1><p>Tu espacio para estudiar, participar y seguir el curso.</p></div><img src="/assets/img/logo_seal.png" alt="Sello del Colegio San Basilio" /></div>
+    <div class="dashboard-grid">{links.map((link) => <a class="dashboard-card" href={link.href}><i data-lucide={link.icon}></i><h2>{link.title}</h2><p>{link.text}</p><span>Entrar <i data-lucide="arrow-up-right"></i></span></a>)}</div>
+    <section class="dashboard-next"><div><span class="dashboard-kicker">EN EL CALENDARIO</span><h2>Próximas tareas</h2></div>{upcoming.length ? <ul>{upcoming.map((item) => <li><a href={`/alumnos/tareas/${item.id}/`}><strong>{item.data.title}</strong><time>{new Date(item.data.dueDate).toLocaleDateString("es-MX", { day:"numeric", month:"long", year:"numeric" })}</time></a></li>)}</ul> : <p>No hay entregas próximas publicadas.</p>}</section>
+  </div></main>
+</Portal>
+<style>
+  .dashboard-main { padding-top: 0 !important; }
+  .dashboard-intro { background: #302044; color: #fff; margin: 0 calc(-1 * clamp(1.2rem,4vw,4rem)) 2.2rem; padding: 2.7rem clamp(1.2rem,4vw,4rem); display: flex; justify-content: space-between; align-items: center; gap: 2rem; }
+  .dashboard-intro h1 { color: #fff; font-size: clamp(2.5rem,4.5vw,4.4rem); margin: .4rem 0; }
+  .dashboard-intro p { color: #eee5d6; }
+  .dashboard-intro img { width: clamp(70px,10vw,130px); height: clamp(70px,10vw,130px); object-fit: contain; }
+  .dashboard-kicker { font: 700 .69rem var(--font-body); letter-spacing: .18em; color: #cdb47c; }
+  .dashboard-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 1rem; }
+  .dashboard-card { display: flex; flex-direction: column; min-height: 220px; padding: 1.5rem; background: #fff; border: 1px solid #ded7c9; }
+  .dashboard-card:hover { border-color: #b59555; box-shadow: var(--shadow-md); transform: translateY(-2px); }
+  .dashboard-card > svg { color: #8d7444; width: 27px; height: 27px; margin-bottom: 1.2rem; }
+  .dashboard-card h2 { font-size: 1.55rem; }
+  .dashboard-card p { color: var(--color-text-light); font-size: .88rem; line-height: 1.5; margin: .55rem 0 1rem; }
+  .dashboard-card span { margin-top: auto; display: flex; align-items: center; gap: .3rem; color: var(--color-primary); font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
+  .dashboard-card span svg { width: 15px; height: 15px; }
+  .dashboard-next { margin-top: 3rem; background: #eeebe3; padding: 2rem; }
+  .dashboard-next h2 { font-size: 2rem; margin: .3rem 0 1rem; }
+  .dashboard-next li { border-top: 1px solid #d8d0c2; }
+  .dashboard-next li a { display: flex; justify-content: space-between; gap: 1rem; padding: .8rem 0; }
+  .dashboard-next time { color: var(--color-text-light); font-size: .85rem; }
+  @media (max-width: 1050px) { .dashboard-grid { grid-template-columns: repeat(2,minmax(0,1fr)); } }
+  @media (max-width: 550px) { .dashboard-grid { grid-template-columns: 1fr; } .dashboard-intro img { display: none; } .dashboard-next li a { display: block; } .dashboard-next time { display: block; } }
+</style>

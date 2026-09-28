@@ -20,14 +20,14 @@ const formattedDue = new Date(tarea.data.dueDate).toLocaleDateString("es-MX", {
 });
 ---
 
-<Portal title={`${tarea.data.title} | Evaluaciones`} portalPage="tareas">
+<Portal title={`${tarea.data.title} | Tareas`} portalPage="tareas">
   <main class="section">
     <div class="container">
       <div class="breadcrumb">
-        <a href="/alumnos/tareas/">← Volver a Evaluaciones</a>
+        <a href="/alumnos/tareas/">← Volver a Tareas</a>
       </div>
       <article class="article">
-        <time class="article-date">Fecha de entrega: {formattedDue}</time>
+        <time class="article-date">{tarea.data.archived ? "Material archivado · Mayo de 2026" : `Fecha de entrega: ${formattedDue}`}</time>
         <h1 class="section-title">{tarea.data.title}</h1>
         <p class="article-desc">{tarea.data.description}</p>
 
